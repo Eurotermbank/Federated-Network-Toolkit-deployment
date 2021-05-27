@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: discussionservice
+  name: discussionservice
+  namespace: otk
+spec:
+  ports:
+  - name: "2080"
+    port: 2080
+    targetPort: 80
+  selector:
+    app: discussionservice
+status:
+  loadBalancer: {}
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: discussionservice
+  name: discussionservice
+  namespace: otk
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: discussionservice
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: discussionservice
+    spec:
+      containers:
+      - env:
+        - name: Auth__JwtBearer__Audience
+          valueFrom:
+           configMapKeyRef:
+            name: termservice-config
+            key: Auth__JwtBearer__Audience
+        - name: Auth__JwtBearer__Issuer
+          valueFrom:
+           configMapKeyRef:
+            name: termservice-config
+            key: Auth__JwtBearer__Issuer
+        - name: Auth__JwtBearer__Secret
+          valueFrom:
+           secretKeyRef:
+            name: termservice-secret
+            key: Auth__JwtBearer__Secret
+        - name: ConnectionStrings__discussionDB
+          valueFrom:
+           secretKeyRef:
+            name: termservice-secret
+            key: ConnectionStrings__discussionDB
+        image: eurotermbank.azurecr.io/discussionservice:V.0.1
+        imagePullPolicy: "Always"
+        name: discussionservice
+        ports:
+        - containerPort: 80
+        resources: {}
+      imagePullSecrets:
+        - name: dregsecret
+      restartPolicy: Always
+      serviceAccountName: ""
+      #volumes: null
+status: {}

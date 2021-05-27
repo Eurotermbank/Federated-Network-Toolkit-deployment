@@ -1,0 +1,95 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: termservice
+  name: termservice
+  namespace: otk
+spec:
+  ports:
+  - name: "2021"
+    port: 2021
+    targetPort: 80
+  selector:
+    app: termservice
+status:
+  loadBalancer: {}
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: termservice
+  name: termservice
+  namespace: otk
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: termservice
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: termservice
+    spec:
+      containers:
+      - env:
+        - name: Auth__BasicAuth__Password
+          valueFrom:
+           secretKeyRef:
+            name: termservice-secret
+            key: Auth__BasicAuth__Password
+        - name: Auth__BasicAuth__Username
+          valueFrom:
+           secretKeyRef:
+            name: termservice-secret
+            key: Auth__BasicAuth__Username
+        - name: Auth__JwtBearer__Audience
+          valueFrom:
+           configMapKeyRef:
+            name: termservice-config
+            key: Auth__JwtBearer__Audience
+        - name: Auth__JwtBearer__Issuer
+          valueFrom:
+           configMapKeyRef:
+            name: termservice-config
+            key: Auth__JwtBearer__Issuer
+        - name: Auth__JwtBearer__Secret
+          valueFrom:
+           secretKeyRef:
+            name: termservice-secret
+            key: Auth__JwtBearer__Secret
+        - name: ConnectionStrings__termDB
+          valueFrom:
+           secretKeyRef:
+            name: termservice-secret
+            key: ConnectionStrings__termDB
+        - name: ElasticSearch__Host
+          valueFrom:
+           configMapKeyRef:
+            name: termservice-config
+            key: ElasticSearch__Host
+        - name: ElasticSearch__IndexName
+          valueFrom:
+           configMapKeyRef:
+            name: termservice-config
+            key: ElasticSearch__IndexName
+        - name: ElasticSearch__TermUri
+          valueFrom:
+           configMapKeyRef:
+            name: termservice-config
+            key: ElasticSearch__TermUri
+        image: tildeterminology.azurecr.io/tt-termservice:V.0.1
+        imagePullPolicy: "Always"
+        name: termservice
+        ports:
+        - containerPort: 80
+        resources: {}
+      imagePullSecrets:
+        - name: dregsecret
+      restartPolicy: Always
+      serviceAccountName: ""
+      #volumes: null
+status: {}

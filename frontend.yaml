@@ -1,0 +1,75 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: frontend
+  name: frontend
+  namespace: otk
+spec:
+  ports:
+  - name: "2000"
+    port: 2000
+    targetPort: 80
+  selector:
+    app: frontend
+status:
+  loadBalancer: {}
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: frontend
+  name: frontend
+  namespace: otk
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - env:       
+        - name: BASE_URL
+          valueFrom:
+           configMapKeyRef:
+            name: frontend-config
+            key: BASE_URL
+        - name: CMS_SERVICE_URL
+          valueFrom:
+           configMapKeyRef:
+            name: frontend-config
+            key: CMS_SERVICE_URL
+        - name: TERM_SERVICE_URL
+          valueFrom:
+           configMapKeyRef:
+            name: frontend-config
+            key: TERM_SERVICE_URL   
+        - name: DISCUSSION_SERVICE_URL
+          valueFrom:
+           configMapKeyRef:
+            name: frontend-config
+            key: DISCUSSION_SERVICE_URL     
+        - name: KC_URL
+          valueFrom:
+           configMapKeyRef:
+            name: frontend-config
+            key: KC_URL
+        image: eurotermbank.azurecr.io/otk-frontend:V.0.1
+        imagePullPolicy: "Always"
+        name: frontend
+        ports:
+        - containerPort: 80
+        resources: {}
+      imagePullSecrets:
+        - name: dregsecret
+      restartPolicy: Always
+      serviceAccountName: ""
+      #volumes: null
+status: {}

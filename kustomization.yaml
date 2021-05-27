@@ -1,0 +1,25 @@
+resources:
+# name space
+- namespace.yaml
+# configuration
+- configmap-test.yaml
+- secret-test.yaml
+
+# Public dockers
+- elasticserch.yaml
+- kibana.yaml
+
+# Tilde ACR docekers
+- frontend.yaml
+- frontend-cms.yaml
+- termservice.yaml
+- discussionservice.yaml
+
+# Nginx Ingress
+- ingress.yaml
+
+# Persistent Storage
+- storage.yaml
+
+# SSL cluster issuer
+#- cluster-issuer.yaml
