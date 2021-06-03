@@ -56,7 +56,7 @@ spec:
            secretKeyRef:
             name: termservice-secret
             key: ConnectionStrings__discussionDB
-        image: eurotermbank.azurecr.io/discussionservice:V.0.1
+        image: eurotermbank.azurecr.io/discussionservice:V.1
         imagePullPolicy: "Always"
         name: discussionservice
         ports:
