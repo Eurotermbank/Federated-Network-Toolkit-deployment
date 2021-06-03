@@ -9,11 +9,12 @@ resources:
 - elasticserch.yaml
 - kibana.yaml
 
-# Tilde ACR docekers
+# Eurotermbank ACR dockers
 - frontend.yaml
 - frontend-cms.yaml
 - termservice.yaml
 - discussionservice.yaml
+- keycloak.yaml
 
 # Nginx Ingress
 - ingress.yaml

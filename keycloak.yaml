@@ -1,0 +1,96 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: keycloak
+  name: keycloak
+spec:
+  ports:
+  - name: kc-http
+    port: 2014
+    targetPort: 8080
+  selector:
+    app: keycloak
+status:
+  loadBalancer: {}
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: keycloak
+  name: keycloak
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: keycloak
+    spec:
+      containers:
+      - env:
+        - name: PROXY_ADDRESS_FORWARDING
+          value: "true"
+        - name: KEYCLOAK_USER
+          valueFrom:
+           secretKeyRef:
+            name: keycloak-secret
+            key: KEYCLOAK_USER
+        - name: KEYCLOAK_PASSWORD
+          valueFrom:
+           secretKeyRef:
+            name: keycloak-secret
+            key: KEYCLOAK_PASSWORD
+        - name: DB_VENDOR
+          valueFrom:
+           configMapKeyRef:
+            name: keycloak-config
+            key: DB_VENDOR
+        - name: DB_ADDR
+          valueFrom:
+           configMapKeyRef:
+            name: keycloak-config
+            key: DB_ADDR
+        - name: DB_DATABASE
+          valueFrom:
+           configMapKeyRef:
+            name: keycloak-config
+            key: DB_DATABASE
+        - name: DB_USER
+          valueFrom:
+           secretKeyRef:
+            name: keycloak-secret
+            key: DB_USER
+        - name: DB_PASSWORD
+          valueFrom:
+           secretKeyRef:
+            name: keycloak-secret
+            key: DB_PASSWORD
+        - name: JDBC_PARAMS
+          valueFrom:
+           configMapKeyRef:
+            name: keycloak-config
+            key: JDBC_PARAMS
+        image: eurotermbank.azurecr.io/auth-keycloak-otk:V.1
+        imagePullPolicy: "Always"
+        name: keycloak
+        ports:
+        - name: kc-http
+          containerPort: 8080
+        - name: kc-https
+          containerPort: 8443
+        readinessProbe:
+          httpGet:
+            path: /auth/realms/master
+            port: 8080
+      imagePullSecrets:
+        - name: dregsecret
+      restartPolicy: Always
+      serviceAccountName: ""
+      #volumes:
+status: {}
