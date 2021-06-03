@@ -61,7 +61,7 @@ spec:
            configMapKeyRef:
             name: frontend-config
             key: KC_URL
-        image: eurotermbank.azurecr.io/otk-frontend:V.0.1
+        image: eurotermbank.azurecr.io/otk-frontend:V.1
         imagePullPolicy: "Always"
         name: frontend
         ports:
