@@ -21,6 +21,3 @@ resources:
 
 # Persistent Storage
 - storage.yaml
-
-# SSL cluster issuer
-#- cluster-issuer.yaml
