@@ -35,7 +35,7 @@ spec:
         app: frontend
     spec:
       containers:
-      - env:       
+      - env:
         - name: BASE_URL
           valueFrom:
            configMapKeyRef:
@@ -50,17 +50,27 @@ spec:
           valueFrom:
            configMapKeyRef:
             name: frontend-config
-            key: TERM_SERVICE_URL   
+            key: TERM_SERVICE_URL
         - name: DISCUSSION_SERVICE_URL
           valueFrom:
            configMapKeyRef:
             name: frontend-config
-            key: DISCUSSION_SERVICE_URL     
+            key: DISCUSSION_SERVICE_URL
         - name: KC_URL
           valueFrom:
            configMapKeyRef:
             name: frontend-config
             key: KC_URL
+        - name: KC_REALM
+          valueFrom:
+           configMapKeyRef:
+            name: frontend-config
+            key: KC_REALM
+        - name: KC_CLIENTID
+          valueFrom:
+           configMapKeyRef:
+            name: frontend-config
+            key: KC_CLIENTID
         image: eurotermbank.azurecr.io/otk-frontend:V.1
         imagePullPolicy: "Always"
         name: frontend

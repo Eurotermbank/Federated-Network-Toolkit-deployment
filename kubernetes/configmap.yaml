@@ -29,7 +29,9 @@ data:
  BASE_URL: ""
  CMS_SERVICE_URL: ""
  TERM_SERVICE_URL: ""
- KC_URL: "" 
+ KC_URL: ""
+ KC_REALM: ""
+ KC_CLIENTID: ""
  DISCUSSION_SERVICE_URL: ""
 ---
 #termservice.yaml
