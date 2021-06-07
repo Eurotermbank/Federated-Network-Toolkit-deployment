@@ -13,6 +13,8 @@ consists of several microservices, deployable as docker containers.
 1) restore DB from dump
 2)Coppy seed data files
 
+[CMS content management guide](user-guides/cms.md)
+
 ## Configure Keycloak
 ### set up Realm
 1) Log into Keycloak master realm with admin user you specified in deployment yaml file (https://keycloak.example.com/auth)
