@@ -28,18 +28,25 @@ Following are the content parts that content editor can edit from Portals CMS:
 You can access cms admin panel at:
 https://your-cms-url/admin
 
+For the first time it is possible to log in with use credentials:
 
-After loggin in, on the left of the page you will be presented with menu panel where you can reach all the content.
+u: unsecure@login.com  
+p: tbYbAa8fuiFVFz
+
+After logging in for the first time it is mandatory to create your own administrative user and delete this one afterwards.
+
+
+Logged in user, on the left of the page will be presented with menu panel where it can reach all the content.
 
 ![Menu item management](img/cms-sidebar.png "Menu item management")
 
 
-All content items in CMS are built similarly - the have usual fields one would imagine and there are nuances that differ. 
+All content items in CMS are built the same way and the best way how to learn about it would be to explore [Strapi content management documentation](https://strapi.io/documentation/user-docs/latest/content-manager/introduction-to-content-manager.html#collection-types). Further lets explore some nuances.
 
 
 ### Pages
 
-Pages section holds a collection of whole page content that can be referred by url. For example Eurotermbank page that can be accessed at https://otktest.tilde.lv/eurotermbank
+Pages section holds a collection of whole-page-content that can be referred by url. For example Eurotermbank page that can be accessed at https://otktest.tilde.lv/eurotermbank
 
 A page has header where you can manage its title, wether to show it or not, add page background and slug, which is used building pages url.
 
@@ -70,9 +77,9 @@ There is a way to add more sections to the page body - after Hero section as wel
 
 ### News articles
 
-News articles can be found at Articls section in the top left corner. It has content section as well as Image, Summary and Published date fields. Image and summary are used in news article preview.
+News articles can be found at Articles section in the top left corner. It has content section as well as Image, Summary and Published date fields. Image and summary are used in news article preview.
 
-
+![Menu location in sidebar](img/cms-news-roll.png "Menu location in sidebar")
 ### Menu
 
 You can create and manage portal menu from CMS.  
@@ -95,13 +102,11 @@ If you want to add a link to external page, External URL field will be used for 
 
 "Attach to menu" switch and "Audience" dropdown is not relevant at this moment.
 
+## User permissions
 
+If you need to create other users than super admin, here you can read how to do it in official documentation:
 
-## Media Library
-
-## CMS user management
-
-## Permissions
+[User permission tutorial](https://strapi.io/documentation/user-docs/latest/users-roles-permissions/introduction-to-users-roles-permissions.html)
 
 ## Troubleshooting
 
