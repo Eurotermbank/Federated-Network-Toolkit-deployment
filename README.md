@@ -3,15 +3,75 @@
 This repo contains set up instructions and deployment files for deploying Toolkit to Kubernetes environment. This toolkit can also be deployed in any other environment taht supports running Docker images
 
 ## Toolkit functionality
-Term management
-Term discusions, aprovals/drafts
+Toolkit provides is intended for decentralized terminology management, terminology sharing, terminology search, terminology creation workflow and its synchronization with central node Eurotermbank.com and later also metadata synchrnization with ELRC-share.
 
+The main functionality of the open Terminology Management Toolkit includes:  
+
+* Terminology management  
+
+  - Terminology import/export from/to TBX/TSV/CSV/Excel  
+
+  - Terminology entry management – edit, delete, create  
+
+* sharing  
+
+  - Share with other people to do collaborative terminology management  
+
+  - Share with citizens – allow anyone to see the whole term collection  
+
+* Terminology search  
+
+  - Global terminology search in the whole local database  
+
+  - Search in the collection list  
+
+  - Search in a term collection  
+
+  - Federated eTranslation TermBank Network (from eurotermbank.com portal) 
+
+* Terminology creation workflow  
+
+  - Share term candidates with others  
+
+  - Discuss about concepts and term candidates  
+
+  - Approve term candidates and new entries  
+
+* Automatic Terminology (approved terms) synchronization with Eurotermbank.com and ELRC-share
+
+* Manage portal style and Content management system:
+  - change colors, logo, title
+  - manage portals' content, news, menu, landing page texts and images
 
 ## Architecture
-consists of several microservices, deployable as docker containers.
+The toolkit consists of several microservices, each component is deployable as docker container.
+
+**Frontend** – Application responsible for all GUI and its operations. It is using Angular, that means this is Single Page Application 
+
+**CMS** – Content management System. Open source headless Content  Managemen system Strapi is used to enable easy and flexible approach for static content. Toolit provides also seed database for initial content.
+
+**Term Service** – microservice responsible for terminology management backend. This service consists from 3 components – (1) backend service built on ASP.NET Core, (2) Elastic Search service and (3) MySQL Database. Main methods for the service are: 
+
+* CRUD operations for term metadata – terminology collections 
+
+* CRUD operations for term entries 
+
+* Bulk methods for massive term import, export 
+
+* Terminology search methods – lookup, search, fuzzy search, instant search 
+
+* Data synchronization support for Federated Network 
+
+**User Service** – microservice that is responsible for user authentication and authorization. Open source identity platform Keycloak was chosen. Custom Keycloak theme has been developed and provided for this toolkit (included in this Toolkit kKeycloak container image) as well initial configuration file to be imported.
+
+**Discussion Service** - This service will consist from 2 components – (1) backend service built on ASP.NET Core, (2) MySQL Database. This service is responsible about user generated coments on terminology entries. 
+
+**Log Service** – This services uses Elastic Search engine for log data storage and Kibana software for log data visualisation and query.
+
 ## Set up CMS
-1) restore DB from dump
-2)Coppy seed data files
+1) Restore DB from dump
+2) Copy seed data files
+3) Change admin username and password
 
 [CMS content management guide](user-guides/cms.md)
 
