@@ -5,37 +5,37 @@ This repo contains set up instructions and deployment files for deploying Toolki
 ## Toolkit functionality
 Toolkit provides is intended for decentralized terminology management, terminology sharing, terminology search, terminology creation workflow and its synchronization with central node Eurotermbank.com and later also metadata synchrnization with ELRC-share.
 
-The main functionality of the open Terminology Management Toolkit includes:  
+The main functionality of the open Terminology Management Toolkit includes:
 
-* Terminology management  
+* Terminology management
 
-  - Terminology import/export from/to TBX/TSV/CSV/Excel  
+  - Terminology import/export from/to TBX/TSV/CSV/Excel
 
-  - Terminology entry management – edit, delete, create  
+  - Terminology entry management – edit, delete, create
 
-* sharing  
+* sharing
 
-  - Share with other people to do collaborative terminology management  
+  - Share with other people to do collaborative terminology management
 
-  - Share with citizens – allow anyone to see the whole term collection  
+  - Share with citizens – allow anyone to see the whole term collection
 
-* Terminology search  
+* Terminology search
 
-  - Global terminology search in the whole local database  
+  - Global terminology search in the whole local database
 
-  - Search in the collection list  
+  - Search in the collection list
 
-  - Search in a term collection  
+  - Search in a term collection
 
-  - Federated eTranslation TermBank Network (from eurotermbank.com portal) 
+  - Federated eTranslation TermBank Network (from eurotermbank.com portal)
 
-* Terminology creation workflow  
+* Terminology creation workflow
 
-  - Share term candidates with others  
+  - Share term candidates with others
 
-  - Discuss about concepts and term candidates  
+  - Discuss about concepts and term candidates
 
-  - Approve term candidates and new entries  
+  - Approve term candidates and new entries
 
 * Automatic Terminology (approved terms) synchronization with Eurotermbank.com and ELRC-share
 
@@ -46,25 +46,25 @@ The main functionality of the open Terminology Management Toolkit includes:
 ## Architecture
 The toolkit consists of several microservices, each component is deployable as docker container.
 
-**Frontend** – Application responsible for all GUI and its operations. It is using Angular, that means this is Single Page Application 
+**Frontend** – Application responsible for all GUI and its operations. It is using Angular, that means this is Single Page Application
 
 **CMS** – Content management System. Open source headless Content  Managemen system Strapi is used to enable easy and flexible approach for static content. Toolit provides also seed database for initial content.
 
-**Term Service** – microservice responsible for terminology management backend. This service consists from 3 components – (1) backend service built on ASP.NET Core, (2) Elastic Search service and (3) MySQL Database. Main methods for the service are: 
+**Term Service** – microservice responsible for terminology management backend. This service consists from 3 components – (1) backend service built on ASP.NET Core, (2) Elastic Search service and (3) MySQL Database. Main methods for the service are:
 
-* CRUD operations for term metadata – terminology collections 
+* CRUD operations for term metadata – terminology collections
 
-* CRUD operations for term entries 
+* CRUD operations for term entries
 
-* Bulk methods for massive term import, export 
+* Bulk methods for massive term import, export
 
-* Terminology search methods – lookup, search, fuzzy search, instant search 
+* Terminology search methods – lookup, search, fuzzy search, instant search
 
-* Data synchronization support for Federated Network 
+* Data synchronization support for Federated Network
 
 **User Service** – microservice that is responsible for user authentication and authorization. Open source identity platform Keycloak was chosen. Custom Keycloak theme has been developed and provided for this toolkit (included in this Toolkit kKeycloak container image) as well initial configuration file to be imported.
 
-**Discussion Service** - This service will consist from 2 components – (1) backend service built on ASP.NET Core, (2) MySQL Database. This service is responsible about user generated coments on terminology entries. 
+**Discussion Service** - This service will consist from 2 components – (1) backend service built on ASP.NET Core, (2) MySQL Database. This service is responsible about user generated coments on terminology entries.
 
 **Log Service** – This services uses Elastic Search engine for log data storage and Kibana software for log data visualisation and query.
 
@@ -263,3 +263,115 @@ There are 2 ways for deployment:
     l) termservice.yaml
 
     m) ingress.yaml
+
+  &nbsp;
+&nbsp;
+&nbsp;
+
+## Additional configuration
+
+&nbsp;
+&nbsp;
+
+### Kibana
+&nbsp;
+There are possability to configure authentification for Kibana dashboard.
+Authentification will be enabled from Ingress. Before configuring Ingress, there are need to create secret key.
+If key configured not correctly you can get error **503**.
+
+Execute command:
+```bash
+htpasswd -c auth otk-logViewer
+```
+where **otk-logViewer** is login. And enter password in terminal log.
+Next, create secret from auth, and displey it.
+
+If you deploying directly to k8, you can add **--namespace otk** paramter to create command.
+```kubectl
+kubectl create secret generic basic-auth --from-file=auth
+kubectl get secret basic-auth -o yaml
+```
+
+Output will be similar:
+```yaml
+apiVersion: v1
+data:
+  auth: 12345678900asdfghjkl==
+kind: Secret
+metadata:
+  creationTimestamp: "2021-06-14T12:47:59Z"
+  managedFields:
+  - apiVersion: v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:data:
+        .: {}
+        f:auth: {}
+      f:type: {}
+    manager: kubectl-create
+    operation: Update
+    time: "2021-06-14T12:47:59Z"
+  name: basic-auth
+  namespace: otk
+  resourceVersion: "50508433"
+  selfLink: /api/v1/namespaces/otk/secrets/basic-auth
+  uid: 77123305-abcd-4567-lll3-000a01e4da74
+type: Opaque
+
+```
+
+If you need to deploy in other environment, you can create secret yaml from previous step. It will look like this:
+```yaml
+apiVersion: v1
+data:
+  auth: 12345678900asdfghjkl==
+kind: Secret
+metadata:
+  managedFields:
+  - apiVersion: v1
+  name: kibana-basic-auth
+  namespace: otk
+type: Opaque
+```
+
+&nbsp;
+&nbsp;
+
+Next enable in Kibana ingress annotations, so it will look like:
+
+```yaml
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/auth-type: basic
+    nginx.ingress.kubernetes.io/auth-secret: kibana-basic-auth
+    nginx.ingress.kubernetes.io/auth-realm: "Authentication Required - Logs and Statistics"
+  name: http-ingress-kibana
+  namespace: default
+spec:
+  tls:
+  - hosts:
+    - kibana.example.com
+    secretName: aks-ingress-tls
+  rules:
+    - host: kibana.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: kibana
+                port:
+                  number: 5601
+status:
+  loadBalancer: {}
+
+```
+
+Here must be defined secret name:
+```yaml
+nginx.ingress.kubernetes.io/auth-secret: kibana-basic-auth
+```
