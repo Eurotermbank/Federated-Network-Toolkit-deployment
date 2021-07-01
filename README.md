@@ -3,7 +3,7 @@
 This repo contains set up instructions and deployment files for deploying Toolkit to Kubernetes environment. This toolkit can also be deployed in any other environment that supports running Docker images
 
 ## Toolkit functionality
-Toolkit provides is intended for decentralized terminology management, terminology sharing, terminology search, terminology creation workflow and its synchronization with central node Eurotermbank.com and later also metadata synchrnization with ELRC-share.
+Toolkit is intended to decentralized terminology management, terminology sharing, terminology search, terminology creation workflow and its synchronization with central node Eurotermbank.com and later also metadata synchrnization with the ELRC-share.
 
 The main functionality of the open Terminology Management Toolkit includes:
 
