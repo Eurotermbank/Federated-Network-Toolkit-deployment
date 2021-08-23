@@ -63,7 +63,7 @@ Functionality VS user types:
 | Can see discussion                           |                                            |                                            | X                         | X                         |
 | Can add discusion comment                    |                                            |                                            | X                         | X                         |
 | Can export all approved terms                |                                            |                                            | X                         | X                         |
-| Can edit Terms                               | variable *                                 | variable *                                 | X                         |
+| Can edit Terms                               | variable *                                 | variable *                                 | X                         | X
 | Can import terms                             |                                            |                                            |                           | X                         |
 | Can delete collection                        |                                            |                                            |                           | X                         |
  
@@ -74,7 +74,7 @@ Functionality VS user types:
 | Can give feedback on term                    | X                                          | X                                          | X                         | X                         |
 | See all user feedbacks                       |                                            |                                            | X                         | X                         |
 | Delete any user feedback                     |                                            |                                            |                           | X                         |
-| Delete any user feedback                     |                                            |                                            |                           |                           |
+| Delete any user feedback                     |                                            |                                            |                           | X                         |
  
 *adjustable for each collection in metadata
 
