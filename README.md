@@ -63,7 +63,7 @@ Functionality VS user types:
 | Can see discussion                           |                                            |                                            | X                         | X                         |
 | Can add discusion comment                    |                                            |                                            | X                         | X                         |
 | Can export all approved terms                | variable *                                 |  variable *                                | X                         | X                         |
-| Can edit terms                               |                                            |                                            | X                         | X
+| Can edit terms                               |                                            |                                            |                           | X
 | Can import terms                             |                                            |                                            |                           | X                         |
 | Can delete collection                        |                                            |                                            |                           | X                         |
  
