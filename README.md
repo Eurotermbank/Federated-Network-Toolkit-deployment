@@ -43,6 +43,41 @@ The main functionality of the open Terminology Management Toolkit includes:
   - change colors, logo, title
   - manage portals' content, news, menu, landing page texts and images
 
+### Portal User Types
+
+**Anonymous user** - any user that is not authenticated
+
+**Registered User** - any user that has an account in set up Federated node and is authenticated
+
+**Registered User as Reader** - registered user that has "Terminology Reader" role and access to certain Terminology Group (every collection belongs to a Group)
+
+**Registered User as Editor** - registered user that has "Terminology Manager" role and access to certain Terminology Group (every collection belongs to a Group)
+
+Functionality VS user types:
+|                                              | Anonymous                                  | Registered User                            | Registered User as Reader | Registered User as Editor |
+| -------------------------------------------- | ------------------------------------------ | ------------------------------------------ | ------------------------- | ------------------------- |
+| See Collection in Collection List            | X                                          | X                                          | X                         | X                         |
+| Can open collection                          | X                                          | X                                          | X                         | X                         |
+| Can see approved terms                       | X                                          | X                                          | X                         | X                         |
+| Can see draft terms                          |                                            |                                            | X                         | X                         |
+| Can see discussion                           |                                            |                                            | X                         | X                         |
+| Can add discusion comment                    |                                            |                                            | X                         | X                         |
+| Can export all approved terms                |                                            |                                            | X                         | X                         |
+| Can edit Terms                               | variable *                                 | variable *                                 | X                         |
+| Can import terms                             |                                            |                                            |                           | X                         |
+| Can delete collection                        |                                            |                                            |                           | X                         |
+ 
+ 
+ Feedback functionality (not implemented yet):
+ |                                              | Anonymous                                  | Registered User                            | Registered User as Reader | Registered User as Editor |
+| -------------------------------------------- | ------------------------------------------ | ------------------------------------------ | ------------------------- | ------------------------- | 
+| Can give feedback on term                    | X                                          | X                                          | X                         | X                         |
+| See all user feedbacks                       |                                            |                                            | X                         | X                         |
+| Delete any user feedback                     |                                            |                                            |                           | X                         |
+| Delete any user feedback                     |                                            |                                            |                           |                           |
+ 
+*adjustable for each collection in metadata
+
 ## Architecture
 The toolkit consists of several microservices, each component is deployable as docker container.
 
