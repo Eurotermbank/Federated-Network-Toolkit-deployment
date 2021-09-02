@@ -40,15 +40,14 @@ Central synchronization API implements Basic authentication. Each Federated node
 
 Synchronization process is following:
 
-1. Add New Collection. API will return an ID for the collection for further update needs.
+1. Add New Collection Metadata. API will return an ID for the collection for further update needs.
 2. Update existing Collection Metadata
-3. Add new Concept entries, or multiple
-4. Update existing entries
+3. Add new Concept entries or update existing
 5. Delete removed entries
 
-## Add new Collection
+## Add New Collection Metadata
 
-POST /sync/collection HTTP/1.1
+POST /termsrv/sync/collection HTTP/1.1
 
 Host: eurotermbank.com
 
@@ -56,65 +55,31 @@ Content-Type: application/json
 
 Authorization: Bearer XXXXXXXXXXXX
 
+```json
 {
-
-&quot;id&quot;: 0,
-
-&quot;name&quot;: &quot;asdasdsss&quot;,
-
-&quot;description&quot;: &quot;asdas&quot;,
-
-&quot;type&quot;: 1,
-
-&quot;belonging&quot;: &quot;&quot;,
-
-&quot;externalUri&quot;: &quot;&quot;,
-
-&quot;domains&quot;: [],
-
-&quot;languages&quot;: [],
-
-&quot;Public&quot;: &quot;true&quot;,
-
-&quot;domainid&quot;: &quot;TaaS-0202&quot;,
-
-&quot;ownerGroupGuid&quot;: &quot;/Tilde&quot;,
-
-&quot;allowsUsesBesidesDGT&quot;: null,
-
-&quot;appropriatnessForDSI&quot;: null,
-
-&quot;attributionText&quot;: null,
-
-&quot;cpEmail&quot;: null,
-
-&quot;cpName&quot;: null,
-
-&quot;cpOrganization&quot;: null,
-
-&quot;cpSurname&quot;: null,
-
-&quot;iprEmail&quot;: null,
-
-&quot;iprName&quot;: null,
-
-&quot;iprOrganization&quot;: null,
-
-&quot;iprSurname&quot;: null,
-
-&quot;isPSI&quot;: null,
-
-&quot;licence&quot;: null,
-
-&quot;originalName&quot;: null,
-
-&quot;originalNameLang&quot;: null,
-
-&quot;restrictionsOfUse&quot;: null,
-
-&quot;sourceURL&quot;: null
-
+    "name": "This is name of my collection",
+    "description": "Description of my collection",
+    "externalUri": "",
+    "domainid": "0202",
+    "allowsUsesBesidesDGT": true,
+    "appropriatnessForDSI": true,
+    "attributionText": null,
+    "cpEmail": null,
+    "cpName": null,
+    "cpOrganization": null,
+    "cpSurname": null,
+    "iprEmail": null,
+    "iprName": null,
+    "iprOrganization": null,
+    "iprSurname": null,
+    "isPSI": null,
+    "licence": null,
+    "originalName": null,
+    "originalNameLang": null,
+    "restrictionsOfUse": null,
+    "sourceURL": null
 }
+```
 
 ## Update Existing Collection Metadata
 
