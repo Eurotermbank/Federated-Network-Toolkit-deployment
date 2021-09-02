@@ -83,16 +83,146 @@ Authorization: Bearer XXXXXXXXXXXX
 
 ## Update Existing Collection Metadata
 
-TODO
+PUT /termsrv/sync/collection HTTP/1.1
 
-## Add New concept entries
+Host: eurotermbank.com
 
-TODO
+Content-Type: application/json
 
-## Update Existing Concept Entry
+Authorization: Bearer XXXXXXXXXXXX
 
-TODO
+```json
+{
+    "id": 112233,
+    "name": "This is name of my collection",
+    "description": "Description of my collection",
+    "externalUri": "",
+    "domainid": "0202",
+    "allowsUsesBesidesDGT": true,
+    "appropriatnessForDSI": true,
+    "attributionText": null,
+    "cpEmail": null,
+    "cpName": null,
+    "cpOrganization": null,
+    "cpSurname": null,
+    "iprEmail": null,
+    "iprName": null,
+    "iprOrganization": null,
+    "iprSurname": null,
+    "isPSI": null,
+    "licence": null,
+    "originalName": null,
+    "originalNameLang": null,
+    "restrictionsOfUse": null,
+    "sourceURL": null
+}
+```
+
+## Add New concept entries or Update Existing Concept Entry
+
+POST /termsrv/sync/collection/{collection_id}/entries HTTP/1.1
+
+Host: eurotermbank.com
+
+Content-Type: application/json
+
+Authorization: Bearer XXXXXXXXXXXX
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE martif SYSTEM "https://eurotermbank.com/TBXcoreStructV02%20%281%29.dtd">
+<martif type="TBX" xml:lang="en">
+  <martifHeader>
+    <fileDesc>
+      <sourceDesc>
+        <p>Sync collection sample</p>
+      </sourceDesc>
+    </fileDesc>
+    <encodingDesc>
+      <p type="XCSURI">https://eurotermbank.com/tbx-0.5.1.xcs</p>
+    </encodingDesc>
+  </martifHeader>
+  <text>
+    <body>
+<termEntry id="tgl-369">
+  <langSet xml:lang="en">
+    <ntig>
+      <termGrp>
+        <term>Computer</term>
+      </termGrp>
+      <termNote type="administrativeStatus">preferredTerm-admn-sts</termNote>
+      <admin type="status">approved</admin>
+      <termNote type="normativeAuthorization">approved</termNote>
+      <termNote type="grammaticalGender">masculine</termNote>
+      <termNote type="grammaticalNumber">singular</termNote>
+      <termNote type="partOfSpeech">noun</termNote>
+      <termNote type="register">technicalRegister</termNote>
+      <termNote type="termType">entryTerm</termNote>
+      <termNote type="usageNote">Commonly used</termNote>
+      <note>Use without restriction</note>
+      <xref type="xSource" target="our company rules" />
+      <descripGrp>
+        <descrip type="context">Early computers were meant to be used only for calculations</descrip>
+        <admin type="sourceIdentifier">https://en.wikipedia.org/wiki/Computer</admin>
+      </descripGrp>
+    </ntig>
+    <descripGrp>
+      <descrip type="definition">A computer is a machine that can be programmed to carry out sequences of arithmetic or logical operations automatically.</descrip>
+      <admin type="sourceIdentifier">https://en.wikipedia.org/wiki/Computer</admin>
+    </descripGrp>
+  </langSet>
+  <langSet xml:lang="lv">
+    <ntig>
+      <termGrp>
+        <term>Dators</term>
+      </termGrp>
+      <admin type="status">approved</admin>
+    </ntig>
+    <ntig>
+      <termGrp>
+        <term>Kompjūters</term>
+      </termGrp>
+      <admin type="status">approved</admin>
+      <termNote type="temporalQualifier">obsoleteTerm</termNote>
+      <note>Dažkārt tiek lietots automotive un citās inženierzinātnēs</note>
+    </ntig>
+  </langSet>
+  <descrip type="subjectField">Politics and Administration</descrip>
+</termEntry>
+<termEntry id="tgl-370">
+  <langSet xml:lang="en">
+    <ntig>
+      <termGrp>
+        <term>Computer program</term>
+      </termGrp>
+      <admin type="status">approved</admin>
+    </ntig>
+    <descripGrp>
+      <descrip type="definition">A computer program is a collection of instructions[1] that can be executed by a computer to perform a specific task.</descrip>
+    </descripGrp>
+  </langSet>
+  <langSet xml:lang="lv">
+    <ntig>
+      <termGrp>
+        <term>Datorprogramma</term>
+      </termGrp>
+      <admin type="status">approved</admin>
+    </ntig>
+  </langSet>
+  <descrip type="subjectField">Politics and Administration</descrip>
+</termEntry></body>
+  </text>
+</martif>
+```
 
 ## Delete Concept Entry
 
-TODO
+DELETE /termsrv/sync/collection/{collection_id} HTTP/1.1
+
+Host: eurotermbank.com
+
+Content-Type: application/json
+
+Authorization: Bearer XXXXXXXXXXXX
+
+
