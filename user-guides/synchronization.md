@@ -227,4 +227,7 @@ Content-Type: application/json
 
 Authorization: Basic XXXXXXXXXXXX
 
+# Node sync API (for Pull strategy)
+Methods to be specified
+
 
