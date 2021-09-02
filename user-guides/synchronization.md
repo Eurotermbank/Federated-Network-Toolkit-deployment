@@ -120,7 +120,7 @@ Authorization: Bearer XXXXXXXXXXXX
 
 ## Add New concept entry or Update Existing Concept Entries
 
-*Multiple collection entries can be submitted, but only max 100 at single Post. Submited entries will be analyzed - if entry ID already exists, entry will be replaced with new version, otherwise new term entry will be created. In case there are no changes in posted entry - no action will be taken for that entry.
+*Multiple collection entries can be submitted, but only max 100 at single Post. Submited entries will be analyzed - if entry ID already exists, entry will be replaced with new version, otherwise new term entry will be created. In case there are no changes in posted entry - no action will be taken for that entry.*
 
 POST /termsrv/sync/collection/{collection_id}/entries HTTP/1.1
 
