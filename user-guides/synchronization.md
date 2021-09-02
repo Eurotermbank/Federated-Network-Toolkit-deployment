@@ -53,7 +53,7 @@ Host: eurotermbank.com
 
 Content-Type: application/json
 
-Authorization: Bearer XXXXXXXXXXXX
+Authorization: Basic XXXXXXXXXXXX
 
 ```json
 {
@@ -89,7 +89,7 @@ Host: eurotermbank.com
 
 Content-Type: application/json
 
-Authorization: Bearer XXXXXXXXXXXX
+Authorization: Basic XXXXXXXXXXXX
 
 ```json
 {
@@ -128,7 +128,7 @@ Host: eurotermbank.com
 
 Content-Type: application/json
 
-Authorization: Bearer XXXXXXXXXXXX
+Authorization: Basic XXXXXXXXXXXX
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -219,12 +219,12 @@ Authorization: Bearer XXXXXXXXXXXX
 
 ## Delete Concept Entry
 
-DELETE /termsrv/sync/collection/{collection_id} HTTP/1.1
+DELETE /termsrv/sync/collection/{concept_id} HTTP/1.1
 
 Host: eurotermbank.com
 
 Content-Type: application/json
 
-Authorization: Bearer XXXXXXXXXXXX
+Authorization: Basic XXXXXXXXXXXX
 
 
