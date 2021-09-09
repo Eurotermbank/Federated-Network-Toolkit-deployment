@@ -71,7 +71,7 @@ spec:
            configMapKeyRef:
             name: frontend-config
             key: KC_CLIENTID
-        image: eurotermbank.azurecr.io/otk-frontend:V.1
+        image: eurotermbank.azurecr.io/otk-frontend:33732
         imagePullPolicy: "Always"
         name: frontend
         ports:
