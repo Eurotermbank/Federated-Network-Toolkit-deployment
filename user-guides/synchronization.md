@@ -146,7 +146,7 @@ Authorization: Basic XXXXXXXXXXXX
   </martifHeader>
   <text>
     <body>
-<termEntry id="tgl-369">
+<termEntry id="external-id-369">
   <langSet xml:lang="en">
     <ntig>
       <termGrp>
@@ -191,7 +191,7 @@ Authorization: Basic XXXXXXXXXXXX
   </langSet>
   <descrip type="subjectField">Politics and Administration</descrip>
 </termEntry>
-<termEntry id="tgl-370">
+<termEntry id="external-id-370">
   <langSet xml:lang="en">
     <ntig>
       <termGrp>
@@ -219,7 +219,7 @@ Authorization: Basic XXXXXXXXXXXX
 
 ## Delete Concept Entry
 
-DELETE /termsrv/sync/collection/{concept_id} HTTP/1.1
+DELETE /termsrv/sync/collection/{concept_id}/entries/{entry_id} HTTP/1.1
 
 Host: eurotermbank.com
 
