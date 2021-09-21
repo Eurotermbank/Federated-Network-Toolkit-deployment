@@ -66,15 +66,15 @@ Functionality VS user types:
 | Can edit terms                               |                                            |                                            |                           | X
 | Can import terms                             |                                            |                                            |                           | X                         |
 | Can delete collection                        |                                            |                                            |                           | X                         |
- 
- 
+
+
  Feedback functionality (not implemented yet):
  |                                              | Anonymous                                  | Registered User                            | Registered User as Reader | Registered User as Editor |
-| -------------------------------------------- | ------------------------------------------ | ------------------------------------------ | ------------------------- | ------------------------- | 
+| -------------------------------------------- | ------------------------------------------ | ------------------------------------------ | ------------------------- | ------------------------- |
 | Can give feedback on term                    | X                                          | X                                          | X                         | X                         |
 | See all users feedback                       |                                            |                                            | X                         | X                         |
 | Delete any user feedback                     |                                            |                                            |                           | X                         |
- 
+
 *adjustable for each collection in metadata
 
 ## Architecture
@@ -101,6 +101,20 @@ The toolkit consists of several microservices, each component is deployable as d
 **Discussion Service** - This service will consist from 2 components – (1) backend service built on ASP.NET Core, (2) MySQL Database. This service is responsible about user generated coments on terminology entries.
 
 **Log Service** – This services uses Elastic Search engine for log data storage and Kibana software for log data visualisation and query.
+
+## System minimal requirements:
+•	At least a 2-core x86/x64 CPU (Central Processor Unit)
+
+•	5 GB of RAM (Random Access Memory) or more
+
+•	30 GB of storage or more
+
+•	Internet access
+
+## Solution have been tested on:
+•	Kubernetes cluster version: 1.19
+
+•	MySQL version 8
 
 ## Set up CMS
 1) Restore DB from dump
