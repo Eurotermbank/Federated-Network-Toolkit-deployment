@@ -102,7 +102,7 @@ The toolkit consists of several microservices, each component is deployable as d
 
 **Log Service** – This services uses Elastic Search engine for log data storage and Kibana software for log data visualisation and query.
 
-## System minimal requirements:
+## Minimal system requirements:
 •	At least a 2-core x86/x64 CPU (Central Processor Unit)
 
 •	5 GB of RAM (Random Access Memory) or more
@@ -111,7 +111,7 @@ The toolkit consists of several microservices, each component is deployable as d
 
 •	Internet access
 
-## Solution have been tested on:
+## Solution has been tested on:
 •	Kubernetes cluster version: 1.19
 
 •	MySQL version 8
