@@ -81,7 +81,7 @@ spec:
            configMapKeyRef:
             name: termservice-config
             key: ElasticSearch__TermUri
-        image: eurotermbank.azurecr.io/otk-termservice:33735
+        image: eurotermbank.azurecr.io/otk-termservice:34368
         imagePullPolicy: "Always"
         name: termservice
         ports:
