@@ -219,7 +219,7 @@ Authorization: Basic XXXXXXXXXXXX
 
 ## Delete Concept Entry
 
-DELETE /termsrv/sync/collection/{concept_id}/entries/{entry_id} HTTP/1.1
+DELETE /termsrv/sync/collection/{collection_id}/entries/{entry_id} HTTP/1.1
 
 Host: eurotermbank.com
 
