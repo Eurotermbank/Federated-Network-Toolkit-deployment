@@ -1,5 +1,5 @@
 
-<img align="right" src="https://user-images.githubusercontent.com/11315268/137450374-160146b9-e56a-4b49-aada-8e11518acc33.png">
+<img align="right" height="100" src="https://user-images.githubusercontent.com/11315268/137450374-160146b9-e56a-4b49-aada-8e11518acc33.png">
 
 # Toolkit for Eurotermbank Federated Network
 
