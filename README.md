@@ -1,6 +1,11 @@
-# Federated Network Toolkit
+
+<img align="right" src="https://user-images.githubusercontent.com/11315268/137450374-160146b9-e56a-4b49-aada-8e11518acc33.png">
+
+# Toolkit for Eurotermbank Federated Network
 
 This repo contains set up instructions and deployment files for deploying Toolkit to Kubernetes environment. This toolkit can also be deployed in any other environment that supports running Docker images
+
+
 
 ## Toolkit functionality
 Toolkit is intended to decentralized terminology management, terminology sharing, terminology search, terminology creation workflow and its synchronization with central node Eurotermbank.com and later also metadata synchrnization with the ELRC-share.
