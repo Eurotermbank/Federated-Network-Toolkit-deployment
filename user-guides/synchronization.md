@@ -45,6 +45,8 @@ Synchronization process is following:
 3. Add new Concept entries or update existing
 5. Delete removed entries
 
+You can use Postman (https://www.postman.com/) prepared collection [FEDTERM Synchro.postman_collection.json](https://github.com/Eurotermbank/Federated-Network-Toolkit-deployment/blob/3b70c207f94b0a01fc373776bbd29056216d5173/user-guides/FEDTERM%20Synchro.postman_collection.json "Postman collection") file.
+
 ## Add New Collection Metadata
 
 POST /termsrv/sync/collection HTTP/1.1
