@@ -1,0 +1,189 @@
+{
+	"info": {
+		"_postman_id": "607efeaa-e1ec-4926-b2f0-f39670c36702",
+		"name": "FEDTERM Synchro",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Collections",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/Sync/collection",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"Sync",
+						"collection"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add New Collection Metadata",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJES2ZoYldhcWJNWDkyc3ZBVW5DX01WRzN2Ty1PS0N6d21ZcXZrQkpUdUs4In0.eyJleHAiOjE2MDc0NTY5NzEsImlhdCI6MTYwNzQyMzUwOCwiYXV0aF90aW1lIjoxNjA3NDIwOTcxLCJqdGkiOiI5MTZmNWE1OS1kZDFmLTQwMzYtYjU2Ny04NDNmMDMxNTMzNzUiLCJpc3MiOiJodHRwOi8vYXV0aHRlc3QudGlsZGUubHYvYXV0aC9yZWFsbXMvVGlsZGUiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiYzdjN2Q0N2EtYTVlOC00MjA4LWJiMDQtYTYyMTdiNzg0NmQ1IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoidHQtZnJvbnRlbmQiLCJub25jZSI6IjE0MTA3OWUzLTQ4NTktNDBmMy04OTQ3LTkxMmM4MzZjMDdjNCIsInNlc3Npb25fc3RhdGUiOiI2YTdhY2Q2Mi05ZTczLTRlMGQtODA5MS02ZjFmZmYxZDJmMDkiLCJhY3IiOiIwIiwiYWxsb3dlZC1vcmlnaW5zIjpbIioiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBHcm91cHMgZW1haWwgcHJvZmlsZSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IkFuZGlzIExhZ3pkacWGxaEiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJhbmRpcy5sYWd6ZGluc0B0aWxkZS5sdiIsIm1lbWJlcnNoaXAiOlsiL0xhdHZpYS9MTkIiLCIvVGlsZGUiXSwiZ2l2ZW5fbmFtZSI6IkFuZGlzIiwiZmFtaWx5X25hbWUiOiJMYWd6ZGnFhsWhIiwiZW1haWwiOiJhbmRpcy5sYWd6ZGluc0B0aWxkZS5sdiJ9.BeJYbHomWatG93RSVsWlc_vZGYsZVvUo2_H6lTuGUnFv958h_STzl4fpTSp8uO5Lm3nZpRSNHt6mRHt1hdyxc2dt0bKPHO9yHQ8DJSetuC5V5ssR_vSeN_6SCWTvtL0seIzav3xYt_FQwMdeQJBRJ-dCqg7gaer5RtPCYg3ML1DS6PdbfwbTaLa7XWT-AuxECyths1Gx-c7PUgLnctC5waFS2q9FI4DviI5T0nPiFyINYaeyG9mxKFwacnSySq5--v9CWcrwe-BZeY30rlbvxRhmBR0JnOIxaSCqYwNRGVG8xzyOyggPdSv110w9IFtBtfgsIOzO81LA2x26jThh6g",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"This is name of my collection\",\n    \"description\": \"Description of my collection\",   \n    \"domainid\": \"0202\",\n    \"allowsUsesBesidesDGT\": true,\n    \"appropriatnessForDSI\": true,\n    \"attributionText\": \"This is attribution text\",\n    \"cpEmail\": \"Contac-person@example.com\",\n    \"cpName\": \"Contac Person Name\",\n    \"cpOrganization\": \"Contac Person Organization\",\n    \"cpSurname\": \"Contac Person Surname\",\n    \"iprEmail\": \"ipr-holder@example.com\",\n    \"iprName\": \"IPR Holder name\",\n    \"iprOrganization\": \"IPR Holder Organization\",\n    \"iprSurname\": \"IPR Holder Surname\",\n    \"isPSI\": false,\n    \"licence\": \"CC-BY-4.0\",\n    \"originalName\": \"Šis ir manas kolekcijas nosaukums\",\n    \"originalNameLang\": \"LV\",\n    \"restrictionsOfUse\": \"No restrictions, you are welcome to use\",\n    \"sourceURL\": \"https://my-resource.example.com\"\n}"
+				},
+				"url": {
+					"raw": "{{url}}/sync/collection",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"sync",
+						"collection"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update existing Collection Metadata",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJES2ZoYldhcWJNWDkyc3ZBVW5DX01WRzN2Ty1PS0N6d21ZcXZrQkpUdUs4In0.eyJleHAiOjE2MDc0NTY5NzEsImlhdCI6MTYwNzQyMzUwOCwiYXV0aF90aW1lIjoxNjA3NDIwOTcxLCJqdGkiOiI5MTZmNWE1OS1kZDFmLTQwMzYtYjU2Ny04NDNmMDMxNTMzNzUiLCJpc3MiOiJodHRwOi8vYXV0aHRlc3QudGlsZGUubHYvYXV0aC9yZWFsbXMvVGlsZGUiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiYzdjN2Q0N2EtYTVlOC00MjA4LWJiMDQtYTYyMTdiNzg0NmQ1IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoidHQtZnJvbnRlbmQiLCJub25jZSI6IjE0MTA3OWUzLTQ4NTktNDBmMy04OTQ3LTkxMmM4MzZjMDdjNCIsInNlc3Npb25fc3RhdGUiOiI2YTdhY2Q2Mi05ZTczLTRlMGQtODA5MS02ZjFmZmYxZDJmMDkiLCJhY3IiOiIwIiwiYWxsb3dlZC1vcmlnaW5zIjpbIioiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBHcm91cHMgZW1haWwgcHJvZmlsZSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IkFuZGlzIExhZ3pkacWGxaEiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJhbmRpcy5sYWd6ZGluc0B0aWxkZS5sdiIsIm1lbWJlcnNoaXAiOlsiL0xhdHZpYS9MTkIiLCIvVGlsZGUiXSwiZ2l2ZW5fbmFtZSI6IkFuZGlzIiwiZmFtaWx5X25hbWUiOiJMYWd6ZGnFhsWhIiwiZW1haWwiOiJhbmRpcy5sYWd6ZGluc0B0aWxkZS5sdiJ9.BeJYbHomWatG93RSVsWlc_vZGYsZVvUo2_H6lTuGUnFv958h_STzl4fpTSp8uO5Lm3nZpRSNHt6mRHt1hdyxc2dt0bKPHO9yHQ8DJSetuC5V5ssR_vSeN_6SCWTvtL0seIzav3xYt_FQwMdeQJBRJ-dCqg7gaer5RtPCYg3ML1DS6PdbfwbTaLa7XWT-AuxECyths1Gx-c7PUgLnctC5waFS2q9FI4DviI5T0nPiFyINYaeyG9mxKFwacnSySq5--v9CWcrwe-BZeY30rlbvxRhmBR0JnOIxaSCqYwNRGVG8xzyOyggPdSv110w9IFtBtfgsIOzO81LA2x26jThh6g",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"This is updated name of my collection\",\n    \"description\": \"Description of my collection\",   \n    \"domainid\": \"0202\",\n    \"allowsUsesBesidesDGT\": true,\n    \"appropriatnessForDSI\": true,\n    \"attributionText\": \"This is attribution text\",\n    \"cpEmail\": \"Contac-person@example.com\",\n    \"cpName\": \"Contac Person Name\",\n    \"cpOrganization\": \"Contac Person Organization\",\n    \"cpSurname\": \"Contac Person Surname\",\n    \"iprEmail\": \"ipr-holder@example.com\",\n    \"iprName\": \"IPR Holder name\",\n    \"iprOrganization\": \"IPR Holder Organization\",\n    \"iprSurname\": \"IPR Holder Surname\",\n    \"isPSI\": false,\n    \"licence\": \"CC-BY-4.0\",\n    \"originalName\": \"Šis ir manas kolekcijas nosaukums\",\n    \"originalNameLang\": \"LV\",\n    \"restrictionsOfUse\": \"No restrictions, you are welcome to use\",\n    \"sourceURL\": \"https://my-resource.example.com\"\n}"
+				},
+				"url": {
+					"raw": "{{url}}sync/collection/1",
+					"host": [
+						"{{url}}sync"
+					],
+					"path": [
+						"collection",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add or update Concept Entries",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic ZXRidXpybmFtZTpldGJwYXp6d29yZA=="
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<!DOCTYPE martif SYSTEM \"https://eurotermbank.com/TBXcoreStructV02%20%281%29.dtd\">\r\n<martif type=\"TBX\" xml:lang=\"en\">\r\n  <martifHeader>\r\n    <fileDesc>\r\n      <sourceDesc>\r\n        <p>Sync collection sample</p>\r\n      </sourceDesc>\r\n    </fileDesc>\r\n    <encodingDesc>\r\n      <p type=\"XCSURI\">https://eurotermbank.com/tbx-0.5.1.xcs</p>\r\n    </encodingDesc>\r\n  </martifHeader>\r\n  <text>\r\n    <body>\r\n<termEntry id=\"tgl-369\">\r\n  <langSet xml:lang=\"en\">\r\n    <ntig>\r\n      <termGrp>\r\n        <term>Computer</term>\r\n      </termGrp>\r\n      <termNote type=\"administrativeStatus\">preferredTerm-admn-sts</termNote>\r\n      <admin type=\"status\">approved</admin>\r\n      <termNote type=\"normativeAuthorization\">approved</termNote>\r\n      <termNote type=\"grammaticalGender\">masculine</termNote>\r\n      <termNote type=\"grammaticalNumber\">singular</termNote>\r\n      <termNote type=\"partOfSpeech\">noun</termNote>\r\n      <termNote type=\"register\">technicalRegister</termNote>\r\n      <termNote type=\"termType\">entryTerm</termNote>\r\n      <termNote type=\"usageNote\">Commonly used</termNote>\r\n      <note>Use without restriction</note>\r\n      <xref type=\"xSource\" target=\"our company rules\" />\r\n      <descripGrp>\r\n        <descrip type=\"context\">Early computers were meant to be used only for calculations</descrip>\r\n        <admin type=\"sourceIdentifier\">https://en.wikipedia.org/wiki/Computer</admin>\r\n      </descripGrp>\r\n    </ntig>\r\n    <descripGrp>\r\n      <descrip type=\"definition\">A computer is a machine that can be programmed to carry out sequences of arithmetic or logical operations automatically.</descrip>\r\n      <admin type=\"sourceIdentifier\">https://en.wikipedia.org/wiki/Computer</admin>\r\n    </descripGrp>\r\n  </langSet>\r\n  <langSet xml:lang=\"lv\">\r\n    <ntig>\r\n      <termGrp>\r\n        <term>Dators</term>\r\n      </termGrp>\r\n      <admin type=\"status\">approved</admin>\r\n    </ntig>\r\n    <ntig>\r\n      <termGrp>\r\n        <term>Kompjūters</term>\r\n      </termGrp>\r\n      <admin type=\"status\">approved</admin>\r\n      <termNote type=\"temporalQualifier\">obsoleteTerm</termNote>\r\n      <note>Dažkārt tiek lietots automotive un citās inženierzinātnēs</note>\r\n    </ntig>\r\n  </langSet>\r\n  <descrip type=\"subjectField\">Politics and Administration</descrip>\r\n</termEntry>\r\n<termEntry id=\"tgl-370\">\r\n  <langSet xml:lang=\"en\">\r\n    <ntig>\r\n      <termGrp>\r\n        <term>Computer program</term>\r\n      </termGrp>\r\n      <admin type=\"status\">approved</admin>\r\n    </ntig>\r\n    <descripGrp>\r\n      <descrip type=\"definition\">A computer program is a collection of instructions[1] that can be executed by a computer to perform a specific task.</descrip>\r\n    </descripGrp>\r\n  </langSet>\r\n  <langSet xml:lang=\"lv\">\r\n    <ntig>\r\n      <termGrp>\r\n        <term>Datorprogramma</term>\r\n      </termGrp>\r\n      <admin type=\"status\">approved</admin>\r\n    </ntig>\r\n  </langSet>\r\n  <descrip type=\"subjectField\">Politics and Administration</descrip>\r\n</termEntry></body>\r\n  </text>\r\n</martif>",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}sync/collection/803/entries",
+					"host": [
+						"{{url}}sync"
+					],
+					"path": [
+						"collection",
+						"803",
+						"entries"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Term entry",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{url}}sync/collection/803/entries/myentryid-332211",
+					"host": [
+						"{{url}}sync"
+					],
+					"path": [
+						"collection",
+						"803",
+						"entries",
+						"myentryid-332211"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": ""
+		}
+	]
+}
