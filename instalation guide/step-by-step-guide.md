@@ -1,6 +1,3 @@
-![Menu item management](img/Capture.png "Menu item management")
-
-
 
 # Step by step installation guide for administrator
 
