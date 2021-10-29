@@ -1,15 +1,43 @@
 
-# Step by step installation guide for administrator
+# Step by step setup Toolkit on Kubernetes
+
+&nbsp;
+&nbsp;
+|Version|0.2|
+|-----|-----------|
+
+&nbsp;
+&nbsp;
 
 ## About guide:
 This document contains information how to run Toolkit for Eurotermbank Federated Network on Kubernetes. In document will be described topics like Kubernetes and MySQL installations.
+
+
+## Table of contents
+1. Prerequire
+2. Kubernetes installation
+3. MySQL installation
+4. OTK Service installation
+5. Ingress/Network configuration
+6. Keycloak configuration
+
+&nbsp;
+&nbsp;
+#### **Changes**
+|Version|Publication date|Change|
+|-----|-----------|-----------|
+|0.1| 28.10.21 | Initial version |
+|0.2| 29.10.21 | Kubernetes installation described |
+
+&nbsp;
+&nbsp;
 
 ## Prerequire:
 1) Linux Virtual machine
 2) Sudo user
 3) Internet connection
 ---
-In this Guide we will use Ubuntu 20.04, in other Linux distributions command can be different.
+In this Guide we will use Ubuntu 20.04 LTS, in other Linux distributions command can be different.
 
 ## Kubernetes installation
 ### Install microk8s
