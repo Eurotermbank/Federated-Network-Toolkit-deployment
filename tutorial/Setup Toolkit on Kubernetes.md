@@ -1,5 +1,5 @@
 
-# Tutorial: Setup Toolkit on Kubernetes step by step.
+# Tutorial: Set up Eurotermbank Toolkit on Kubernetes step by step.
 
 &nbsp;
 &nbsp;
@@ -10,7 +10,7 @@
 &nbsp;
 
 ## About tutorial:
-This document contains information how to run Toolkit for Eurotermbank Federated Network on Kubernetes. In document will be described topics like Kubernetes and MySQL installations.
+This document contains information how to run Toolkit for Eurotermbank Federated Network on Kubernetes including Kubernetes set up and MySQL installation.
 
 
 ## Table of contents
