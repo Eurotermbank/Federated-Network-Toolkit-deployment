@@ -47,7 +47,7 @@ Run:
 ```bash
 sudo apt update
 ```
-![sudo apt update](img/apt-update.png "sudo apt update")
+![sudo apt update](https://raw.githubusercontent.com/Eurotermbank/Federated-Network-Toolkit-deployment/blob/guide/tutorial/img/apt-update.PNG "sudo apt update")
 
 This will update Ubuntu repositories.
 
