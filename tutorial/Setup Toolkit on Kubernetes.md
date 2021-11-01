@@ -59,7 +59,7 @@ Run:
 ```bash
 sudo snap install microk8s --classic --channel=1.19/stable
 ```
-![install microk8s](img/install-microk8s.png "install microk8s")
+![install microk8s](img/install-microk8s.PNG "install microk8s")
 
 ### Permissions for microk8s
 
@@ -74,7 +74,7 @@ Also we need grant access to kubernetes directory for our sudo user.
 sudo chown -f -R admins ~/.kube
 ```
 
-![Permissions for microk8s](img/permissions-microk8s.png "Permissions for microk8s")
+![Permissions for microk8s](img/permissions-microk8s.PNG "Permissions for microk8s")
 
 ### Enable kubernetes features
 
@@ -96,7 +96,7 @@ or can be enabled by one cmd:
 ```bash
 sudo microk8s enable dns dashboard storage ingress
 ```
-![microk8s enable](img/microk8s-enable.png "microk8s enable")
+![microk8s enable](img/microk8s-enable.PNG "microk8s enable")
 
 ### Accessing Dashboard
 
@@ -111,7 +111,7 @@ token=$(microk8s kubectl -n kube-system get secret | grep default-token | cut -d
 microk8s kubectl -n kube-system describe secret $token
 ```
 
-![get dashboard token](img/dashboard-token.png "get dashboard token")
+![get dashboard token](img/dashboard-token.PNG "get dashboard token")
 
 Copy this token, it will be needed in future.
 
@@ -120,7 +120,7 @@ Next we will port forward dashboard service. It will allow to connect to service
 ```bash
 microk8s kubectl port-forward -n kube-system service/kubernetes-dashboard 18001:443 --address=0.0.0.0
 ```
-![port forward](img/port-forward.png "port forward")
+![port forward](img/port-forward.PNG "port forward")
 
 P.S. port forward command can be used for all services in kubernetes cluster.
 
@@ -135,7 +135,7 @@ If you dont know your server name, you can execute:
 hostname
 ```
 
-![hostname](img/hostname.png "hostname")
+![hostname](img/hostname.PNG "hostname")
 
 
 In our demo case it will be:
@@ -146,18 +146,18 @@ https://otk-k8s:18001/#/
 Open browser and connect to URL.
 If you will see error about not private connection, press proceed. In future there will be possability to add SSL cert if you need.
 
-![connection not private](img/connection-not-private.png "connection not private")
+![connection not private](img/connection-not-private.PNG "connection not private")
 
 
 
 After proceed, you will see Kubernetes Dashboard login page.
-![Dashboard login](img/dashboard-login.png "Dashboard login")
+![Dashboard login](img/dashboard-login.PNG "Dashboard login")
 
 
 In Dashboard choose Token auth method, enter token from privious step and press Sign in.
 Welcome to Dashboard:
 
-![Dashboard ](img/dashboard.png "Dashboard ")
+![Dashboard ](img/dashboard.PNG "Dashboard ")
 
 
 ### Useful hack
