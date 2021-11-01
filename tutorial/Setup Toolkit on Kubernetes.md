@@ -1,5 +1,5 @@
 
-# Step by step setup Toolkit on Kubernetes
+# Tutorial: Setup Toolkit on Kubernetes step by step.
 
 &nbsp;
 &nbsp;
@@ -9,15 +9,15 @@
 &nbsp;
 &nbsp;
 
-## About guide:
+## About tutorial:
 This document contains information how to run Toolkit for Eurotermbank Federated Network on Kubernetes. In document will be described topics like Kubernetes and MySQL installations.
 
 
 ## Table of contents
-1. Prerequire
+1. Prerequisites
 2. Kubernetes installation
 3. MySQL installation
-4. OTK Service installation
+4. Toolkit Deployment
 5. Ingress/Network configuration
 6. Keycloak configuration
 
@@ -32,12 +32,12 @@ This document contains information how to run Toolkit for Eurotermbank Federated
 &nbsp;
 &nbsp;
 
-## Prerequire:
+## Prerequisites:
 1) Linux Virtual machine
 2) Sudo user
 3) Internet connection
 ---
-In this Guide we will use Ubuntu 20.04 LTS, in other Linux distributions command can be different.
+In this Tutorial we will use Ubuntu 20.04 LTS, in other Linux distributions commands may be different.
 
 ## Kubernetes installation
 ### Install microk8s
@@ -51,9 +51,10 @@ sudo apt update
 
 This will update Ubuntu repositories.
 
-After repositories are updated. We will install Kubernetes.
+When repositories are updated, let's install Kubernetes.
 
-To run kubernetes on Ubuntu, we will use microk8s.
+To run Kubernetes on Ubuntu, we will use microk8s (https://microk8s.io/).
+
 We will install kubernetes - 1.19.
 Run:
 ```bash
@@ -63,12 +64,12 @@ sudo snap install microk8s --classic --channel=1.19/stable
 
 ### Permissions for microk8s
 
-We need to grant admin permissions for microk8s
+We need to grant admin permissions for microk8s:
 
 ```bash
 sudo usermod -a -G microk8s admins
 ```
-Also we need grant access to kubernetes directory for our sudo user.
+Also we need grant access to kubernetes directory for our sudo user:
 
 ```bash
 sudo chown -f -R admins ~/.kube
@@ -78,20 +79,20 @@ sudo chown -f -R admins ~/.kube
 
 ### Enable kubernetes features
 
-After succesfull microk8s installation, we will configure kuberntes features.
+After succesfull microk8s installation, we need to configure Kubernetes features.
 
-For succsesfull kubernetes usage, we will need enable:
+For successful Kubernetes usage, we have to enable following features:
 1) DNS
 2) Dashboard
 3) Storage
 4) Ingress
 
-This features can be enabled one by one:
+Feature can be enabled one by one:
 ```bash
 sudo microk8s enable ingress
 ```
 
-or can be enabled by one cmd:
+or can be enabled with a single command:
 
 ```bash
 sudo microk8s enable dns dashboard storage ingress
@@ -100,11 +101,9 @@ sudo microk8s enable dns dashboard storage ingress
 
 ### Accessing Dashboard
 
-Before access to Dashboard, you will need get secret token.
+Before accessing the Kubernetes Dashboard, we need to get a secret token for authentication:
 
-Token will be used as auth.
-
-You will need execute 2 commands. As a result you will get token.
+Following two commands must be executed and as a result you will get the token:
 
 ```bash
 token=$(microk8s kubectl -n kube-system get secret | grep default-token | cut -d " " -f1)
@@ -113,9 +112,9 @@ microk8s kubectl -n kube-system describe secret $token
 
 ![get dashboard token](img/dashboard-token.PNG "get dashboard token")
 
-Copy this token, it will be needed in future.
+Copy and save this token for later use, it will be needed to access the Kubernetes Dashboard.
 
-Next we will port forward dashboard service. It will allow to connect to service out of kubernetes cluster.
+The next step is to set up port forwarding for Dashboard service. It will allow to connect the Dashboard from outside of Kubernetes cluster.
 
 ```bash
 microk8s kubectl port-forward -n kube-system service/kubernetes-dashboard 18001:443 --address=0.0.0.0
@@ -124,13 +123,13 @@ microk8s kubectl port-forward -n kube-system service/kubernetes-dashboard 18001:
 
 P.S. port forward command can be used for all services in kubernetes cluster.
 
-Finaly you can connect to Dashboard.
+Finaly you can connect to the Kubernetes Dashboard.
 
-URL will be:
+URL looks like this:
 
 https://your-server-name:18001/#/
 
-If you dont know your server name, you can execute:
+If you don't know your server name, you can execute this command:
 ```bash
 hostname
 ```
@@ -143,31 +142,30 @@ In our demo case it will be:
 https://otk-k8s:18001/#/
 
 
-Open browser and connect to URL.
-If you will see error about not private connection, press proceed. In future there will be possability to add SSL cert if you need.
+Open the web browser and connect to the URL. If you will see error message saying somthing about not having private connection, press to proceed. Later in this tutorial we will add SSL certificate to secure the connection.
 
-![connection not private](img/connection-not-private.PNG "connection not private")
-
+![connection not private](img/connection-not-private.PNG "connection is not private")
 
 
-After proceed, you will see Kubernetes Dashboard login page.
+
+After accepting insecure connection you will see Kubernetes Dashboard login page:
 ![Dashboard login](img/dashboard-login.PNG "Dashboard login")
 
 
-In Dashboard choose Token auth method, enter token from privious step and press Sign in.
+In the Dashboard choose 'Token auth method', enter the previously saved token and press Sign in.
 Welcome to Dashboard:
 
-![Dashboard ](img/dashboard.PNG "Dashboard ")
+![Dashboard ](img/dashboard.PNG "Dashboard")
 
 
-### Useful hack
+### Useful hacks
 
-If you are planning to use kubernetes from terminal. To avoid use all the time microk8s before kubectl. For example:
+If you are planning to use Kubernetes from terminal. To avoid use all the time microk8s before kubectl. For example:
 ```bash
 microk8s kubectl port-forward -n kube-system service/kubernetes-dashboard 18001:443 --address=0.0.0.0
 ```
 
-You can execute:
+You can execute this command to set shorter alias 'kubectl' or even other as you prefer:
 ```bash
 sudo snap alias microk8s.kubectl kubectl
 ```
@@ -177,3 +175,16 @@ Now you can execute without microk8s:
 ```bash
 kubectl port-forward -n kube-system service/kubernetes-dashboard 18001:443 --address=0.0.0.0
 ```
+
+## MySQL installation
+ *Description in process
+
+## Toolkit Deployment
+ *Description in process
+ 
+## Ingress/Network configuration
+ *Description in process
+ 
+## Authentication (Keycloak) configuration
+ *Description in process
+ 
