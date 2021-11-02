@@ -3,7 +3,7 @@
 
 &nbsp;
 &nbsp;
-|Version|0.2|
+|Version|0.3|
 |-----|-----------|
 
 &nbsp;
@@ -28,6 +28,7 @@ This document contains information how to run Toolkit for Eurotermbank Federated
 |-----|-----------|-----------|
 |0.1| 28.10.21 | Initial version |
 |0.2| 29.10.21 | Kubernetes installation described |
+|0.3| 02.11.21 | MySQL installation described |
 
 &nbsp;
 &nbsp;
