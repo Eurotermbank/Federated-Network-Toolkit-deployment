@@ -345,8 +345,11 @@ Next open Workbench. And press **+** to addd new connection.
 ![mysql workbench ](img/mysql-workbench.PNG "mysql workbench")
 
 Fill connection parametrs.
+
 **Connection name** - name for connection, it can be anything (only appear in Workbench connection list).
+
 **Hostname** - server IP.
+
 **Username** - user (not root)
 
 Press **Test connection**
@@ -361,9 +364,107 @@ To connect to server, press to connection name.
 
 ![mysql connection ](img/mysql-connection.PNG "mysql connection")
 
-```bash
+&nbsp;
+&nbsp;
 
-```
+### Creating required database
+
+
+&nbsp;
+&nbsp;
+
+There are need to configure 2 databases before deploying Toolkit.
+&nbsp;
+
+#### Keycloak database
+&nbsp;
+
+
+Connect to MySQL server in Workbench.
+
+Open Schemas tab.
+
+![mysql schemas tab ](img/mysql-tab.PNG "mysql schemas tab")
+
+
+Press button to create new schema.
+
+![mysql new schema ](img/mysql-new-schema.PNG "mysql new schema")
+
+Fill form with:
+
+**Name** - otk-keycloak - *new database name, you can choose different, but there will be need to update install yaml*.
+
+**Default characterset** - utf8 .
+
+**Default collation** -  utf8_unicode_ci .
+
+![mysql keycloak ](img/mysql-keycloak.PNG "mysql keycloak")
+
+Press **Apply**
+
+In new promt window validate if parametrs is correct and press **Apply**
+
+![mysql keycloak ](img/mysql-keycloak2.PNG "mysql keycloak")
+
+Database for keycloak created.
+
+&nbsp;
+
+#### CMS database
+
+&nbsp;
+
+In Workbench create new schema.
+
+Fill form with:
+
+**Name** - otk-cms - *new database name, you can choose different, but there will be need to update install yaml*.
+
+**Default characterset** - utf8mb4.
+
+**Default collation** -  utf8mb4_general_ci.
+
+![mysql cms ](img/mysql-cms.PNG "mysql cms")
+
+Press **Apply**
+
+In new promt window validate if parametrs is correct and press **Apply**
+
+Now we will import database from dump file.
+
+You can find dump file in repo [cms-dump.sql](https://github.com/Eurotermbank/Federated-Network-Toolkit-deployment/blob/main/seed-data/cms/cms-dump.sql "cms-dump.sql").
+
+Download file to same machine, there you are using Workbench.
+
+Once dump downloaded, open **Administration** tab in Workbench.
+
+Press **Data Import/Restore**
+
+![mysql Administration tab ](img/mysql-tab2.PNG "mysql Administration tab")
+
+
+In **Import Options** select **Import from Self-Contained File** and locate priviosly downloaded dumb file.
+
+In **Default Target Schema** select priviously created CMS database.
+
+Under **Select Database Objects to Import** select **Dump Structure and Data**
+
+Then press **Start import**
+
+![mysql data import ](img/mysql-dataimport.PNG "mysql data import")
+
+After successful import, you will see what import completed.
+
+![mysql data import ](img/mysql-dataimport2.PNG "mysql data import")
+
+
+To validate if import was successful, go to Schemas tab and expose **Tables** under database.
+If there are Tables, then data was successfully imported.
+
+![mysql cms schema ](img/mysql-cms-schema.PNG "mysql cms schema")
+
+
 
 ## Toolkit Deployment
  *Description in process
