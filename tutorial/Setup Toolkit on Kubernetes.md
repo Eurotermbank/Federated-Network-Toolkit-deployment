@@ -211,7 +211,7 @@ Make sure what in **MySQL Server & Cluster** part selected **mysql-8.0**.
 
 ![mysql apt config ](img/mysql-apt-config.PNG "mysql apt config")
 
-Then select **OK**
+Then press **OK**
 
 Next we need download the package lists from the repositories and "updates" them to get information on the newest versions of packages and their dependencies.
 It can be performed by:
@@ -238,6 +238,7 @@ In authentication setup part, please select:
 
 
 After succsefull installation, we will update MySQL configuration.
+
 Open MySQL configuration file with nano:
 
 ```bash
@@ -247,7 +248,7 @@ Original configuration:
 
 ![mysql config before ](img/mysql-config-before.PNG "mysql config before")
 
-New parametrs will define servers’ collation and character set. After updating your configuration will be similar:
+New parametrs will define servers’ collation and character set.
 
 
 ```bash
@@ -263,6 +264,10 @@ init-connect='SET NAMES utf8mb4'
 character-set-server = utf8mb4
 
 ```
+
+After updating, your configuration must be similar:
+
+
 ![mysql config after ](img/mysql-config-after.PNG "mysql config after")
 
 
@@ -305,7 +310,9 @@ mysql -u root -p$MYSQL_ROOT_PWD -e "CREATE USER '$DBADMINUSER'@'%' IDENTIFIED BY
 mysql -u root -p$MYSQL_ROOT_PWD -e "GRANT ALL PRIVILEGES ON *.* TO '$DBADMINUSER'@'%' WITH GRANT OPTION"
 ```
 **MYSQL_ROOT_PWD** - root user password (created in previous step)
+
 **DBADMINUSER** - new user username
+
 **DBADMINS_PWD** - new user password
 
 
@@ -375,9 +382,11 @@ To connect to server, press to connection name.
 &nbsp;
 
 There are need to configure 2 databases before deploying Toolkit.
+
+&nbsp;
 &nbsp;
 
-#### Keycloak database
+#### **Keycloak database**
 &nbsp;
 
 
@@ -411,8 +420,9 @@ In new promt window validate if parametrs is correct and press **Apply**
 Database for keycloak created.
 
 &nbsp;
+&nbsp;
 
-#### CMS database
+#### **CMS database**
 
 &nbsp;
 
