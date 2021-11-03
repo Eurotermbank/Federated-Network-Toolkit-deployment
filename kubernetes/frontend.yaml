@@ -34,6 +34,10 @@ spec:
       labels:
         app: frontend
     spec:
+      volumes:
+      - name: otk-html-pv-volume
+        persistentVolumeClaim:
+          claimName: otk-html-pv-claim
       containers:
       - env:
         - name: BASE_URL
@@ -76,6 +80,9 @@ spec:
         name: frontend
         ports:
         - containerPort: 80
+        volumeMounts:
+        - mountPath: "/usr/share/nginx/html/assets/overrides"
+          name: otk-html-pv-volume
         resources: {}
       imagePullSecrets:
         - name: dregsecret
