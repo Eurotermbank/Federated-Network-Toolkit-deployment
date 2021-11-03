@@ -236,6 +236,8 @@ In authentication setup part, please select:
 
 ![mysql auth setup ](img/mysql-auth.PNG "mysql auth setup")
 
+Legacy Authentication Method required for Strapi cms.
+https://strapi.io/blog/configuring-strapi-mysql-database
 
 After succsefull installation, we will update MySQL configuration.
 
