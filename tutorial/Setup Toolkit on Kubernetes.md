@@ -18,9 +18,10 @@ This document contains information how to run Toolkit for Eurotermbank Federated
 2. Kubernetes installation
 3. MySQL installation
 4. Storage configuration
-5. Toolkit Deployment
+5. Toolkit configuration
 6. Ingress/Network configuration
-7. Keycloak configuration
+7. Toolkit Deployment
+8. Keycloak configuration
 
 &nbsp;
 &nbsp;
@@ -560,10 +561,90 @@ ls /mnt/otk/cms-public-uploads/
 
 ![list files ](img/cms-ls2.PNG "list files")
 
-## Toolkit Deployment
- *Description in process
+
+If you dont want use local mounted folder. You can use NFS share, cloud storage. [Kubernetes official documentation](https://kubernetes.io/docs/concepts/storage/volumes"Kubernetes-official-document")
+
+
+
+## Toolkit configuration
+
+
+For Toolkit deployment we are using .yaml files.
+There are several types of .yaml files.
+
+Configmap - is an API object used to store non-confidential data in key-value pairs. Pods can consume ConfigMaps as environment variables.
+
+Service - an abstract way to expose an application running on a set of Pods as a network service.
+
+Kustomization - defines the source of Kubernetes manifests by referencing an object managed by source-controller, the path to the Kustomization file within that source, and the interval at which the kustomize build output is applied on the cluster.
+
+Namespace - a mechanism for isolating groups of resources within a single cluster.
+
+Secret - an object that contains a small amount of sensitive data such as a password, a token, or a key.
+
+Storage - Include PV and PVC. A PersistentVolume (PV) is a piece of storage in the cluster that has been provisioned by an administrator or dynamically provisioned using Storage Classes. A PersistentVolumeClaim (PVC) is a request for storage by a user. It is similar to a Pod. Pods consume node resources and PVCs consume PV resources.
+
+Ingress - An API object that manages external access to the services in a cluster, typically HTTP. Ingress may provide load balancing, SSL termination and name-based virtual hosting
+
+
+Before deploy .yaml files to Kubernetes there is need to fill required parametrs into **configmap.yaml** and **secret.yaml**
+
+### Configmap.yaml
+
+#### frontend-cms.yaml
+
+ DATABASE_CLIENT - "mysql" - define SQL server client.
+
+ DATABASE_HOST - "1.1.1.1" - define SQL server IP address.
+
+ DATABASE_NAME - "otk-cms" - CMS database name.
+
+ DATABASE_PORT - "3306" - SQL server port.
+
+
+
+####  frontend.yaml
+
+ BASE_URL - "https://otk.example.com" - frontend URL.
+
+ CMS_SERVICE_URL - "https://cms.example.com" - frontend CMS URL.
+
+ TERM_SERVICE_URL - "https://otk.example.com/api/termservice" - Term service URL.
+
+ KC_URL - "https://auth.example.com/auth" - Keycloak URL.
+
+ KC_REALM - "toolkit" - Keycloak Realm name.
+
+ KC_CLIENTID - "otk-frontend" - keycloak client name.
+
+ DISCUSSION_SERVICE_URL - "https://otk.example.com/api/discussionservice" - Discussion service URL.
+
+
+#### termservice.yaml
+
+ Auth__JwtBearer__Audience - "account" - keycloak audience. **will be deprecated**
+
+ Auth__JwtBearer__Issuer - "https://**auth.example.com**/auth/realms/**toolkit**" - URL to keycloak realm. Need to update base URL **auth.example.com** and realm name **toolkit**
+
+
+#### keycloak.yaml
+
+ DB_VENDOR - "MYSQL" - define SQL server client.
+
+ DB_ADDR - "1.1.1.1" - define SQL server IP address.
+
+ DB_DATABASE - "otk-keycloak" - keycloak database name.
+
+
+
+
+
 
 ## Ingress/Network configuration
+ *Description in process
+
+
+## Toolkit Deployment
  *Description in process
 
 ## Authentication (Keycloak) configuration
