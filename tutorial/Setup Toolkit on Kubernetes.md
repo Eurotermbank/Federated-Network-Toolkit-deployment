@@ -3,7 +3,7 @@
 
 &nbsp;
 &nbsp;
-|Version|0.3|
+|Version|0.4|
 |-----|-----------|
 
 &nbsp;
@@ -17,9 +17,10 @@ This document contains information how to run Toolkit for Eurotermbank Federated
 1. Prerequisites
 2. Kubernetes installation
 3. MySQL installation
-4. Toolkit Deployment
-5. Ingress/Network configuration
-6. Keycloak configuration
+4. Storage configuration
+5. Toolkit Deployment
+6. Ingress/Network configuration
+7. Keycloak configuration
 
 &nbsp;
 &nbsp;
@@ -29,6 +30,7 @@ This document contains information how to run Toolkit for Eurotermbank Federated
 |0.1| 28.10.21 | Initial version |
 |0.2| 29.10.21 | Kubernetes installation described |
 |0.3| 02.11.21 | MySQL installation described |
+|0.4| 04.11.21 | Storage configuration described |
 
 &nbsp;
 &nbsp;
@@ -478,6 +480,85 @@ If there are Tables, then data was successfully imported.
 ![mysql cms schema ](img/mysql-cms-schema.PNG "mysql cms schema")
 
 
+
+
+## Storage configuration
+
+Toolkit require storage configuration. Storage required for Frontend and for Frontend CMS.
+
+In this tutorial we will use local shared folder.
+
+1. Frontend
+
+Frontend storage will be used for portal branding. Here you can upload custom branding files.
+
+Local paths must be under **/mnt/** folder. This is default directory for mounted storage. Overwise Kubernetes won’t be able to connect to it.
+
+In our tutorial under **mnt** folder, we will create **otk** folder which will contain all project related folders.
+
+Create folder for frontend:
+
+```bash
+sudo mkdir -p /mnt/otk/frontend-html/
+```
+
+You can choose your own folder name, but dont forget update **storage.yaml** with correct local path.
+Command with custom path can be:
+
+```bash
+sudo mkdir -p /mnt/something/...
+```
+
+2. Frontend CMS
+
+Frontend CMS folder will contain all CMS files.
+
+Folder will be located next to frontend-html folder.
+
+```bash
+sudo mkdir -p /mnt/otk/cms-public-uploads/
+```
+
+Same as for frontend, you can choose your own folder name, but dont forget update **storage.yaml** with correct local path.
+
+
+For frontend CMS you need to upload files. Files located in [cms-public-uploads](https://github.com/Eurotermbank/Federated-Network-Toolkit-deployment/blob/main/seed-data/cms/cms-public-uploads.zip"cms-public-uploads.zip") .
+
+Download .zip file into your server.
+
+In my server .zip file located in home directory.
+
+```bash
+cd
+ls
+```
+![list files ](img/cms-ls.PNG "list files")
+
+If in your server file located in other location, all **cd** command execute with **cd /zipfiledirectory/**.
+
+Next install **unzip** tool.
+
+```bash
+sudo apt-get install unzip
+```
+
+Once unzip tool installed.
+Execute commands to unzip archive and copy to mounted folder.
+```bash
+cd
+sudo unzip cms-public-uploads.zip
+cd uploads/
+sudo cp /mnt/otk/cms-public-uploads/ /*
+```
+
+To validate if all files exist in mounted directory, execute:
+
+```bash
+ls /mnt/otk/cms-public-uploads/
+```
+
+
+![list files ](img/cms-ls2.PNG "list files")
 
 ## Toolkit Deployment
  *Description in process
