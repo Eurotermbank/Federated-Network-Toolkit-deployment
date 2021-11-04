@@ -3,7 +3,7 @@
 
 &nbsp;
 &nbsp;
-|Version|0.4|
+|Version|0.5|
 |-----|-----------|
 
 &nbsp;
@@ -18,7 +18,7 @@ This document contains information how to run Toolkit for Eurotermbank Federated
 2. Kubernetes installation
 3. MySQL installation
 4. Storage configuration
-5. Toolkit configuration
+5. Toolkit variable configuration
 6. Ingress/Network configuration
 7. Toolkit Deployment
 8. Keycloak configuration
@@ -32,6 +32,7 @@ This document contains information how to run Toolkit for Eurotermbank Federated
 |0.2| 29.10.21 | Kubernetes installation described |
 |0.3| 02.11.21 | MySQL installation described |
 |0.4| 04.11.21 | Storage configuration described |
+|0.5| 04.11.21 | Toolkit variable configuration described |
 
 &nbsp;
 &nbsp;
@@ -480,16 +481,26 @@ If there are Tables, then data was successfully imported.
 
 ![mysql cms schema ](img/mysql-cms-schema.PNG "mysql cms schema")
 
-
+&nbsp;
+&nbsp;
 
 
 ## Storage configuration
+
+&nbsp;
+&nbsp;
 
 Toolkit require storage configuration. Storage required for Frontend and for Frontend CMS.
 
 In this tutorial we will use local shared folder.
 
-1. Frontend
+&nbsp;
+&nbsp;
+### Frontend
+
+
+&nbsp;
+&nbsp;
 
 Frontend storage will be used for portal branding. Here you can upload custom branding files.
 
@@ -510,7 +521,13 @@ Command with custom path can be:
 sudo mkdir -p /mnt/something/...
 ```
 
-2. Frontend CMS
+&nbsp;
+&nbsp;
+
+### Frontend CMS
+
+&nbsp;
+&nbsp;
 
 Frontend CMS folder will contain all CMS files.
 
@@ -564,10 +581,13 @@ ls /mnt/otk/cms-public-uploads/
 
 If you dont want use local mounted folder. You can use NFS share, cloud storage. [Kubernetes official documentation](https://kubernetes.io/docs/concepts/storage/volumes"Kubernetes-official-document")
 
+&nbsp;
+&nbsp;
 
+## Toolkit variable configuration
 
-## Toolkit configuration
-
+&nbsp;
+&nbsp;
 
 For Toolkit deployment we are using .yaml files.
 There are several types of .yaml files.
@@ -589,56 +609,151 @@ Ingress - An API object that manages external access to the services in a cluste
 
 Before deploy .yaml files to Kubernetes there is need to fill required parametrs into **configmap.yaml** and **secret.yaml**
 
+All .yaml is located in Git [toolkit yaml](https://github.com/Eurotermbank/Federated-Network-Toolkit-deployment/tree/main/kubernetes"toolkit-yaml")
+
+&nbsp;
+&nbsp;
+
+
 ### Configmap.yaml
 
-#### frontend-cms.yaml
-
- DATABASE_CLIENT - "mysql" - define SQL server client.
-
- DATABASE_HOST - "1.1.1.1" - define SQL server IP address.
-
- DATABASE_NAME - "otk-cms" - CMS database name.
-
- DATABASE_PORT - "3306" - SQL server port.
+&nbsp;
+&nbsp;
 
 
+#### **frontend-cms**
 
-####  frontend.yaml
+&nbsp;
+&nbsp;
 
- BASE_URL - "https://otk.example.com" - frontend URL.
+ **DATABASE_CLIENT** - "mysql" - define SQL server client.
 
- CMS_SERVICE_URL - "https://cms.example.com" - frontend CMS URL.
+ **DATABASE_HOST** - "1.1.1.1" - define SQL server IP address.
 
- TERM_SERVICE_URL - "https://otk.example.com/api/termservice" - Term service URL.
+ **DATABASE_NAME** - "otk-cms" - CMS database name.
 
- KC_URL - "https://auth.example.com/auth" - Keycloak URL.
+ **DATABASE_PORT** - "3306" - SQL server port.
 
- KC_REALM - "toolkit" - Keycloak Realm name.
+&nbsp;
+&nbsp;
 
- KC_CLIENTID - "otk-frontend" - keycloak client name.
+####  **frontend**
 
- DISCUSSION_SERVICE_URL - "https://otk.example.com/api/discussionservice" - Discussion service URL.
+&nbsp;
+&nbsp;
+
+ **BASE_URL** - "https://otk.example.com" - frontend URL.
+
+ **CMS_SERVICE_URL** - "https://cms.example.com" - frontend CMS URL.
+
+ **TERM_SERVICE_URL** - "https://otk.example.com/api/termservice" - Term service URL.
+
+ **KC_URL** - "https://auth.example.com/auth" - Keycloak URL.
+
+ **KC_REALM** - "toolkit" - Keycloak Realm name.
+
+ **KC_CLIENTID** - "otk-frontend" - keycloak client name.
+
+ **DISCUSSION_SERVICE_URL** - "https://otk.example.com/api/discussionservice" - Discussion service URL.
+
+&nbsp;
+&nbsp;
+
+#### **termservice**
+
+&nbsp;
+&nbsp;
 
 
-#### termservice.yaml
+ **Auth__JwtBearer__Audience** - "account" - keycloak audience. **will be deprecated**
 
- Auth__JwtBearer__Audience - "account" - keycloak audience. **will be deprecated**
+ **Auth__JwtBearer__Issuer** - "https://**auth.example.com**/auth/realms/**toolkit**" - URL to keycloak realm. Need to update base URL **auth.example.com** and realm name **toolkit**
 
- Auth__JwtBearer__Issuer - "https://**auth.example.com**/auth/realms/**toolkit**" - URL to keycloak realm. Need to update base URL **auth.example.com** and realm name **toolkit**
+&nbsp;
+&nbsp;
+
+#### **keycloak**
+
+&nbsp;
+&nbsp;
+
+ **DB_VENDOR** - "MYSQL" - define SQL server client.
+
+ **DB_ADDR** - "1.1.1.1" - define SQL server IP address.
+
+ **DB_DATABASE** - "otk-keycloak" - keycloak database name.
+
+&nbsp;
+&nbsp;
+
+### secret.yaml
+
+&nbsp;
+&nbsp;
+
+#### **frontend-cms**
+
+&nbsp;
+&nbsp;
+
+ **DATABASE_USERNAME** - "otkdbuser" - SQL server user username.
+
+ **DATABASE_PASSWORD** - "strongpass" - SQL server user pass.
+
+ **SMTP_HOST** - "smtp.office365.com" - SMTP host URL.
+
+ **SMTP_PORT** - "587" - SMTP host port.
+
+ **SMTP_USERNAME** -  "no-reply@example.com" - SMTP user email, no-reply email will be sended from it.
+
+ **SMTP_PASSWORD** - "strongpass" - SMTP user password.
+
+ **SMTP_FROM** -  "no-reply@example.com" - SMTP user email, no-reply email will be sended from it.
+
+ **SMTP_REPLYTO** -  "no-reply@example.com" - SMTP user email, no-reply email will be sended from it.
+
+&nbsp;
+&nbsp;
+
+#### **termservice and discussionService**
+
+&nbsp;
+&nbsp;
+
+Term service and discussion service use same secret, as they require same parameters.
 
 
-#### keycloak.yaml
 
- DB_VENDOR - "MYSQL" - define SQL server client.
+ **Auth__BasicAuth__Password** - "strongpass" - password for new user, it will be used for service basic authentication.
 
- DB_ADDR - "1.1.1.1" - define SQL server IP address.
+ **Auth__BasicAuth__Username** - "username" - username for new user, it will be used for service basic authentication.
 
- DB_DATABASE - "otk-keycloak" - keycloak database name.
+ **Auth__JwtBearer__Secret** -  "" - leave it blank for now. it will be configured later in keycloak admin portal, after we will update it.
 
+ **ConnectionStrings__termDB** - "server=1.1.1.1;user id=dbuser;password=dbpass;persistsecurityinfo=True;database=otk-term-srv;oldguids=true;Convert Zero Datetime=True;charset=utf8" - Term database connection string. Define SQL server IP, SQL server user, SQL server user password, Term database name (you can choose db name, it will generate it).
 
+ **ConnectionStrings__discussionDB** -  "server=1.1.1.1;user id=dbuser;password=dbpass;persistsecurityinfo=True;database=otk-discussion-srv;oldguids=true;Convert Zero Datetime=True;charset=utf8" - Discussion service database connection string. Define SQL server IP, SQL server user, SQL server user password, discussion service database name (you can choose db name, it will generate it).
 
+ **P.S.** connection strings use MySQL default port "3306", if your SQL server use different port you can add port parameter into string. . (example: Server=myServerAddress;Port=1234;Database=myDataBase;Uid=myUsername;Pwd=myPassword;)
 
+&nbsp;
+&nbsp;
 
+#### **keycloak**
+
+&nbsp;
+&nbsp;
+
+ **KEYCLOAK_USER** - "username" - create new Keycloak admin username.
+
+ **KEYCLOAK_PASSWORD** - - "strongpass" - create new Keycloak admin password.
+
+ **DB_PASSWORD** - "otkdbuser" - SQL server user username.
+
+ **DB_USER** - "strongpass" - SQL server user pass.
+
+&nbsp;
+&nbsp;
 
 ## Ingress/Network configuration
  *Description in process
