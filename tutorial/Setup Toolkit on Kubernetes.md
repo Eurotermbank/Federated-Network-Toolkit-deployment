@@ -3,7 +3,7 @@
 
 &nbsp;
 &nbsp;
-|Version|0.2|
+|Version|0.5|
 |-----|-----------|
 
 &nbsp;
@@ -17,9 +17,11 @@ This document contains information how to run Toolkit for Eurotermbank Federated
 1. Prerequisites
 2. Kubernetes installation
 3. MySQL installation
-4. Toolkit Deployment
-5. Ingress/Network configuration
-6. Keycloak configuration
+4. Storage configuration
+5. Toolkit variable configuration
+6. Ingress/Network configuration
+7. Toolkit Deployment
+8. Keycloak configuration
 
 &nbsp;
 &nbsp;
@@ -28,6 +30,9 @@ This document contains information how to run Toolkit for Eurotermbank Federated
 |-----|-----------|-----------|
 |0.1| 28.10.21 | Initial version |
 |0.2| 29.10.21 | Kubernetes installation described |
+|0.3| 02.11.21 | MySQL installation described |
+|0.4| 04.11.21 | Storage configuration described |
+|0.5| 04.11.21 | Toolkit variable configuration described |
 
 &nbsp;
 &nbsp;
@@ -175,16 +180,588 @@ Now you can execute without microk8s:
 ```bash
 kubectl port-forward -n kube-system service/kubernetes-dashboard 18001:443 --address=0.0.0.0
 ```
+&nbsp;
+&nbsp;
 
 ## MySQL installation
+
+&nbsp;
+&nbsp;
+
+This section will go over how to install MySQL version 8.0 on an Ubuntu 20.04 server.
+
+To install it, update the package index on your server if you’ve not done so recently:
+
+```bash
+ sudo apt update
+```
+
+Use wget command to add MySQL to Ubuntu repository:
+
+```bash
+wget -c https://repo.mysql.com/mysql-apt-config_0.8.15-1_all.deb
+```
+
+ ![mysql wget ](img/mysql-wget.PNG "mysql wget")
+
+
+Before installation we need validate MySQL installation file. Execute command:
+
+```bash
+sudo dpkg -i mysql-apt-config_0.8.15-1_all.deb
+```
+
+Make sure what in **MySQL Server & Cluster** part selected **mysql-8.0**.
+
+![mysql apt config ](img/mysql-apt-config.PNG "mysql apt config")
+
+Then press **OK**
+
+Next we need download the package lists from the repositories and "updates" them to get information on the newest versions of packages and their dependencies.
+It can be performed by:
+
+```bash
+sudo apt-get update
+```
+
+Then install the mysql-server package:
+
+```bash
+sudo apt-get install mysql-server
+```
+![mysql install ](img/mysql-install.PNG "mysql install")
+
+In this section please provide password for MySQL root user.
+
+![mysql root password setup ](img/mysql-root-pass.PNG "mysql root password setup")
+
+In authentication setup part, please select:
+**Use legacy Authentication Method**
+
+![mysql auth setup ](img/mysql-auth.PNG "mysql auth setup")
+
+Legacy Authentication Method required for Strapi cms.
+https://strapi.io/blog/configuring-strapi-mysql-database
+
+After succsefull installation, we will update MySQL configuration.
+
+Open MySQL configuration file with nano:
+
+```bash
+sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
+```
+Original configuration:
+
+![mysql config before ](img/mysql-config-before.PNG "mysql config before")
+
+New parametrs will define servers’ collation and character set.
+
+
+```bash
+[mysqld]
+pid-file        = /var/run/mysqld/mysqld.pid
+socket          = /var/run/mysqld/mysqld.sock
+datadir         = /var/lib/mysql
+log-error       = /var/log/mysql/error.log
+bind-address    = 0.0.0.0
+#
+collation-server = utf8mb4_general_ci
+init-connect='SET NAMES utf8mb4'
+character-set-server = utf8mb4
+
+```
+
+After updating, your configuration must be similar:
+
+
+![mysql config after ](img/mysql-config-after.PNG "mysql config after")
+
+
+Now we need to restart MySQL to apply all changes.
+
+```bash
+sudo systemctl restart mysql
+```
+Once restart complete, you can check MySQL server status.
+
+```bash
+sudo service mysql status
+```
+
+![mysql status ](img/mysql-status.PNG "mysql status")
+
+&nbsp;
+&nbsp;
+
+## Creating a Dedicated MySQL User and Granting Privileges
+
+Upon installation, MySQL creates a root user account which you can use to manage your database. This user has full privileges over the MySQL server, meaning it has complete control over every database, table, user, and so on.
+Because of this, it’s best to avoid using this account outside of administrative functions.
+This step outlines how to use the root MySQL user to create a new user account and grant it privileges.
+
+We will create small shell script.
+
+```bash
+sudo nano mysql-user-setup.sh
+```
+Fill file with configuration bellow.
+
+```bash
+#!/bin/bash
+MYSQL_ROOT_PWD="root-pass"
+# user: dbadmins
+DBADMINUSER="db-user"
+DBADMINS_PWD="db-user-pass"
+mysql -u root -p$MYSQL_ROOT_PWD -e "CREATE USER '$DBADMINUSER'@'%' IDENTIFIED BY '$DBADMINS_PWD'"
+mysql -u root -p$MYSQL_ROOT_PWD -e "GRANT ALL PRIVILEGES ON *.* TO '$DBADMINUSER'@'%' WITH GRANT OPTION"
+```
+**MYSQL_ROOT_PWD** - root user password (created in previous step)
+
+**DBADMINUSER** - new user username
+
+**DBADMINS_PWD** - new user password
+
+
+![mysql user ](img/mysql-user.PNG "mysql user")
+
+Once script created, execute next command, this will make script executable.
+
+```bash
+sudo chmod +x mysql-user-setup.sh
+```
+Execute script:
+
+```bash
+./mysql-user-setup.sh
+```
+&nbsp;
+&nbsp;
+
+### Test connection
+
+&nbsp;
+&nbsp;
+
+For easier work with MySQL, you can use MySQL Workbench.
+You can download it from [mysql workbench](https://www.mysql.com/products/workbench/ "mysql workbench") page.
+
+In Workbench you will need define MySQL server IP address.
+You can find by executing:
+
+```bash
+ip a
+```
+
+![mysql ip ](img/mysql-ip.PNG "mysql ip")
+
+Next open Workbench. And press **+** to addd new connection.
+
+![mysql workbench ](img/mysql-workbench.PNG "mysql workbench")
+
+Fill connection parametrs.
+
+**Connection name** - name for connection, it can be anything (only appear in Workbench connection list).
+
+**Hostname** - server IP.
+
+**Username** - user (not root)
+
+Press **Test connection**
+
+![mysql test ](img/mysql-test.PNG "mysql test")
+
+It will promt to enter **password**
+
+If test successful, you can close configuration.
+
+To connect to server, press to connection name.
+
+![mysql connection ](img/mysql-connection.PNG "mysql connection")
+
+&nbsp;
+&nbsp;
+
+### Creating required database
+
+
+&nbsp;
+&nbsp;
+
+There are need to configure 2 databases before deploying Toolkit.
+
+&nbsp;
+&nbsp;
+
+#### **Keycloak database**
+&nbsp;
+
+
+Connect to MySQL server in Workbench.
+
+Open Schemas tab.
+
+![mysql schemas tab ](img/mysql-tab.PNG "mysql schemas tab")
+
+
+Press button to create new schema.
+
+![mysql new schema ](img/mysql-new-schema.PNG "mysql new schema")
+
+Fill form with:
+
+**Name** - otk-keycloak - *new database name, you can choose different, but there will be need to update install yaml*.
+
+**Default characterset** - utf8 .
+
+**Default collation** -  utf8_unicode_ci .
+
+![mysql keycloak ](img/mysql-keycloak.PNG "mysql keycloak")
+
+Press **Apply**
+
+In new promt window validate if parametrs is correct and press **Apply**
+
+![mysql keycloak ](img/mysql-keycloak2.PNG "mysql keycloak")
+
+Database for keycloak created.
+
+&nbsp;
+&nbsp;
+
+#### **CMS database**
+
+&nbsp;
+
+In Workbench create new schema.
+
+Fill form with:
+
+**Name** - otk-cms - *new database name, you can choose different, but there will be need to update install yaml*.
+
+**Default characterset** - utf8mb4.
+
+**Default collation** -  utf8mb4_general_ci.
+
+![mysql cms ](img/mysql-cms.PNG "mysql cms")
+
+Press **Apply**
+
+In new promt window validate if parametrs is correct and press **Apply**
+
+Now we will import database from dump file.
+
+You can find dump file in repo [cms-dump.sql](https://github.com/Eurotermbank/Federated-Network-Toolkit-deployment/blob/main/seed-data/cms/cms-dump.sql "cms-dump.sql").
+
+Download file to same machine, there you are using Workbench.
+
+Once dump downloaded, open **Administration** tab in Workbench.
+
+Press **Data Import/Restore**
+
+![mysql Administration tab ](img/mysql-tab2.PNG "mysql Administration tab")
+
+
+In **Import Options** select **Import from Self-Contained File** and locate priviosly downloaded dumb file.
+
+In **Default Target Schema** select priviously created CMS database.
+
+Under **Select Database Objects to Import** select **Dump Structure and Data**
+
+Then press **Start import**
+
+![mysql data import ](img/mysql-dataimport.PNG "mysql data import")
+
+After successful import, you will see what import completed.
+
+![mysql data import ](img/mysql-dataimport2.PNG "mysql data import")
+
+
+To validate if import was successful, go to Schemas tab and expose **Tables** under database.
+If there are Tables, then data was successfully imported.
+
+![mysql cms schema ](img/mysql-cms-schema.PNG "mysql cms schema")
+
+&nbsp;
+&nbsp;
+
+
+## Storage configuration
+
+&nbsp;
+&nbsp;
+
+Toolkit require storage configuration. Storage required for Frontend and for Frontend CMS.
+
+In this tutorial we will use local shared folder.
+
+&nbsp;
+&nbsp;
+### Frontend
+
+
+&nbsp;
+&nbsp;
+
+Frontend storage will be used for portal branding. Here you can upload custom branding files.
+
+Local paths must be under **/mnt/** folder. This is default directory for mounted storage. Overwise Kubernetes won’t be able to connect to it.
+
+In our tutorial under **mnt** folder, we will create **otk** folder which will contain all project related folders.
+
+Create folder for frontend:
+
+```bash
+sudo mkdir -p /mnt/otk/frontend-html/
+```
+
+You can choose your own folder name, but dont forget update **storage.yaml** with correct local path.
+Command with custom path can be:
+
+```bash
+sudo mkdir -p /mnt/something/...
+```
+
+&nbsp;
+&nbsp;
+
+### Frontend CMS
+
+&nbsp;
+&nbsp;
+
+Frontend CMS folder will contain all CMS files.
+
+Folder will be located next to frontend-html folder.
+
+```bash
+sudo mkdir -p /mnt/otk/cms-public-uploads/
+```
+
+Same as for frontend, you can choose your own folder name, but dont forget update **storage.yaml** with correct local path.
+
+
+For frontend CMS you need to upload files. Files located in [cms-public-uploads](https://github.com/Eurotermbank/Federated-Network-Toolkit-deployment/blob/main/seed-data/cms/cms-public-uploads.zip"cms-public-uploads.zip") .
+
+Download .zip file into your server.
+
+In my server .zip file located in home directory.
+
+```bash
+cd
+ls
+```
+![list files ](img/cms-ls.PNG "list files")
+
+If in your server file located in other location, all **cd** command execute with **cd /zipfiledirectory/**.
+
+Next install **unzip** tool.
+
+```bash
+sudo apt-get install unzip
+```
+
+Once unzip tool installed.
+Execute commands to unzip archive and copy to mounted folder.
+```bash
+cd
+sudo unzip cms-public-uploads.zip
+cd uploads/
+sudo cp /mnt/otk/cms-public-uploads/ /*
+```
+
+To validate if all files exist in mounted directory, execute:
+
+```bash
+ls /mnt/otk/cms-public-uploads/
+```
+
+
+![list files ](img/cms-ls2.PNG "list files")
+
+
+If you dont want use local mounted folder. You can use NFS share, cloud storage. [Kubernetes official documentation](https://kubernetes.io/docs/concepts/storage/volumes"Kubernetes-official-document")
+
+&nbsp;
+&nbsp;
+
+## Toolkit variable configuration
+
+&nbsp;
+&nbsp;
+
+For Toolkit deployment we are using .yaml files.
+There are several types of .yaml files.
+
+Configmap - is an API object used to store non-confidential data in key-value pairs. Pods can consume ConfigMaps as environment variables.
+
+Service - an abstract way to expose an application running on a set of Pods as a network service.
+
+Kustomization - defines the source of Kubernetes manifests by referencing an object managed by source-controller, the path to the Kustomization file within that source, and the interval at which the kustomize build output is applied on the cluster.
+
+Namespace - a mechanism for isolating groups of resources within a single cluster.
+
+Secret - an object that contains a small amount of sensitive data such as a password, a token, or a key.
+
+Storage - Include PV and PVC. A PersistentVolume (PV) is a piece of storage in the cluster that has been provisioned by an administrator or dynamically provisioned using Storage Classes. A PersistentVolumeClaim (PVC) is a request for storage by a user. It is similar to a Pod. Pods consume node resources and PVCs consume PV resources.
+
+Ingress - An API object that manages external access to the services in a cluster, typically HTTP. Ingress may provide load balancing, SSL termination and name-based virtual hosting
+
+
+Before deploy .yaml files to Kubernetes there is need to fill required parametrs into **configmap.yaml** and **secret.yaml**
+
+All .yaml is located in Git [toolkit yaml](https://github.com/Eurotermbank/Federated-Network-Toolkit-deployment/tree/main/kubernetes"toolkit-yaml")
+
+&nbsp;
+&nbsp;
+
+
+### Configmap.yaml
+
+&nbsp;
+&nbsp;
+
+
+#### **frontend-cms**
+
+&nbsp;
+&nbsp;
+
+ **DATABASE_CLIENT** - "mysql" - define SQL server client.
+
+ **DATABASE_HOST** - "1.1.1.1" - define SQL server IP address.
+
+ **DATABASE_NAME** - "otk-cms" - CMS database name.
+
+ **DATABASE_PORT** - "3306" - SQL server port.
+
+&nbsp;
+&nbsp;
+
+####  **frontend**
+
+&nbsp;
+&nbsp;
+
+ **BASE_URL** - "https://otk.example.com" - frontend URL.
+
+ **CMS_SERVICE_URL** - "https://cms.example.com" - frontend CMS URL.
+
+ **TERM_SERVICE_URL** - "https://otk.example.com/api/termservice" - Term service URL.
+
+ **KC_URL** - "https://auth.example.com/auth" - Keycloak URL.
+
+ **KC_REALM** - "toolkit" - Keycloak Realm name.
+
+ **KC_CLIENTID** - "otk-frontend" - keycloak client name.
+
+ **DISCUSSION_SERVICE_URL** - "https://otk.example.com/api/discussionservice" - Discussion service URL.
+
+&nbsp;
+&nbsp;
+
+#### **termservice**
+
+&nbsp;
+&nbsp;
+
+
+ **Auth__JwtBearer__Audience** - "account" - keycloak audience. **will be deprecated**
+
+ **Auth__JwtBearer__Issuer** - "https://**auth.example.com**/auth/realms/**toolkit**" - URL to keycloak realm. Need to update base URL **auth.example.com** and realm name **toolkit**
+
+&nbsp;
+&nbsp;
+
+#### **keycloak**
+
+&nbsp;
+&nbsp;
+
+ **DB_VENDOR** - "MYSQL" - define SQL server client.
+
+ **DB_ADDR** - "1.1.1.1" - define SQL server IP address.
+
+ **DB_DATABASE** - "otk-keycloak" - keycloak database name.
+
+&nbsp;
+&nbsp;
+
+### secret.yaml
+
+&nbsp;
+&nbsp;
+
+#### **frontend-cms**
+
+&nbsp;
+&nbsp;
+
+ **DATABASE_USERNAME** - "otkdbuser" - SQL server user username.
+
+ **DATABASE_PASSWORD** - "strongpass" - SQL server user pass.
+
+ **SMTP_HOST** - "smtp.office365.com" - SMTP host URL.
+
+ **SMTP_PORT** - "587" - SMTP host port.
+
+ **SMTP_USERNAME** -  "no-reply@example.com" - SMTP user email, no-reply email will be sended from it.
+
+ **SMTP_PASSWORD** - "strongpass" - SMTP user password.
+
+ **SMTP_FROM** -  "no-reply@example.com" - SMTP user email, no-reply email will be sended from it.
+
+ **SMTP_REPLYTO** -  "no-reply@example.com" - SMTP user email, no-reply email will be sended from it.
+
+&nbsp;
+&nbsp;
+
+#### **termservice and discussionService**
+
+&nbsp;
+&nbsp;
+
+Term service and discussion service use same secret, as they require same parameters.
+
+
+
+ **Auth__BasicAuth__Password** - "strongpass" - password for new user, it will be used for service basic authentication.
+
+ **Auth__BasicAuth__Username** - "username" - username for new user, it will be used for service basic authentication.
+
+ **Auth__JwtBearer__Secret** -  "" - leave it blank for now. it will be configured later in keycloak admin portal, after we will update it.
+
+ **ConnectionStrings__termDB** - "server=1.1.1.1;user id=dbuser;password=dbpass;persistsecurityinfo=True;database=otk-term-srv;oldguids=true;Convert Zero Datetime=True;charset=utf8" - Term database connection string. Define SQL server IP, SQL server user, SQL server user password, Term database name (you can choose db name, it will generate it).
+
+ **ConnectionStrings__discussionDB** -  "server=1.1.1.1;user id=dbuser;password=dbpass;persistsecurityinfo=True;database=otk-discussion-srv;oldguids=true;Convert Zero Datetime=True;charset=utf8" - Discussion service database connection string. Define SQL server IP, SQL server user, SQL server user password, discussion service database name (you can choose db name, it will generate it).
+
+ **P.S.** connection strings use MySQL default port "3306", if your SQL server use different port you can add port parameter into string. . (example: Server=myServerAddress;Port=1234;Database=myDataBase;Uid=myUsername;Pwd=myPassword;)
+
+&nbsp;
+&nbsp;
+
+#### **keycloak**
+
+&nbsp;
+&nbsp;
+
+ **KEYCLOAK_USER** - "username" - create new Keycloak admin username.
+
+ **KEYCLOAK_PASSWORD** - - "strongpass" - create new Keycloak admin password.
+
+ **DB_PASSWORD** - "otkdbuser" - SQL server user username.
+
+ **DB_USER** - "strongpass" - SQL server user pass.
+
+&nbsp;
+&nbsp;
+
+## Ingress/Network configuration
  *Description in process
+
 
 ## Toolkit Deployment
  *Description in process
- 
-## Ingress/Network configuration
- *Description in process
- 
+
 ## Authentication (Keycloak) configuration
  *Description in process
- 
+
