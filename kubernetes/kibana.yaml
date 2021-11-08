@@ -4,6 +4,7 @@ metadata:
   labels:
     app: kibana
   name: kibana
+  namespace: otk
 spec:
   ports:
   - name: "5601"
@@ -21,6 +22,7 @@ metadata:
   labels:
     app: kibana
   name: kibana
+  namespace: otk
 spec:
   replicas: 1
   selector:

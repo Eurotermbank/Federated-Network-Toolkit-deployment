@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: http-ingress-keycloak
-  namespace: default
+  namespace: otk
   annotations:
     kubernetes.io/ingress.class: nginx
 spec:
@@ -59,7 +59,7 @@ metadata:
     #nginx.ingress.kubernetes.io/auth-secret: kibana-basic-auth
     #nginx.ingress.kubernetes.io/auth-realm: "Authentication Required - Logs and Statistics"
   name: http-ingress-kibana
-  namespace: default
+  namespace: otk
 spec:
   tls:
   - hosts:

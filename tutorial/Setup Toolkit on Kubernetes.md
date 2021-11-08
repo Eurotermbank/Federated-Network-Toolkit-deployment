@@ -3,7 +3,7 @@
 
 &nbsp;
 &nbsp;
-|Version|0.5|
+|Version|0.6|
 |-----|-----------|
 
 &nbsp;
@@ -33,6 +33,7 @@ This document contains information how to run Toolkit for Eurotermbank Federated
 |0.3| 02.11.21 | MySQL installation described |
 |0.4| 04.11.21 | Storage configuration described |
 |0.5| 04.11.21 | Toolkit variable configuration described |
+|0.6| 08.11.21 | Ingress/Network configuration described |
 
 &nbsp;
 &nbsp;
@@ -756,8 +757,146 @@ Term service and discussion service use same secret, as they require same parame
 &nbsp;
 
 ## Ingress/Network configuration
- *Description in process
 
+In this tutorial we are using Nginx Ingress to expose an application to the outside of your Kubernetes cluster.
+
+We need to expose several applications.
+
+To achive this, we will need 4 DNS name:
+
+1) Keycloak - auth.example.com
+
+2) Frotend CMS - strapi.example.com
+
+3) Frontned, term service, discussion service - otk.example.com
+
+4) Kibana - kibana.example.com. **Kibana** is optional open-source service, which allow track all services logs. Open toolkit can work without it.
+
+
+You can choose your DNS name, whatever you want or what required by your organisation name policy. Its not required to use auth, otk etc.
+
+All applications will be exposed with HTTPS.
+
+You need add SSL certificate to Kubernetes. If you wont add certificate, services will be available, but it will show what they are not secure.
+
+Steps to import key to kubernetes:
+
+First we need to create kubernetes namespace:
+
+In this tutorail we will use namespace with name **otk**. You can use your custom name.
+
+To create name space execute:
+
+```bash
+kubectl create namespace otk
+```
+
+To list all namespaces:
+
+```bash
+kubectl get namespace
+```
+
+![create namespace ](img/ingress-namespace.PNG "create namespace")
+
+
+
+Once namespace created copy to virtual machine TLS certificate and key.
+
+Go to stored directory. Before execute command, you will need to modify it.
+
+```bash
+kubectl -n otk create secret tls aks-ingress-tls --cert=tls.crt --key=tls.key
+```
+
+**-n otk** - define your services namespace. you need change only **otk**, **-n** is namespace argument.
+
+**aks-ingress-tls** - kubernetes name for imported certificate (you can choose name).
+
+**tls.crt** - TLS certficate file name (it can be .pem, .crt or other )
+
+**tls.key** - TLS certficate key file name (it can be .pem, .crt or other )
+
+Once you addited command execute it.
+
+![create TLS secret ](img/ingress-secret.PNG "create TLS secret")
+
+
+
+Next you need choose DNS names for your services and register in you Domain Controller.
+
+After your DNS names are ready, you need to update **Ingress.yaml**.
+
+**Ingress.yaml** include network configuration for all services. In file you need to update several parametrs.
+
+You will need to upadate same parametrs in all configurations. Bellow will be example for Keycloak service.
+
+```bash
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: http-ingress-keycloak
+  namespace: otk
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  tls:
+  - hosts:
+    - auth.example.com
+    secretName: aks-ingress-tls
+  rules:
+    - host: auth.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: keycloak
+                port:
+                  number: 2014
+status:
+  loadBalancer: {}
+
+```
+
+Here you need to update:
+
+**name** - you can define ingress name.
+
+```bash
+name: http-ingress-keycloak
+```
+
+**namespace** - created namespace name.
+
+```bash
+namespace: otk
+```
+
+
+**Hosts** -  you need to enter DNS name for your service.
+
+```bash
+- hosts:
+    - auth.example.com
+```
+
+
+**secretName** - name of TLS certificate secret, which was created in previous steps. If you didnt create then you can leave default value.
+
+```bash
+secretName: aks-ingress-tls
+```
+
+**Host** -  you need to enter DNS name for your service.
+
+```bash
+- host: auth.example.com
+```
+
+
+Update all Ingress configrurations same way.
 
 ## Toolkit Deployment
  *Description in process
