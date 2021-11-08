@@ -70,7 +70,7 @@ sudo snap install microk8s --classic --channel=1.19/stable
 
 ### Permissions for microk8s
 
-We need to grant admin permissions for microk8s:
+We need to grant admin permissions for microk8s. In **admins** place, define your user:
 
 ```bash
 sudo usermod -a -G microk8s admins
@@ -758,6 +758,9 @@ Term service and discussion service use same secret, as they require same parame
 
 ## Ingress/Network configuration
 
+&nbsp;
+&nbsp;
+
 In this tutorial we are using Nginx Ingress to expose an application to the outside of your Kubernetes cluster.
 
 We need to expose several applications.
@@ -898,8 +901,72 @@ secretName: aks-ingress-tls
 
 Update all Ingress configrurations same way.
 
+&nbsp;
+&nbsp;
+
 ## Toolkit Deployment
- *Description in process
+
+&nbsp;
+&nbsp;
+
+Before deploy toolkit download all .yaml files from [Git](https://github.com/Eurotermbank/Federated-Network-Toolkit-deployment/tree/main/kubernetes"toolkit-yaml") to virtual machine.
+
+You can create separate folder for it. In this tutorial was created folder **otk** in home directory.
+
+
+![List all yaml ](img/deploy-ls.PNG "List all yaml")
+
+
+First we need to create secret key for container registry.
+
+This key will allow to download docker images from Azure Container registry.
+
+Execute on virtual machine:
+
+```bash
+kubectl create secret docker-registry dregsecret \
+    --namespace otk \
+    --docker-server=eurotermbank.azurecr.io \
+    --docker-username=bbff8f3e-176d-483a-89ef-1a17b0674abf \
+    --docker-password=Pvq3OmyHlbtrpP7yGfZ3Kp9_5pt1b1-LwI
+```
+
+Once secret created, go thrue **configmap.yaml** and **secret.yaml** files and check if all values in place.
+
+As well go thrue all .yaml files and check if there are correct namespaces defined.
+
+**P.S.** in service's yaml (discussionservice.yaml, frontend.yaml etc.) there are defined namespace in 2 place under **Service** definition and under **Deployment** definition.
+
+![Service namespace ](img/deploy-namespace.PNG "Service namespace")
+
+
+After validation values and namespace update, you can deploy services to kubernetes.
+
+To deploy you need execute command bellow. Before executing you need to update command. In tutorial, **otk** is direcrectory name where are located all .yaml files.
+
+```bash
+cd
+kubectl kustomize otk > otk/config.yaml &&  kubectl apply -k otk
+```
+
+![Deploy .yaml ](img/deploy-deploy.PNG "Deploy .yaml")
+
+
+After deployment you can check POD status.
+
+You can check from terminal:
+
+kubectl get pods --namespace=otk
+
+![Get pods ](img/deploy-pods-ctl.PNG "Get pods")
+
+Or you can check from Dashboard:
+
+![Get pods ](img/deploy-pods-dash.PNG "Get pods")
+
+
+&nbsp;
+&nbsp;
 
 ## Authentication (Keycloak) configuration
  *Description in process
