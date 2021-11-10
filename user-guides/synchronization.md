@@ -48,6 +48,7 @@ Synchronization process is following:
 You can use Postman (https://www.postman.com/) prepared collection [FEDTERM Synchro.postman_collection.json](https://github.com/Eurotermbank/Federated-Network-Toolkit-deployment/blob/3b70c207f94b0a01fc373776bbd29056216d5173/user-guides/FEDTERM%20Synchro.postman_collection.json "Postman collection") file.
 
 ## Add New Collection Metadata
+* Domain ID is mandatory and must be sent one of the Ids specified in this file: *
 
 POST /termsrv/sync/collection HTTP/1.1
 
@@ -60,28 +61,29 @@ Authorization: Basic XXXXXXXXXXXX
 ```json
 {
     "name": "This is name of my collection",
-    "description": "Description of my collection",
-    "externalUri": "",
-    "domainid": "0202",
+    "description": "Description of my collection",   
+    "domainid": "04",
     "allowsUsesBesidesDGT": true,
     "appropriatnessForDSI": true,
-    "attributionText": null,
-    "cpEmail": null,
-    "cpName": null,
-    "cpOrganization": null,
-    "cpSurname": null,
-    "iprEmail": null,
-    "iprName": null,
-    "iprOrganization": null,
-    "iprSurname": null,
-    "isPSI": null,
-    "licence": null,
-    "originalName": null,
-    "originalNameLang": null,
-    "restrictionsOfUse": null,
-    "sourceURL": null
+    "attributionText": "This is attribution text",
+    "cpEmail": "Contac-person@example.com",
+    "cpName": "Contac Person Name",
+    "cpOrganization": "Contac Person Organization",
+    "cpSurname": "Contac Person Surname",
+    "iprEmail": "ipr-holder@example.com",
+    "iprName": "IPR Holder name",
+    "iprOrganization": "IPR Holder Organization",
+    "iprSurname": "IPR Holder Surname",
+    "isPSI": false,
+    "licence": "CC-BY-4.0",
+    "originalName": "Šis ir manas kolekcijas nosaukums",
+    "originalNameLang": "LV",
+    "restrictionsOfUse": "No restrictions, you are welcome to use",
+    "sourceURL": "https://my-resource.example.com"
 }
 ```
+Return value: Id of created collection.
+
 
 ## Update Existing Collection Metadata
 
@@ -95,30 +97,29 @@ Authorization: Basic XXXXXXXXXXXX
 
 ```json
 {
-    "id": 112233,
-    "name": "This is name of my collection",
-    "description": "Description of my collection",
-    "externalUri": "",
-    "domainid": "0202",
+    "name": "This is updated name of my collection",
+    "description": "Description of my collection",   
+    "domainid": "04",
     "allowsUsesBesidesDGT": true,
     "appropriatnessForDSI": true,
-    "attributionText": null,
-    "cpEmail": null,
-    "cpName": null,
-    "cpOrganization": null,
-    "cpSurname": null,
-    "iprEmail": null,
-    "iprName": null,
-    "iprOrganization": null,
-    "iprSurname": null,
-    "isPSI": null,
-    "licence": null,
-    "originalName": null,
-    "originalNameLang": null,
-    "restrictionsOfUse": null,
-    "sourceURL": null
+    "attributionText": "This is attribution text",
+    "cpEmail": "Contac-person@example.com",
+    "cpName": "Contac Person Name",
+    "cpOrganization": "Contac Person Organization",
+    "cpSurname": "Contac Person Surname",
+    "iprEmail": "ipr-holder@example.com",
+    "iprName": "IPR Holder name",
+    "iprOrganization": "IPR Holder Organization",
+    "iprSurname": "IPR Holder Surname",
+    "isPSI": false,
+    "licence": "CC-BY-4.0",
+    "originalName": "Šis ir manas kolekcijas nosaukums",
+    "originalNameLang": "LV",
+    "restrictionsOfUse": "No restrictions, you are welcome to use",
+    "sourceURL": "https://my-resource.example.com"
 }
 ```
+Return value: Id of updated collection.
 
 ## Add New concept entry or Update Existing Concept Entries
 
