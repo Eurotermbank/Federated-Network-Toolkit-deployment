@@ -3,7 +3,7 @@
 
 &nbsp;
 &nbsp;
-|Version|0.6|
+|Version|0.8|
 |-----|-----------|
 
 &nbsp;
@@ -34,6 +34,8 @@ This document contains information how to run Toolkit for Eurotermbank Federated
 |0.4| 04.11.21 | Storage configuration described |
 |0.5| 04.11.21 | Toolkit variable configuration described |
 |0.6| 08.11.21 | Ingress/Network configuration described |
+|0.7| 09.11.21 | Toolkit Deployment described |
+|0.8| 10.11.21 | Keycloak configuration described |
 
 &nbsp;
 &nbsp;
@@ -969,5 +971,208 @@ Or you can check from Dashboard:
 &nbsp;
 
 ## Authentication (Keycloak) configuration
- *Description in process
 
+&nbsp;
+&nbsp;
+
+Once all POD's are running, we need to setup Keyclok.
+
+Login to Keycloak portal, URL will be same, as you defined in Keycloak ingress.
+
+![keycloak main page ](img/keycloak-main.PNG "keycloak main page")
+
+
+Press **Administration Console**.
+
+Enter login and password, same as you defined in Keycloak **secret.yaml** under **KEYCLOAK_PASSWORD** and **KEYCLOAK_USER** values.
+
+![keycloak login ](img/keycloak-login.PNG "keycloak login")
+
+
+After successful login, we need to configure our custom realm.
+
+First step will be import REALM template.
+
+Press **Master** icon at the left corner and press **Add realm**
+
+
+![keycloak add ](img/keycloak-add.PNG "keycloak add")
+
+
+In **Add realm** section, you need to Select temlplate file. You can find template file in [Git](https://github.com/Eurotermbank/Federated-Network-Toolkit-deployment/tree/main/seed-data/keycloak"toolkit-keycloak"). Download **toolkit.json** file. Once file downloaded select it from **Add realm** section in browser.
+
+
+If you want you can choose custome Realm name, but you will need to update all values in **configmap.yaml** and in **secret.yaml** which point to Realm name.
+
+
+![keycloak add ](img/keycloak-add2.PNG "keycloak add")
+
+
+Press **Create**.
+
+
+Once Realm is created you will forwarded to Realm admin page.
+
+In realm admin page, we need to update several values.
+
+First we will fill Email settings. It can be used for example to restore password.
+
+In right corner press to admin name and push **Manage account** button.
+
+![keycloak user ](img/keycloak-user.PNG "keycloak user")
+
+In **Account** section fill required parametrs:
+
+**Email** - admin personal email, where you will get email from keyclok.
+
+**First name** - admin name.
+
+**Last name** - admin name.
+
+Enter values and press **Save**.
+
+After you save, in right corner press **Back to Security Admin Console**
+
+![keycloak user ](img/keycloak-user2.PNG "keycloak user")
+
+
+
+Next in **Realm Setting** open **Email** tab.
+
+There you need to enter your SMTP parametrs, same as you enteres for **CMS** in **secret.yaml**.
+
+
+You need fill in:
+
+**Host** - SMTP server host.
+
+**Port** - SMTP server port.
+
+**From** - SMTP user.
+
+**Enable StartTLS** - ON
+
+**Enable Authentication** - ON
+
+**Username** - SMTP user.
+
+**Password** - SMTP user password.
+
+
+![keycloak email ](img/keycloak-email.PNG "keycloak email")
+
+Press **Save** and you can press **Test connection** to send test email.
+
+
+Next we will update Frontend and Keycloak connections.
+
+You need to open **Cleints** section, find **otk-frontend** end press **Edit**.
+
+
+![keycloak clients ](img/keycloak-clients.PNG "keycloak clients")
+
+
+Here we need to update 3 parametrs.
+
+Root URL - https://otk.example.com - frontend URL
+
+Valid redirect URL - http://localhost:4200/* and https://otk.example.com/* - local host URL and frontend URL - **IMPORTANT ADD /* at the end of URL's**
+
+Base URL - https://otk.example.com - frontend URL
+
+
+![keycloak url ](img/keycloak-url.PNG "keycloak url")
+
+
+Update values and press **Save**
+
+
+In **secret.yaml** configuration part I have mentioned **Auth__JwtBearer__Secret** token. Now we can generete it and update **secret.yaml**.
+
+As JWT token is used Keycloak realm public key. We can use default key or generate custom. We can get key in admin portal.
+
+Go to Realm settings.
+
+Open keys tab.
+
+Select Active.
+
+Press Public key.
+
+Copy key from prompt window.
+
+![keycloak defult key ](img/keycloak-defultkey.PNG "keycloak defult key")
+
+
+Update **secret.yaml** with new key. And execute command to update it (check if folder name correct, same command as in deploy part):
+```bash
+cd
+kubectl kustomize otk > otk/config.yaml &&  kubectl apply -k otk
+```
+
+To apply change for POD go to kubenrtes Dashboard to **POD** section in **otk** namespece and delete fronend POD.
+
+![ delete pod ](img/keycloak-pod.PNG "delete pod")
+
+
+If you want to use custom key, to increase security. You can generate it in admin portal.
+
+Go to Realm settings.
+
+Open keys tab.
+
+Select Providers.
+
+In right corner press Add keystone…
+
+Select rsa-generated.
+
+![keycloak custom key ](img/keycloak-customkey.PNG "keycloak custom key")
+
+
+Fill form:
+
+**Console display name** – key name, it can be anything.
+
+**Priority** – key priority, more then 100 (bigger number, bigger priority).
+
+Mark ON for **Enable** and **Active**.
+
+**Algorithm** and **Key** size can be default.
+
+
+![keycloak custom key ](img/keycloak-customkey2.PNG "keycloak custom key")
+
+Open keys tab.
+
+Select Active.
+
+Press to old key (rsa-generated) in Provider section.
+
+![keycloak custom key ](img/keycloak-customkey3.PNG "keycloak custom key")
+
+
+Change Enable and Active to off.
+
+Press Public key on new key.
+
+Copy key from prompt window.
+
+Update **secret.yaml** with new key. And execute command to update it (check if folder name correct, same command as in deploy part):
+```bash
+cd
+kubectl kustomize otk > otk/config.yaml &&  kubectl apply -k otk
+```
+
+To apply change for POD go to kubenrtes Dashboard to **POD** section in **otk** namespece and delete fronend POD.
+
+![ delete pod ](img/keycloak-pod.PNG "delete pod")
+
+&nbsp;
+&nbsp;
+
+Now you can open your frontend URL in browser.
+
+&nbsp;
+&nbsp;
+![frontend url ](img/keycloak-frontend.PNG "frontend url")
