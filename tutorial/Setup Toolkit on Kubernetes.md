@@ -1069,7 +1069,7 @@ Next we will update Frontend and Keycloak connections.
 You need to open **Cleints** section, find **otk-frontend** end press **Edit**.
 
 
-![keycloak clients ](img/keycloak-clients.PNG "keycloak clients")
+![keycloak clients ](img/keycloak-clients.png "keycloak clients")
 
 
 Here we need to update 3 parametrs.
@@ -1101,7 +1101,7 @@ Press Public key.
 
 Copy key from prompt window.
 
-![keycloak defult key ](img/keycloak-defultkey.PNG "keycloak defult key")
+![keycloak defult key ](img/keycloak-defultkey.png "keycloak defult key")
 
 
 Update **secret.yaml** with new key. And execute command to update it (check if folder name correct, same command as in deploy part):
@@ -1127,7 +1127,7 @@ In right corner press Add keystone…
 
 Select rsa-generated.
 
-![keycloak custom key ](img/keycloak-customkey.PNG "keycloak custom key")
+![keycloak custom key ](img/keycloak-customkey.png "keycloak custom key")
 
 
 Fill form:
@@ -1141,7 +1141,7 @@ Mark ON for **Enable** and **Active**.
 **Algorithm** and **Key** size can be default.
 
 
-![keycloak custom key ](img/keycloak-customkey2.PNG "keycloak custom key")
+![keycloak custom key ](img/keycloak-customkey2.png "keycloak custom key")
 
 Open keys tab.
 
@@ -1149,7 +1149,7 @@ Select Active.
 
 Press to old key (rsa-generated) in Provider section.
 
-![keycloak custom key ](img/keycloak-customkey3.PNG "keycloak custom key")
+![keycloak custom key ](img/keycloak-customkey3.png "keycloak custom key")
 
 
 Change Enable and Active to off.
