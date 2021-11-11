@@ -14,9 +14,9 @@ docker login eurotermbank.azurecr.io
 ```
 You will be asked for username and password:
 
-username: bbff8f3e-176d-483a-89ef-1a17b0674abf \
+<u>Username</u>: bbff8f3e-176d-483a-89ef-1a17b0674abf \
 
-password: Pvq3OmyHlbtrpP7yGfZ3Kp9_5pt1b1-LwI
+<u>Password</u>: Pvq3OmyHlbtrpP7yGfZ3Kp9_5pt1b1-LwI
 
 **#Step 2**
 
@@ -27,7 +27,7 @@ docker-compose -f "docker-compose.yaml" up
 ```
 |-> *Use "up" for seting eveything up, "down" for taking everything down and "restart" to redeploy (down and then up)*
 
-**#step 3**
+**#Step 3**
 Open terminology portal by url specified in docker-compose.yaml: 
 ```
 http://localhost:8080
