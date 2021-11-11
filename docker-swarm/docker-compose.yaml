@@ -1,0 +1,101 @@
+version: '3.9'
+services:   
+  frontend:
+    image: eurotermbank.azurecr.io/otk-frontend:34349
+    ports:
+    - 8080:80     
+    environment:      
+      BASE_URL: http://localhost:8080
+      TERM_SERVICE_URL: http://localhost:8081
+      CMS_SERVICE_URL: http://localhost:1337     
+      DISCUSSION_SERVICE_URL: http://localhost:8082 
+      KC_URL: http://localhost:8083/auth
+      KC_REALM: OTK
+      KC_CLIENTID: otk-frontend
+  frontend-cms:
+    image: eurotermbank.azurecr.io/otk-frontend-cms:31121
+    ports:
+    - 1337:1337    
+    environment:  
+      DATABASE_CLIENT: mysql
+      DATABASE_HOST: myDB
+      DATABASE_PORT: 3306
+      DATABASE_NAME: otk-cms
+      DATABASE_USERNAME: user
+      DATABASE_PASSWORD: db-password
+      #specify smtp to allow
+      #SMTP_HOST: ${SMTP_HOST}
+      #SMTP_PORT: ${SMTP_PORT}
+      #SMTP_USERNAME: ${SMTP_USERNAME}
+      #SMTP_PASSWORD: ${SMTP_PASSWORD}
+      #SMTP_FROM: ${SMTP_FROM}
+      #SMTP_REPLYTO: ${SMTP_REPLYTO}      
+  termService: 
+    image: eurotermbank.azurecr.io/otk-termservice:34368
+    ports:
+      - 8081:80   
+    environment:
+      "ConnectionStrings:termDB": server=myDB;user id=user;password=db-password;persistsecurityinfo=True;database=otk-term-service;oldguids=true;Convert Zero Datetime=True;charset=utf8
+      "Auth:JwtBearer:Secret": MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhrLY8MGhs3zQ82KKkOLzMmdIP3422LsYIvuqsSh7Y/V+iNrBCHQFD8+IO8ptJ557klIqOiqq6W1lBL2tO/H+MUM1Rs7x2HqxPfprlPf1e8choz7EfmubjhNCo8VzD3SWS/pED+5ybl4VQAz6XpA5vzd5K+QleIUm1WF1hr7mh4P+dme+VpAUDQ34TW+Rk2+PM9zSbHxvEzc+P3slnRfoDkOy2yCPNBnjn+XV1bZwan+W5IDdtWnsCGX7Dyc/a6wsMH/L2Q2c4WczRnnwN3bl1Pfy+vSNr9ETIQI2uyjNhpFzWsIAOngR+T8JFXne2Nke+ohJly1Cg17jAbhcF8zCSQIDAQAB
+      "Auth:JwtBearer:Issuer":  http://localhost:8083/auth/realms/otk
+      "Auth:BasicAuth:Username":  BA_USERNAME
+      "Auth:BasicAuth:Password":  BA_PASSWORD
+      "ElasticSearch:Host":  http://localhost:9200 
+      "ElasticSearch:TermUri":  https://otk.eurotermbank.com/
+      "ElasticSearch:IndexName":  otk-terms
+  discussionService: 
+    image: eurotermbank.azurecr.io/otk-discussionservice:31027
+    ports:
+      - 8082:80   
+    environment:
+      "ConnectionStrings:discussionDB": server=myDB;user id=user;password=db-password;persistsecurityinfo=True;database=otk-discussion-service;oldguids=true;Convert Zero Datetime=True;charset=utf8
+      "Auth:JwtBearer:Secret": MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhrLY8MGhs3zQ82KKkOLzMmdIP3422LsYIvuqsSh7Y/V+iNrBCHQFD8+IO8ptJ557klIqOiqq6W1lBL2tO/H+MUM1Rs7x2HqxPfprlPf1e8choz7EfmubjhNCo8VzD3SWS/pED+5ybl4VQAz6XpA5vzd5K+QleIUm1WF1hr7mh4P+dme+VpAUDQ34TW+Rk2+PM9zSbHxvEzc+P3slnRfoDkOy2yCPNBnjn+XV1bZwan+W5IDdtWnsCGX7Dyc/a6wsMH/L2Q2c4WczRnnwN3bl1Pfy+vSNr9ETIQI2uyjNhpFzWsIAOngR+T8JFXne2Nke+ohJly1Cg17jAbhcF8zCSQIDAQAB
+      "Auth:JwtBearer:Issuer":  http://localhost:8083/auth/realms/otk
+      "Auth:JwtBearer:Audience":  "account" # to be removed
+  elasticSearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.2
+    ports:
+    - 9200:9200 
+    environment:      
+      discovery.type: single-node
+  kibana:
+    container_name: kibana
+    image: docker.elastic.co/kibana/kibana:7.9.2
+    ports:
+      - 5601:5601
+    depends_on:
+      - elasticSearch
+    environment:
+      - ELASTICSEARCH_HOSTS=http://localhost:9200   
+  keycloak:
+    image: eurotermbank.azurecr.io/auth-keycloak-otk:V.1
+    environment:
+      KEYCLOAK_USER: otk-admin
+      KEYCLOAK_PASSWORD: otk-admin
+      DB_VENDOR: MYSQL
+      DB_ADDR: myDB
+      DB_DATABASE: keycloak
+      DB_USER: user
+      DB_PASSWORD: db-password
+      JDBC_PARAMS: "connectTimeout=30000"      
+    ports:
+      - 8083:8080
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'myDB'     
+      MYSQL_USER: 'user'    
+      MYSQL_PASSWORD: 'db-password'    
+      MYSQL_ROOT_PASSWORD: 'db-root-password'
+    ports:      
+      - '3306:3306'
+    expose:
+      - '3306'
+      # Where our data will be persisted
+    volumes:
+      - my-db:/var/lib/mysql
+# Names our volume
+volumes:
+  my-db:
+  my-cms:
