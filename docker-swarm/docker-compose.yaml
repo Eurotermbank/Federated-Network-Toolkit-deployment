@@ -1,5 +1,24 @@
 version: '3.9'
-services:   
+services: 
+  db:
+    image: mysql:5.7
+    restart: always
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+    environment:        
+      MYSQL_ROOT_PASSWORD: db-root-password
+    ports:      
+      - '3306:3306'
+    expose:
+      - '3307'
+      # Where our data will be persisted
+    volumes:
+      - db-pv:/var/lib/mysql
+      - ./initdata:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", 'mysqladmin ping']
+      interval: 4s
+      timeout: 2s
+      retries: 10  
   frontend:
     image: eurotermbank.azurecr.io/otk-frontend:34349
     ports:
@@ -18,10 +37,10 @@ services:
     - 1337:1337    
     environment:  
       DATABASE_CLIENT: mysql
-      DATABASE_HOST: localhost
-      DATABASE_PORT: 3307
+      DATABASE_HOST: db
+      DATABASE_PORT: 3306
       DATABASE_NAME: cms
-      DATABASE_USERNAME: user
+      DATABASE_USERNAME: cms-user
       DATABASE_PASSWORD: db-password
       #specify smtp to allow
       #SMTP_HOST: ${SMTP_HOST}
@@ -31,15 +50,16 @@ services:
       #SMTP_FROM: ${SMTP_FROM}
       #SMTP_REPLYTO: ${SMTP_REPLYTO}  
     depends_on:
-      - "db"   
+      db:
+        condition: service_healthy   
     volumes:
-      - my-cms:/my-path/public/uploads
+      - cms-pv:/my-path/public/uploads
   termService: 
     image: eurotermbank.azurecr.io/otk-termservice:34368
     ports:
       - 8081:80   
     environment:
-      "ConnectionStrings:termDB": "server=localhost,3307;user id=user;password=db-password;persistsecurityinfo=True;database=termservice;oldguids=true;Convert Zero Datetime=True;charset=utf8"
+      "ConnectionStrings:termDB": "server=db,3306;user id=term-user;password=db-password;persistsecurityinfo=True;database=termservice;oldguids=true;Convert Zero Datetime=True;charset=utf8"
       "Auth:JwtBearer:Secret": MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhrLY8MGhs3zQ82KKkOLzMmdIP3422LsYIvuqsSh7Y/V+iNrBCHQFD8+IO8ptJ557klIqOiqq6W1lBL2tO/H+MUM1Rs7x2HqxPfprlPf1e8choz7EfmubjhNCo8VzD3SWS/pED+5ybl4VQAz6XpA5vzd5K+QleIUm1WF1hr7mh4P+dme+VpAUDQ34TW+Rk2+PM9zSbHxvEzc+P3slnRfoDkOy2yCPNBnjn+XV1bZwan+W5IDdtWnsCGX7Dyc/a6wsMH/L2Q2c4WczRnnwN3bl1Pfy+vSNr9ETIQI2uyjNhpFzWsIAOngR+T8JFXne2Nke+ohJly1Cg17jAbhcF8zCSQIDAQAB
       "Auth:JwtBearer:Issuer":  http://localhost:8083/auth/realms/otk
       "Auth:BasicAuth:Username":  BA_USERNAME
@@ -48,18 +68,20 @@ services:
       "ElasticSearch:TermUri":  https://otk.eurotermbank.com/
       "ElasticSearch:IndexName":  otk-terms
     depends_on:
-      - "db"
+      db:
+        condition: service_healthy
   discussionService: 
     image: eurotermbank.azurecr.io/otk-discussionservice:31027
     ports:
-      - 8082:80   
+      - 8082:80 
     environment:
-      "ConnectionStrings:discussionDB": "server=localhost,3307;user id=user;password=db-password;persistsecurityinfo=True;database=discussionservice;oldguids=true;Convert Zero Datetime=True;charset=utf8"
+      "ConnectionStrings:discussionDB": "server=db,3306;user id=discuss-user;password=db-password;persistsecurityinfo=True;database=discussionservice;oldguids=true;Convert Zero Datetime=True;charset=utf8"
       "Auth:JwtBearer:Secret": MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhrLY8MGhs3zQ82KKkOLzMmdIP3422LsYIvuqsSh7Y/V+iNrBCHQFD8+IO8ptJ557klIqOiqq6W1lBL2tO/H+MUM1Rs7x2HqxPfprlPf1e8choz7EfmubjhNCo8VzD3SWS/pED+5ybl4VQAz6XpA5vzd5K+QleIUm1WF1hr7mh4P+dme+VpAUDQ34TW+Rk2+PM9zSbHxvEzc+P3slnRfoDkOy2yCPNBnjn+XV1bZwan+W5IDdtWnsCGX7Dyc/a6wsMH/L2Q2c4WczRnnwN3bl1Pfy+vSNr9ETIQI2uyjNhpFzWsIAOngR+T8JFXne2Nke+ohJly1Cg17jAbhcF8zCSQIDAQAB
       "Auth:JwtBearer:Issuer":  http://localhost:8083/auth/realms/otk
       "Auth:JwtBearer:Audience":  "account" # to be removed
     depends_on:
-      - "db"
+      db:
+        condition: service_healthy
   elasticSearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.9.2
     ports:
@@ -81,34 +103,18 @@ services:
       KEYCLOAK_USER: otk-admin
       KEYCLOAK_PASSWORD: otk-admin
       DB_VENDOR: MYSQL
-      DB_ADDR: localhost
-      DB_PORT: 3307
+      DB_ADDR: db
+      DB_PORT: 3306
       DB_DATABASE: keycloak
-      DB_USER: user
+      DB_USER: kc-user
       DB_PASSWORD: db-password
       JDBC_PARAMS: "connectTimeout=30000"      
     ports:
       - 8083:8080
     depends_on:
-      - "db"
-  db:
-    image: mysql:5.7
-    restart: always
-    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-    environment:
-      #MYSQL_DATABASE: 'keycloak cms termservice discussionservice '     
-      # MYSQL_USER: 'user'    
-      # MYSQL_PASSWORD: 'db-password'    
-      MYSQL_ROOT_PASSWORD: 'db-root-password'
-    ports:      
-      - '3307:3306'
-    expose:
-      - '3307'
-      # Where our data will be persisted
-    volumes:
-      - my-db:/var/lib/mysql
-      - ./initdata:/docker-entrypoint-initdb.d
+      db:
+        condition: service_healthy
 # Names our volume
 volumes:
-  my-db:
-  my-cms:  
+  db-pv:
+  cms-pv:  
