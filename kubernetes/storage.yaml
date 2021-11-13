@@ -28,3 +28,35 @@ spec:
   resources:
     requests:
       storage: 3Gi
+---
+# prep storage for frontend html uploads
+# storage for custom branding files
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: otk-html-pv-volume
+  namespace: otk
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 3Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/otk/frontend-html"
+---
+# html Pub storage
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: otk-html-pv-claim
+  namespace: otk
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 3Gi

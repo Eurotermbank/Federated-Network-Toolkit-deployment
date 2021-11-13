@@ -48,6 +48,7 @@ Synchronization process is following:
 You can use Postman (https://www.postman.com/) prepared collection [FEDTERM Synchro.postman_collection.json](https://github.com/Eurotermbank/Federated-Network-Toolkit-deployment/blob/3b70c207f94b0a01fc373776bbd29056216d5173/user-guides/FEDTERM%20Synchro.postman_collection.json "Postman collection") file.
 
 ## Add New Collection Metadata
+* Domain ID is mandatory and must be sent one of the IDs specified in [Domain Classifications](https://github.com/Eurotermbank/Federated-Network-Toolkit-deployment/blob/5918fe4486eac2f9f4067043b1cad9639d14a230/user-guides/DomainClassifiers.md)
 
 POST /termsrv/sync/collection HTTP/1.1
 
@@ -60,30 +61,33 @@ Authorization: Basic XXXXXXXXXXXX
 ```json
 {
     "name": "This is name of my collection",
-    "description": "Description of my collection",
-    "externalUri": "",
-    "domainid": "0202",
+    "description": "Description of my collection",   
+    "domainid": "04",
     "allowsUsesBesidesDGT": true,
     "appropriatnessForDSI": true,
-    "attributionText": null,
-    "cpEmail": null,
-    "cpName": null,
-    "cpOrganization": null,
-    "cpSurname": null,
-    "iprEmail": null,
-    "iprName": null,
-    "iprOrganization": null,
-    "iprSurname": null,
-    "isPSI": null,
-    "licence": null,
-    "originalName": null,
-    "originalNameLang": null,
-    "restrictionsOfUse": null,
-    "sourceURL": null
+    "attributionText": "This is attribution text",
+    "cpEmail": "Contac-person@example.com",
+    "cpName": "Contac Person Name",
+    "cpOrganization": "Contac Person Organization",
+    "cpSurname": "Contac Person Surname",
+    "iprEmail": "ipr-holder@example.com",
+    "iprName": "IPR Holder name",
+    "iprOrganization": "IPR Holder Organization",
+    "iprSurname": "IPR Holder Surname",
+    "isPSI": false,
+    "licence": "CC-BY-4.0",
+    "originalName": "Šis ir manas kolekcijas nosaukums",
+    "originalNameLang": "LV",
+    "restrictionsOfUse": "No restrictions, you are welcome to use",
+    "sourceURL": "https://my-resource.example.com"
 }
 ```
+Return value: Id of created collection.
+
 
 ## Update Existing Collection Metadata
+
+* Domain ID is mandatory and must be sent one of the IDs specified in [Domain Classifications](https://github.com/Eurotermbank/Federated-Network-Toolkit-deployment/blob/5918fe4486eac2f9f4067043b1cad9639d14a230/user-guides/DomainClassifiers.md)
 
 PUT /termsrv/sync/collection HTTP/1.1
 
@@ -95,30 +99,29 @@ Authorization: Basic XXXXXXXXXXXX
 
 ```json
 {
-    "id": 112233,
-    "name": "This is name of my collection",
-    "description": "Description of my collection",
-    "externalUri": "",
-    "domainid": "0202",
+    "name": "This is updated name of my collection",
+    "description": "Description of my collection",   
+    "domainid": "04",
     "allowsUsesBesidesDGT": true,
     "appropriatnessForDSI": true,
-    "attributionText": null,
-    "cpEmail": null,
-    "cpName": null,
-    "cpOrganization": null,
-    "cpSurname": null,
-    "iprEmail": null,
-    "iprName": null,
-    "iprOrganization": null,
-    "iprSurname": null,
-    "isPSI": null,
-    "licence": null,
-    "originalName": null,
-    "originalNameLang": null,
-    "restrictionsOfUse": null,
-    "sourceURL": null
+    "attributionText": "This is attribution text",
+    "cpEmail": "Contac-person@example.com",
+    "cpName": "Contac Person Name",
+    "cpOrganization": "Contac Person Organization",
+    "cpSurname": "Contac Person Surname",
+    "iprEmail": "ipr-holder@example.com",
+    "iprName": "IPR Holder name",
+    "iprOrganization": "IPR Holder Organization",
+    "iprSurname": "IPR Holder Surname",
+    "isPSI": false,
+    "licence": "CC-BY-4.0",
+    "originalName": "Šis ir manas kolekcijas nosaukums",
+    "originalNameLang": "LV",
+    "restrictionsOfUse": "No restrictions, you are welcome to use",
+    "sourceURL": "https://my-resource.example.com"
 }
 ```
+Return value: Id of updated collection.
 
 ## Add New concept entry or Update Existing Concept Entries
 
@@ -217,6 +220,19 @@ Authorization: Basic XXXXXXXXXXXX
 </termEntry></body>
   </text>
 </martif>
+```
+
+Return value: As the result you will get summary of actions taken - You will see entry count that was inported including count of newly created and the count up updated antries, as well will get count of skippet entries - because beeing duplicates (exacly same entry exists in DB) or beeing corrupted (e.g. not having any terms).
+
+Example of summary (tried to import 6 entries):
+```json
+{
+    "totalImportedEntries": 4,
+    "addedNewEntries": 1,
+    "updatedEntries": 3,
+    "skippedAsCorrupted": 0,
+    "skippedAsDuplicates": 2
+}
 ```
 
 ## Delete Concept Entry
