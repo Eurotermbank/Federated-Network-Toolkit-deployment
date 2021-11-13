@@ -77,7 +77,7 @@ services:
     environment:
       "ConnectionStrings:discussionDB": "server=db,3306;user id=discuss-user;password=db-password;persistsecurityinfo=True;database=discussionservice;oldguids=true;Convert Zero Datetime=True;charset=utf8"
       "Auth:JwtBearer:Secret": MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhrLY8MGhs3zQ82KKkOLzMmdIP3422LsYIvuqsSh7Y/V+iNrBCHQFD8+IO8ptJ557klIqOiqq6W1lBL2tO/H+MUM1Rs7x2HqxPfprlPf1e8choz7EfmubjhNCo8VzD3SWS/pED+5ybl4VQAz6XpA5vzd5K+QleIUm1WF1hr7mh4P+dme+VpAUDQ34TW+Rk2+PM9zSbHxvEzc+P3slnRfoDkOy2yCPNBnjn+XV1bZwan+W5IDdtWnsCGX7Dyc/a6wsMH/L2Q2c4WczRnnwN3bl1Pfy+vSNr9ETIQI2uyjNhpFzWsIAOngR+T8JFXne2Nke+ohJly1Cg17jAbhcF8zCSQIDAQAB
-      "Auth:JwtBearer:Issuer":  http://localhost:8083/auth/realms/otk
+      "Auth:JwtBearer:Issuer":  http://localhost:8083/auth/realms/toolkit
       "Auth:JwtBearer:Audience":  "account" # to be removed
     depends_on:
       db:
@@ -98,7 +98,7 @@ services:
     environment:
       - ELASTICSEARCH_HOSTS=http://localhost:9200   
   keycloak:
-    image: eurotermbank.azurecr.io/auth-keycloak-otk:V.1
+    image: eurotermbank.azurecr.io/auth-keycloak-otk:35896
     environment:
       KEYCLOAK_USER: otk-admin
       KEYCLOAK_PASSWORD: otk-admin
@@ -108,7 +108,8 @@ services:
       DB_DATABASE: keycloak
       DB_USER: kc-user
       DB_PASSWORD: db-password
-      JDBC_PARAMS: "connectTimeout=30000"      
+      JDBC_PARAMS: "connectTimeout=30000"
+      KEYCLOAK_IMPORT: /tmp/toolkit.json
     ports:
       - 8083:8080
     depends_on:
