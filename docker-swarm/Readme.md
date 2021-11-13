@@ -36,3 +36,24 @@ Open terminology portal by url specified in docker-compose.yaml:
 http://localhost:8080
 ```
 
+**#Other Tips**
+
+To access authentication management:
+```
+http://localhost:8083/auth/
+```
+Enter Username/password defined in docker-composer.yaml file. 
+In this sample credentials are otk-admin/otk-admin
+
+
+To access CMS management:
+```
+http://localhost:1337/admin/
+```
+Enter initial credentials:
+
+ u: unsecure@login.com
+ 
+ p: tbYbAa8fuiFVFz
+
+and then change them, if you make toolkit public. See CMS User guide to mofify content.
