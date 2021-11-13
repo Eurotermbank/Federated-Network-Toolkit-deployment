@@ -72,15 +72,15 @@ sudo snap install microk8s --classic --channel=1.19/stable
 
 ### Permissions for microk8s
 
-We need to grant admin permissions for microk8s. In **admins** place, define your user:
+We need to grant admin permissions for microk8s:
 
 ```bash
-sudo usermod -a -G microk8s admins
+sudo usermod -a -G microk8s $USER
 ```
 Also we need grant access to kubernetes directory for our sudo user:
 
 ```bash
-sudo chown -f -R admins ~/.kube
+sudo chown -f -R $USER ~/.kube
 ```
 
 ![Permissions for microk8s](img/permissions-microk8s.PNG "Permissions for microk8s")
