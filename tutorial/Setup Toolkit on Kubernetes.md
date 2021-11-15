@@ -3,7 +3,7 @@
 
 &nbsp;
 &nbsp;
-|Version|0.8|
+|Version|1.0|
 |-----|-----------|
 
 &nbsp;
@@ -36,6 +36,7 @@ This document contains information how to run Toolkit for Eurotermbank Federated
 |0.6| 08.11.21 | Ingress/Network configuration described |
 |0.7| 09.11.21 | Toolkit Deployment described |
 |0.8| 10.11.21 | Keycloak configuration described |
+|1.0| 15.11.21 | Minor fix|
 
 &nbsp;
 &nbsp;
@@ -44,6 +45,7 @@ This document contains information how to run Toolkit for Eurotermbank Federated
 1) Linux Virtual machine
 2) Sudo user
 3) Internet connection
+4) Open port 80 and 443 (not in use)
 ---
 In this Tutorial we will use Ubuntu 20.04 LTS, in other Linux distributions commands may be different.
 
@@ -84,6 +86,9 @@ sudo chown -f -R $USER ~/.kube
 ```
 
 ![Permissions for microk8s](img/permissions-microk8s.PNG "Permissions for microk8s")
+
+
+Restart terminal session, to apply changes.
 
 ### Enable kubernetes features
 
@@ -220,7 +225,7 @@ Make sure what in **MySQL Server & Cluster** part selected **mysql-8.0**.
 
 Then press **OK**
 
-Next we need download the package lists from the repositories and "updates" them to get information on the newest versions of packages and their dependencies.
+Next, we need to download the package lists from the repositories and "updates" them to get information on the newest versions of packages and their dependencies.
 It can be performed by:
 
 ```bash
@@ -257,7 +262,7 @@ Original configuration:
 
 ![mysql config before ](img/mysql-config-before.PNG "mysql config before")
 
-New parametrs will define servers’ collation and character set.
+New parametrs will define servers collation and character set.
 
 
 ```bash
@@ -274,7 +279,7 @@ character-set-server = utf8mb4
 
 ```
 
-After updating, your configuration must be similar:
+After updating, your configuration must be similar to:
 
 
 ![mysql config after ](img/mysql-config-after.PNG "mysql config after")
@@ -302,7 +307,7 @@ Upon installation, MySQL creates a root user account which you can use to manage
 Because of this, it’s best to avoid using this account outside of administrative functions.
 This step outlines how to use the root MySQL user to create a new user account and grant it privileges.
 
-We will create small shell script.
+We will create shell script.
 
 ```bash
 sudo nano mysql-user-setup.sh
@@ -327,16 +332,13 @@ mysql -u root -p$MYSQL_ROOT_PWD -e "GRANT ALL PRIVILEGES ON *.* TO '$DBADMINUSER
 
 ![mysql user ](img/mysql-user.PNG "mysql user")
 
-Once script created, execute next command, this will make script executable.
+Once script created, execute:
 
 ```bash
 sudo chmod +x mysql-user-setup.sh
-```
-Execute script:
-
-```bash
 ./mysql-user-setup.sh
 ```
+
 &nbsp;
 &nbsp;
 
@@ -349,7 +351,7 @@ For easier work with MySQL, you can use MySQL Workbench.
 You can download it from [mysql workbench](https://www.mysql.com/products/workbench/ "mysql workbench") page.
 
 In Workbench you will need define MySQL server IP address.
-You can find by executing:
+You can find it by executing in virtual machine:
 
 ```bash
 ip a
@@ -357,7 +359,7 @@ ip a
 
 ![mysql ip ](img/mysql-ip.PNG "mysql ip")
 
-Next open Workbench. And press **+** to addd new connection.
+Next open Workbench. And press **+** to add new connection.
 
 ![mysql workbench ](img/mysql-workbench.PNG "mysql workbench")
 
@@ -422,7 +424,7 @@ Fill form with:
 
 Press **Apply**
 
-In new promt window validate if parametrs is correct and press **Apply**
+In new promt window validate if parametrs are correct and press **Apply**
 
 ![mysql keycloak ](img/mysql-keycloak2.PNG "mysql keycloak")
 
@@ -449,13 +451,13 @@ Fill form with:
 
 Press **Apply**
 
-In new promt window validate if parametrs is correct and press **Apply**
+In new promt window validate if parametrs are correct and press **Apply**
 
 Now we will import database from dump file.
 
 You can find dump file in repo [cms-dump.sql](https://github.com/Eurotermbank/Federated-Network-Toolkit-deployment/blob/main/seed-data/cms/cms-dump.sql "cms-dump.sql").
 
-Download file to same machine, there you are using Workbench.
+Download file into same machine, there are you using Workbench.
 
 Once dump downloaded, open **Administration** tab in Workbench.
 
@@ -610,7 +612,7 @@ Storage - Include PV and PVC. A PersistentVolume (PV) is a piece of storage in t
 Ingress - An API object that manages external access to the services in a cluster, typically HTTP. Ingress may provide load balancing, SSL termination and name-based virtual hosting
 
 
-Before deploy .yaml files to Kubernetes there is need to fill required parametrs into **configmap.yaml** and **secret.yaml**
+Before deploy .yaml files to Kubernetes there are need to fill required parameters into **configmap.yaml** and **secret.yaml**
 
 All .yaml is located in Git [toolkit yaml](https://github.com/Eurotermbank/Federated-Network-Toolkit-deployment/tree/main/kubernetes"toolkit-yaml")
 
@@ -782,7 +784,7 @@ You can choose your DNS name, whatever you want or what required by your organis
 
 All applications will be exposed with HTTPS.
 
-You need add SSL certificate to Kubernetes. If you wont add certificate, services will be available, but it will show what they are not secure.
+You need to add SSL certificate to Kubernetes. If you wont add certificate, services will be available, but it will show what they are not secure.
 
 Steps to import key to kubernetes:
 
@@ -806,15 +808,15 @@ kubectl get namespace
 
 
 
-Once namespace created copy to virtual machine TLS certificate and key.
+Once namespace created, copy to virtual machine TLS certificate and key.
 
-Go to stored directory. Before execute command, you will need to modify it.
+Go to certficate stored directory. Before execute command, you will need to modify it.
 
 ```bash
 kubectl -n otk create secret tls aks-ingress-tls --cert=tls.crt --key=tls.key
 ```
 
-**-n otk** - define your services namespace. you need change only **otk**, **-n** is namespace argument.
+**otk** - define your services namespace. you need change only **otk**. **-n** is namespace argument.
 
 **aks-ingress-tls** - kubernetes name for imported certificate (you can choose name).
 
@@ -832,7 +834,7 @@ Next you need choose DNS names for your services and register in you Domain Cont
 
 After your DNS names are ready, you need to update **Ingress.yaml**.
 
-**Ingress.yaml** include network configuration for all services. In file you need to update several parametrs.
+**Ingress.yaml** include network configuration for all services. In file you will need to update several parametrs.
 
 You will need to upadate same parametrs in all configurations. Bellow will be example for Keycloak service.
 
@@ -901,7 +903,7 @@ secretName: aks-ingress-tls
 ```
 
 
-Update all Ingress configrurations same way.
+Update all others Ingress configrurations in same way.
 
 &nbsp;
 &nbsp;
@@ -923,7 +925,7 @@ First we need to create secret key for container registry.
 
 This key will allow to download docker images from Azure Container registry.
 
-Execute on virtual machine:
+Execute on virtual machine with correct namespace:
 
 ```bash
 kubectl create secret docker-registry dregsecret \
@@ -1037,7 +1039,7 @@ After you save, in right corner press **Back to Security Admin Console**
 
 
 
-Next in **Realm Setting** open **Email** tab.
+Next, in **Realm Setting** open **Email** tab.
 
 There you need to enter your SMTP parametrs, same as you enteres for **CMS** in **secret.yaml**.
 
@@ -1089,7 +1091,9 @@ Update values and press **Save**
 
 In **secret.yaml** configuration part I have mentioned **Auth__JwtBearer__Secret** token. Now we can generete it and update **secret.yaml**.
 
-As JWT token is used Keycloak realm public key. We can use default key or generate custom. We can get key in admin portal.
+As JWT token is used Keycloak realm public key. We can use default key or generate custom. We can get this key's in admin portal.
+
+For default key:
 
 Go to Realm settings.
 
@@ -1115,7 +1119,9 @@ To apply change for POD go to kubenrtes Dashboard to **POD** section in **otk** 
 ![ delete pod ](img/keycloak-pod.PNG "delete pod")
 
 
-If you want to use custom key, to increase security. You can generate it in admin portal.
+For custom key:
+
+If you want to use custom key, to increase security. You can generate it in admin portal as well.
 
 Go to Realm settings.
 
