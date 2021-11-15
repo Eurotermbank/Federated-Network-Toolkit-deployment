@@ -54,6 +54,12 @@ services:
         condition: service_healthy   
     volumes:
       - cms-pv:/my-path/public/uploads
+    deploy:
+      replicas: 1
+      restart_policy:
+          condition: on-failure
+          delay: 5s
+          max_attempts: 5
   termService: 
     image: eurotermbank.azurecr.io/otk-termservice:34368
     ports:
