@@ -29,7 +29,7 @@ services:
       CMS_SERVICE_URL: http://localhost:1337     
       DISCUSSION_SERVICE_URL: http://localhost:8082 
       KC_URL: http://localhost:8083/auth
-      KC_REALM: OTK
+      KC_REALM: Toolkit
       KC_CLIENTID: otk-frontend
   frontend-cms:
     image: eurotermbank.azurecr.io/otk-frontend-cms:31121
@@ -70,6 +70,12 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    deploy:
+      replicas: 1
+      restart_policy:
+          condition: on-failure
+          delay: 5s
+          max_attempts: 5
   discussionService: 
     image: eurotermbank.azurecr.io/otk-discussionservice:31027
     ports:
@@ -82,6 +88,12 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    deploy:
+      replicas: 1
+      restart_policy:
+          condition: on-failure
+          delay: 5s
+          max_attempts: 5
   elasticSearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.9.2
     ports:
@@ -98,7 +110,7 @@ services:
     environment:
       - ELASTICSEARCH_HOSTS=http://localhost:9200   
   keycloak:
-    image: eurotermbank.azurecr.io/auth-keycloak-otk:35896
+    image: eurotermbank.azurecr.io/auth-keycloak-otk:35914
     environment:
       KEYCLOAK_USER: otk-admin
       KEYCLOAK_PASSWORD: otk-admin
