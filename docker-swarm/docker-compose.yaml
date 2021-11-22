@@ -61,18 +61,15 @@ services:
           delay: 5s
           max_attempts: 5
   termService: 
-    image: eurotermbank.azurecr.io/otk-termservice:34368
+    image: eurotermbank.azurecr.io/otk-termservice:35984
     ports:
       - 8081:80   
     environment:
       "ConnectionStrings:termDB": "server=db,3306;user id=term-user;password=db-password;persistsecurityinfo=True;database=termservice;oldguids=true;Convert Zero Datetime=True;charset=utf8"
-      "Auth:JwtBearer:Secret": MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhrLY8MGhs3zQ82KKkOLzMmdIP3422LsYIvuqsSh7Y/V+iNrBCHQFD8+IO8ptJ557klIqOiqq6W1lBL2tO/H+MUM1Rs7x2HqxPfprlPf1e8choz7EfmubjhNCo8VzD3SWS/pED+5ybl4VQAz6XpA5vzd5K+QleIUm1WF1hr7mh4P+dme+VpAUDQ34TW+Rk2+PM9zSbHxvEzc+P3slnRfoDkOy2yCPNBnjn+XV1bZwan+W5IDdtWnsCGX7Dyc/a6wsMH/L2Q2c4WczRnnwN3bl1Pfy+vSNr9ETIQI2uyjNhpFzWsIAOngR+T8JFXne2Nke+ohJly1Cg17jAbhcF8zCSQIDAQAB
       "Auth:JwtBearer:Issuer":  http://localhost:8083/auth/realms/otk
       "Auth:BasicAuth:Username":  BA_USERNAME
       "Auth:BasicAuth:Password":  BA_PASSWORD
-      "ElasticSearch:Host":  http://localhost:9200 
-      "ElasticSearch:TermUri":  https://otk.eurotermbank.com/
-      "ElasticSearch:IndexName":  otk-terms
+      "ElasticSearch:Host":  http://localhost:9200
     depends_on:
       db:
         condition: service_healthy
@@ -83,7 +80,7 @@ services:
           delay: 5s
           max_attempts: 5
   discussionService: 
-    image: eurotermbank.azurecr.io/otk-discussionservice:31027
+    image: eurotermbank.azurecr.io/otk-discussionservice:35988
     ports:
       - 8082:80 
     environment:
