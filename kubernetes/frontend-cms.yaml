@@ -101,13 +101,13 @@ spec:
            secretKeyRef:
             name: frontend-cms-secret
             key: SMTP_REPLYTO
-        image: eurotermbank.azurecr.io/otk-frontend-cms:31121
+        image: eurotermbank.azurecr.io/otk-frontend-cms:35990
         imagePullPolicy: "Always"
         name: frontend-cms
         ports:
         - containerPort: 1337
         volumeMounts:
-        - mountPath: "/my-path/public/uploads"
+        - mountPath: "/strapi/public/uploads"
           name: otk-cms-pv-storage
         resources: {}
       imagePullSecrets:
