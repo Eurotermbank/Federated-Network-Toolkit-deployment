@@ -20,7 +20,7 @@ services:
       timeout: 2s
       retries: 10  
   frontend:
-    image: eurotermbank.azurecr.io/otk-frontend:36108
+    image: eurotermbank.azurecr.io/otk-frontend:36340
     ports:
     - 8080:80     
     environment:      
@@ -31,8 +31,9 @@ services:
       KC_URL: http://localhost:8083/auth
       KC_REALM: Toolkit
       KC_CLIENTID: otk-frontend
+      ETB_URL: https://test-fedterm.eurotermbank.com/register
   frontend-cms:
-    image: eurotermbank.azurecr.io/otk-frontend-cms:35990
+    image: eurotermbank.azurecr.io/otk-frontend-cms:36310
     ports:
     - 1337:1337    
     environment:  
@@ -61,7 +62,7 @@ services:
           delay: 5s
           max_attempts: 5
   termService: 
-    image: eurotermbank.azurecr.io/otk-termservice:35984
+    image: eurotermbank.azurecr.io/otk-termservice:36278
     ports:
       - 8081:80   
     environment:

@@ -101,7 +101,7 @@ spec:
            secretKeyRef:
             name: frontend-cms-secret
             key: SMTP_REPLYTO
-        image: eurotermbank.azurecr.io/otk-frontend-cms:35990
+        image: eurotermbank.azurecr.io/otk-frontend-cms:36310
         imagePullPolicy: "Always"
         name: frontend-cms
         ports:

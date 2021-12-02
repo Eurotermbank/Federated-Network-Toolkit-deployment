@@ -33,6 +33,7 @@ data:
  KC_REALM: ""
  KC_CLIENTID: ""
  DISCUSSION_SERVICE_URL: ""
+ ETB_URL: "https://test-fedterm.eurotermbank.com/register"
 ---
 #termservice.yaml
 apiVersion: v1

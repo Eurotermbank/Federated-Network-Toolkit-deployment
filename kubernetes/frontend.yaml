@@ -75,7 +75,12 @@ spec:
            configMapKeyRef:
             name: frontend-config
             key: KC_CLIENTID
-        image: eurotermbank.azurecr.io/otk-frontend:34349
+        - name: ETB_URL
+          valueFrom:
+           configMapKeyRef:
+            name: frontend-config
+            key: ETB_URL
+        image: eurotermbank.azurecr.io/otk-frontend:36340
         imagePullPolicy: "Always"
         name: frontend
         ports:

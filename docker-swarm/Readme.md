@@ -4,7 +4,7 @@
 
 **Prerequisite**
 
-You have a Docker Swarm - make sure you have already installed both Docker Engine and Docker Compose. 
+You have a Docker Swarm - make sure you have already installed both Docker Engine(https://docs.docker.com/engine/install/) and Docker Compose (https://docs.docker.com/compose/install/). You can install as well docker Desktop that already includes both. 
 
 
 **#Step 1**
