@@ -15,7 +15,7 @@ docker login eurotermbank.azurecr.io
 ```
 You will be asked for username and password:
 
-<u>Username</u>: bbff8f3e-176d-483a-89ef-1a17b0674abf \
+<u>Username</u>: bbff8f3e-176d-483a-89ef-1a17b0674abf
 
 <u>Password</u>: Pvq3OmyHlbtrpP7yGfZ3Kp9_5pt1b1-LwI
 
