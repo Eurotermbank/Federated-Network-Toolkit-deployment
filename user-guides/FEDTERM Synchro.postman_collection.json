@@ -216,6 +216,28 @@
             "response": []
         },
         {
+            "name": "Delete Term entry with external collection ID",
+            "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                    "raw": "{{url}}/sync/collection/external/external-collection-id-1/entries/external-1",
+                    "host": [
+                        "{{url}}"
+                    ],
+                    "path": [
+                        "sync",
+                        "collection",
+                        "external",
+                        "external-collection-id-1",
+                        "entries",
+                        "external-1"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
             "name": "Delete Collection",
             "request": {
                 "method": "DELETE",

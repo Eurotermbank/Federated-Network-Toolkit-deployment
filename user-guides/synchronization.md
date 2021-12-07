@@ -56,7 +56,7 @@ You can use Postman (https://www.postman.com/) prepared collection [FEDTERM Sync
 ## Add New Collection Metadata
 * Domain ID is mandatory and must be sent one of the IDs specified in [Domain Classifications](https://github.com/Eurotermbank/Federated-Network-Toolkit-deployment/blob/5918fe4486eac2f9f4067043b1cad9639d14a230/user-guides/DomainClassifiers.md)
 
-POST /termsrv/sync/collection HTTP/1.1
+POST /api/termsrv/sync/collection HTTP/1.1
 
 Host: eurotermbank.com
 
@@ -95,7 +95,7 @@ Return value: Id of created collection.
 
 * Domain ID is mandatory and must be sent one of the IDs specified in [Domain Classifications](https://github.com/Eurotermbank/Federated-Network-Toolkit-deployment/blob/5918fe4486eac2f9f4067043b1cad9639d14a230/user-guides/DomainClassifiers.md)
 
-PUT /termsrv/sync/collection HTTP/1.1
+PUT /api/termsrv/sync/collection HTTP/1.1
 
 Host: eurotermbank.com
 
@@ -133,7 +133,7 @@ Return value: Id of updated collection.
 
 *Multiple collection entries can be submitted, but only max 100 at single Post. Submited entries will be analyzed - if entry ID already exists, entry will be replaced with new version, otherwise new term entry will be created. In case there are no changes in posted entry - no action will be taken for that entry.*
 
-POST /termsrv/sync/collection/{collection_id}/entries HTTP/1.1
+POST /api/termsrv/sync/collection/{collection_id}/entries HTTP/1.1
 
 Host: eurotermbank.com
 
@@ -246,7 +246,7 @@ Example of summary (tried to import 6 entries):
 
 ## Delete Concept Entry
 
-DELETE /termsrv/sync/collection/{collection_id}/entries/{entry_id} HTTP/1.1
+DELETE /api/termsrv/sync/collection/{collection_id}/entries/{entry_id} HTTP/1.1
 
 Host: eurotermbank.com
 
@@ -257,7 +257,7 @@ Authorization: Basic XXXXXXXXXXXX
 
 ## Delete Collection
 
-DELETE /termsrv/sync/collection/{collection_id}/
+DELETE /api/termsrv/sync/collection/{collection_id}/
 HTTP/1.1
 
 Host: eurotermbank.com
@@ -276,7 +276,7 @@ Authorization: Basic XXXXXXXXXXXX
 
 * In case external ID will exist for this federated node, metadata will be updated.
 
-PUT /termsrv/sync/collection/external/{external-collection-id} HTTP/1.1
+PUT /api/termsrv/sync/collection/external/{external-collection-id} HTTP/1.1
 
 Host: eurotermbank.com
 
@@ -424,7 +424,7 @@ Example of summary (tried to import 6 entries):
 
 ## Delete Concept Entry using External Collection ID
 
-DELETE /termsrv/sync/collection/external/{external-collection-id}/entries/{entry_id} HTTP/1.1
+DELETE /api/termsrv/sync/collection/external/{external-collection-id}/entries/{entry_id} HTTP/1.1
 
 Host: eurotermbank.com
 
@@ -435,7 +435,7 @@ Authorization: Basic XXXXXXXXXXXX
 
 ## Delete Collection using External Collection ID
 
-DELETE /termsrv/sync/collection/external/{external-collection-id}/
+DELETE /api/termsrv/sync/collection/external/{external-collection-id}/
 HTTP/1.1
 
 Host: eurotermbank.com
