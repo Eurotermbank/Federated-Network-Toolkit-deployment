@@ -37,6 +37,7 @@ This document contains information how to run Toolkit for Eurotermbank Federated
 |0.7| 09.11.21 | Toolkit Deployment described |
 |0.8| 10.11.21 | Keycloak configuration described |
 |1.0| 15.11.21 | Minor fix|
+|1.1| 07.12.21 | Link update, picture update, cmd update |
 
 &nbsp;
 &nbsp;
@@ -127,10 +128,15 @@ microk8s kubectl -n kube-system describe secret $token
 
 Copy and save this token for later use, it will be needed to access the Kubernetes Dashboard.
 
+We will execute next command to set shorter alias 'kubectl':
+```bash
+sudo snap alias microk8s.kubectl kubectl
+```
+
 The next step is to set up port forwarding for Dashboard service. It will allow to connect the Dashboard from outside of Kubernetes cluster.
 
 ```bash
-microk8s kubectl port-forward -n kube-system service/kubernetes-dashboard 18001:443 --address=0.0.0.0
+kubectl port-forward -n kube-system service/kubernetes-dashboard 18001:443 --address=0.0.0.0
 ```
 ![port forward](img/port-forward.PNG "port forward")
 
@@ -170,23 +176,6 @@ Welcome to Dashboard:
 
 ![Dashboard ](img/dashboard.PNG "Dashboard")
 
-
-### Useful hacks
-
-If you are planning to use Kubernetes from terminal. To avoid use all the time microk8s before kubectl. For example:
-```bash
-microk8s kubectl port-forward -n kube-system service/kubernetes-dashboard 18001:443 --address=0.0.0.0
-```
-
-You can execute this command to set shorter alias 'kubectl' or even other as you prefer:
-```bash
-sudo snap alias microk8s.kubectl kubectl
-```
-
-Now you can execute without microk8s:
-
-```bash
-kubectl port-forward -n kube-system service/kubernetes-dashboard 18001:443 --address=0.0.0.0
 ```
 &nbsp;
 &nbsp;
@@ -571,7 +560,7 @@ Execute commands to unzip archive and copy to mounted folder.
 cd
 sudo unzip cms-public-uploads.zip
 cd uploads/
-sudo cp /mnt/otk/cms-public-uploads/ /*
+sudo cp ./* /mnt/otk/cms-public-uploads/
 ```
 
 To validate if all files exist in mounted directory, execute:
@@ -584,7 +573,7 @@ ls /mnt/otk/cms-public-uploads/
 ![list files ](img/cms-ls2.PNG "list files")
 
 
-If you dont want use local mounted folder. You can use NFS share, cloud storage. [Kubernetes official documentation](https://kubernetes.io/docs/concepts/storage/volumes"Kubernetes-official-document")
+If you dont want use local mounted folder. You can use NFS share, cloud storage. [Kubernetes official documentation](https://kubernetes.io/docs/concepts/storage/volumes)
 
 &nbsp;
 &nbsp;
@@ -614,7 +603,7 @@ Ingress - An API object that manages external access to the services in a cluste
 
 Before deploy .yaml files to Kubernetes there are need to fill required parameters into **configmap.yaml** and **secret.yaml**
 
-All .yaml is located in Git [toolkit yaml](https://github.com/Eurotermbank/Federated-Network-Toolkit-deployment/tree/main/kubernetes"toolkit-yaml")
+All .yaml is located in Git [toolkit yaml](https://github.com/Eurotermbank/Federated-Network-Toolkit-deployment/tree/main/kubernetes)
 
 &nbsp;
 &nbsp;
@@ -649,7 +638,7 @@ All .yaml is located in Git [toolkit yaml](https://github.com/Eurotermbank/Feder
 
  **BASE_URL** - "https://otk.example.com" - frontend URL.
 
- **CMS_SERVICE_URL** - "https://cms.example.com" - frontend CMS URL.
+ **CMS_SERVICE_URL** - "https://strapi.example.com" - frontend CMS URL.
 
  **TERM_SERVICE_URL** - "https://otk.example.com/api/termservice" - Term service URL.
 
@@ -1001,10 +990,10 @@ Press **Master** icon at the left corner and press **Add realm**
 ![keycloak add ](img/keycloak-add.PNG "keycloak add")
 
 
-In **Add realm** section, you need to Select temlplate file. You can find template file in [Git](https://github.com/Eurotermbank/Federated-Network-Toolkit-deployment/tree/main/seed-data/keycloak"toolkit-keycloak"). Download **toolkit.json** file. Once file downloaded select it from **Add realm** section in browser.
+In **Add realm** section, you need to Select temlplate file. You can find template file in [Git](https://github.com/Eurotermbank/Federated-Network-Toolkit-deployment/tree/main/seed-data/keycloak). Download **toolkit.json** file. Once file downloaded select it from **Add realm** section in browser.
 
 
-If you want you can choose custome Realm name, but you will need to update all values in **configmap.yaml** and in **secret.yaml** which point to Realm name.
+If you want you can choose custome Realm name, but you will need to update all values in **configmap.yaml** which point to Realm name.
 
 
 ![keycloak add ](img/keycloak-add2.PNG "keycloak add")

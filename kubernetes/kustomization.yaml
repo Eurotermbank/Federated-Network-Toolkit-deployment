@@ -2,8 +2,8 @@ resources:
 # name space
 - namespace.yaml
 # configuration
-- configmap-test.yaml
-- secret-test.yaml
+- configmap.yaml
+- secret.yaml
 
 # Public dockers
 - elasticserch.yaml
