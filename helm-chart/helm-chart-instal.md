@@ -2,7 +2,7 @@
 
 &nbsp;
 &nbsp;
-|Version|0.1|
+|Version|1.1|
 |-----|-----------|
 
 &nbsp;
@@ -31,7 +31,8 @@ This document contains information how to run Toolkit for Eurotermbank Federated
 |0.4| 10.12.21 | Storage configuration described |
 |0.5| 10.12.21 | Toolkit variable configuration described |
 |0.6| 10.12.21 | Toolkit Deployment described |
-|1.0| 10.12.21| Base version described |
+|1.0| 10.12.21 | Base version described |
+|1.1| 30.12.21 | Comments added |
 
 &nbsp;
 &nbsp;
@@ -328,6 +329,8 @@ If you want to update helm version:
 helm upgrade open-toolkit open-toolkit-1.1.0.tgz
 ```
 
+**P.S** you can perform upgrade command to same version package (for example if you perfromed advanced configuration after installation). More information can be found here: https://helm.sh/docs/helm/helm_upgrade/
+
 Once helm deployed. You can check POD status vai Dashboard or vai cmd:
 
 ```bash
@@ -337,6 +340,8 @@ kubectl get pods --all-namespaces
 
 
 Note Keycloak pod first start can take longer then other PODS.
+
+P.S. in some cases first start can take up 15 min or 5 min after server restart.
 
 
 Once all PODS are up you can try to connect to URL's.
