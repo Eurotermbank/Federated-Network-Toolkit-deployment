@@ -1,10 +1,8 @@
 # Terminology Data synchronization specification for Eurotermbank Federated Node
 
-Version 0.1
+Version 0.2
 
-## Draft
 
-_Data model, examples and all other information are not yet stable and can be subject to change_
 
 # Description and Principles
 
@@ -14,25 +12,20 @@ Eurotermbank.com central node will contain terminology data copies in the centra
 
 Collections, that are managed by federated nodes, will be locked for eny editorial option at Central Eurotermbank system, only non-federated collection will have possibility to manage from central portal.
 
-There are two subjects to synhronize – Collection Metadata and terminology data. Each collection must contain synchronization point and last update date to be able to synchronize updated data only.
+There are two subjects to synhronize – collection metadata and terminology data. Each collection must contain synchronization point and last update date to be able to synchronize updated data only.
 
-Data synchonization strategies
+## Data synchonization strategy
 
-There are two data synhronization strategies enabled – Push and Pull strategie.
+There is a Push data synhronization strategy enabled.
 
-![image](https://user-images.githubusercontent.com/11315268/131524132-266421fb-049c-4e0e-823b-85e2d89adec9.png)
+This strategy means that federated nodes manages by themselves synchronization point and data to be synchronized. Federated nodes regularly pushes their changes to the central node with their initiative. Central synchronization API (Central Sync API) is specified below in this document.
 
-_Figure 1 Data synchronization strategies_
 
-Pull strategy means that federated nodes manages by themselves synchronization point and data to be synchronized. Federated nodes regularly pushes their changes to the central node with their initiative. Central synchronization API (Central Sync API) is specified later in this document.
-
-Eurotermbank.com central node will contain synchronization time for each federated collection. Pull strategy will be established by having an agent – SyncJob, that will ask Federated node for data changes after the synchronization point. And this agent after getting changes from federated node will continue Push strategy workflow – will exploit same data synchronization endpoint. In this scenario federated node do not have to create integration with Central Sync API, but must ensure node synchronization API (Node Sync API).
-
-Data Categories
+## Data Categories
 
 Collection Metadata Categories will exist the same as central Eurotermbank node has.
 
-Terminology data Categories supported by eurotermbank.com is here.
+See Terminology data Categories supported by eurotermbank.com in samples below. Here is TBX specification, more information about data categories can be found there: https://www.gala-global.org/sites/default/files/migrated-pages/docs/tbx_oscar_0.pdf
 
 # Central Sync API
 
