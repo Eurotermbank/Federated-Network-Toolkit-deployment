@@ -80,7 +80,7 @@ spec:
            configMapKeyRef:
             name: frontend-config
             key: ETB_URL
-        image: eurotermbank.azurecr.io/otk-frontend:36340
+        image: eurotermbank.azurecr.io/otk-frontend:37290
         imagePullPolicy: "Always"
         name: frontend
         ports:
