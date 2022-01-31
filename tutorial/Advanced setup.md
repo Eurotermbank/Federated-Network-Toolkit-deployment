@@ -821,7 +821,7 @@ Now you can open your frontend URL in browser.
 
 **How to regenerate Elastic Search index for terminology data?**
 
-To recreate search index for terminology data from scratch, execute following Term service method, by providing credentials via basic authentication (see term service configuration file for the credentials)
+To recreate search index for terminology data from scratch, execute following Term service method, by providing credentials via basic authentication (see your term service configuration file for the credentials)
 
 ```
 POST /api/termservice/search/reindex 
