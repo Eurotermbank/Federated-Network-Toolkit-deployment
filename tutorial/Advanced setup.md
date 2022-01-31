@@ -14,22 +14,14 @@ This document contains information how to update helm/yaml installation with adv
 
 
 ## Table of contents
-1. MySQL
-2. Storage configuration
-3. Keycloak configuration
+
+1. [MySQL](#mysql)  
+2. [Storage configuration](#storage)  
+3. [Keycloak configuration](#keycloak)  
+4. [Troubleshooting](#Troubleshooting)  
 
 &nbsp;
 &nbsp;
-#### **Changes**
-|Version|Publication date|Change|
-|-----|-----------|-----------|
-|0.1| 28.12.21 | Initial version |
-|0.2| 29.12.21 | MySQL configuration described |
-|0.3| 29.12.21 | Storage  configuration described |
-|0.4| 29.12.21 | Keycloak configuration described |
-|0.5| 30.12.21 | MySQL updated |
-|1.0 | 30.12.21 | Base version created |
-
 
 ## MySQL
 
@@ -50,7 +42,7 @@ If you want to add data to your server go to section **Creating required databas
 **IMPORTANT** if you use custom MySQL server you will need update helm chart. It will be described bellow in section **Database string update**
 
 
-### MySQL installation
+### <a name="mysql">MySQL installation</a> 
 
 This section will go over how to install MySQL version 8.0 on an Ubuntu 20.04 server.
 
@@ -485,7 +477,7 @@ Update there:
 &nbsp;
 &nbsp;
 
-## Storage configuration
+## <a name="storage">Storage configuration</a> 
 
 &nbsp;
 &nbsp;
@@ -618,7 +610,7 @@ Uncomment it by removing **#**. Check if PV name in **name**  and Claim name **c
 Save archive and perform helm update.
 
 
-## Authentication (Keycloak) configuration
+## <a name="keycloak">Authentication (Keycloak) configuration</a>  
 
 &nbsp;
 &nbsp;
@@ -821,3 +813,18 @@ Now you can open your frontend URL in browser.
 &nbsp;
 &nbsp;
 ![frontend url ](img/keycloak-frontend.PNG "frontend url")
+
+&nbsp;
+&nbsp;
+
+## <a name="Troubleshooting">Troubleshooting</a> 
+
+**How to regenerate Elastic Search index for terminology data?**
+
+To recreate search index for terminology data from scratch, execute following Term service method, by providing credentials via basic authentication (see term service configuration file for the credentials)
+
+```
+POST /api/termservice/search/reindex 
+Host: your-host.example.com
+Authorization: Basic XXXXXXXXXX
+```
