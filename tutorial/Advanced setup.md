@@ -3,7 +3,7 @@
 
 &nbsp;
 &nbsp;
-|Version|1.0|
+|Version|1.1|
 |-----|-----------|
 
 &nbsp;
@@ -15,10 +15,10 @@ This document contains information how to update helm/yaml installation with adv
 
 ## Table of contents
 
-1. [MySQL](#mysql)  
-2. [Storage configuration](#storage)  
-3. [Keycloak configuration](#keycloak)  
-4. [Troubleshooting](#Troubleshooting)  
+1. [MySQL](#mysql)
+2. [Storage configuration](#storage)
+3. [Keycloak configuration](#keycloak)
+4. [Troubleshooting](#Troubleshooting)
 
 &nbsp;
 &nbsp;
@@ -42,7 +42,7 @@ If you want to add data to your server go to section **Creating required databas
 **IMPORTANT** if you use custom MySQL server you will need update helm chart. It will be described bellow in section **Database string update**
 
 
-### <a name="mysql">MySQL installation</a> 
+### <a name="mysql">MySQL installation</a>
 
 This section will go over how to install MySQL version 8.0 on an Ubuntu 20.04 server.
 
@@ -477,43 +477,16 @@ Update there:
 &nbsp;
 &nbsp;
 
-## <a name="storage">Storage configuration</a> 
+## <a name="storage">Storage configuration</a>
 
 &nbsp;
 &nbsp;
 
 If you want to use custom branding files or not use default docker images, when toolkit require storage configuration.
 
-Storage can be configred for Frontend and for Frontend CMS.
+Storage can be configred for Frontend, Frontend CMS and ElasticSearch.
 
 In this tutorial we will use local shared folder.
-
-&nbsp;
-&nbsp;
-### Frontend
-
-
-&nbsp;
-&nbsp;
-
-Frontend storage will be used for portal branding. Here you can upload custom branding files.
-
-Local paths must be under **/mnt/** folder. This is default directory for mounted storage. Overwise Kubernetes won’t be able to connect to it.
-
-In our tutorial under **mnt** folder, we will create **otk** folder which will contain all project related folders.
-
-Create folder for frontend:
-
-```bash
-sudo mkdir -p /mnt/otk/frontend-html/
-```
-
-You can choose your own folder name, but dont forget update **storage.yaml** with correct local path.
-Command with custom path can be:
-
-```bash
-sudo mkdir -p /mnt/something/...
-```
 
 &nbsp;
 &nbsp;
@@ -589,6 +562,52 @@ storage.yaml is located in Git [storage yaml](https://github.com/Eurotermbank/Fe
 
 
 After you need update helm chart with new parametrs.
+Open helm chart archive and go to frontend-cms.yaml.
+
+In Deployemnt part there are commented **volumes** section:
+
+```bash
+#volumes:
+      #- name: otk-cms-pv
+      #  persistentVolumeClaim:
+      #    claimName: otk-cms-claim
+```
+and in **volumeMounts** section:
+```bash
+#volumeMounts:
+        #- mountPath: "/strapi/public/uploads"
+        #  name: otk-cms-pv
+```
+Uncomment it by removing **#**. Check if PV name in **name**  and Claim name **claimName** in parametrs same as in storage.yaml in privious step.
+
+Save archive and perform helm update.
+
+### Frontend
+
+
+&nbsp;
+&nbsp;
+
+Frontend storage will be used for portal branding. Here you can upload custom branding files.
+
+Local paths must be under **/mnt/** folder. This is default directory for mounted storage. Overwise Kubernetes won’t be able to connect to it.
+
+In our tutorial under **mnt** folder, we will create **otk** folder which will contain all project related folders.
+
+Create folder for frontend:
+
+```bash
+sudo mkdir -p /mnt/otk/frontend-html/
+```
+
+You can choose your own folder name, but dont forget update **storage.yaml** with correct local path.
+Command with custom path can be:
+
+```bash
+sudo mkdir -p /mnt/something/...
+```
+
+After you need update helm chart with new parametrs.
 Open helm chart archive and go to frontend.yaml.
 
 In Deployemnt part there are commented **volumes** section:
@@ -609,8 +628,56 @@ Uncomment it by removing **#**. Check if PV name in **name**  and Claim name **c
 
 Save archive and perform helm update.
 
+&nbsp;
+&nbsp;
 
-## <a name="keycloak">Authentication (Keycloak) configuration</a>  
+### ElasticSearch
+
+
+&nbsp;
+&nbsp;
+
+ElasticSearch storage will be used for index storing.
+
+
+Create folder for ElasticSearch:
+
+```bash
+sudo mkdir -p /mnt/otk/es/
+```
+
+You can choose your own folder name, but dont forget update **storage.yaml** with correct local path.
+Command with custom path can be:
+
+```bash
+sudo mkdir -p /mnt/something/...
+```
+
+After you need update helm chart with new parametrs.
+Open helm chart archive and go to elasticsearch.yaml.
+
+In Deployemnt part there are commented **volumes** section:
+
+```bash
+#volumes:
+      #- name: otk-es-pv
+      #  persistentVolumeClaim:
+      #    claimName: otk-es-claim
+```
+and in **volumeMounts** section:
+```bash
+#volumeMounts:
+        #- mountPath: "/usr/share/elasticsearch/data"
+        #  name: otk-es-pv
+```
+Uncomment it by removing **#**. Check if PV name in **name**  and Claim name **claimName** in parametrs same as in storage.yaml in privious step.
+
+Save archive and perform helm update.
+
+&nbsp;
+&nbsp;
+
+## <a name="keycloak">Authentication (Keycloak) configuration</a>
 
 &nbsp;
 &nbsp;
@@ -817,14 +884,14 @@ Now you can open your frontend URL in browser.
 &nbsp;
 &nbsp;
 
-## <a name="Troubleshooting">Troubleshooting</a> 
+## <a name="Troubleshooting">Troubleshooting</a>
 
 **How to regenerate Elastic Search index for terminology data?**
 
 To recreate search index for terminology data from scratch, execute following Term service method, by providing credentials via basic authentication (see your term service configuration file for the credentials)
 
 ```
-POST /api/termservice/search/reindex 
+POST /api/termservice/search/reindex
 Host: your-host.example.com
 Authorization: Basic XXXXXXXXXX
 ```
