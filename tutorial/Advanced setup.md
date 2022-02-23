@@ -503,6 +503,7 @@ Folder will be located next to frontend-html folder.
 
 ```bash
 sudo mkdir -p /mnt/otk/cms-public-uploads/
+sudo chown -R 1000:1000 /mnt/otk/cms-public-uploads
 ```
 
 Same as for frontend, you can choose your own folder name, but dont forget update **storage.yaml** with correct local path.
@@ -599,6 +600,7 @@ Create folder for frontend:
 
 ```bash
 sudo mkdir -p /mnt/otk/frontend-html/
+sudo chown -R 1000:1000 /mnt/otk/frontend-html
 ```
 
 You can choose your own folder name, but dont forget update **storage.yaml** with correct local path.
@@ -645,6 +647,7 @@ Create folder for ElasticSearch:
 
 ```bash
 sudo mkdir -p /mnt/otk/es/
+sudo chown -R 1000:1000 /mnt/otk/es
 ```
 
 You can choose your own folder name, but dont forget update **storage.yaml** with correct local path.
