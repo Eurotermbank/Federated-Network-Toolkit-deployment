@@ -700,9 +700,9 @@ Enter login and password, same as you defined in Keycloak values.
 ![keycloak login ](img/keycloak-login.PNG "keycloak login")
 
 
-After successful login, in left corrner choose Realm **Toolkit**.
+After successful login, in left corrner choose Realm **toolkit**.
 
-Once you select **Toolkit** it will forward you to Realm admin page.
+Once you select **toolkit** it will forward you to Realm admin page.
 
 In realm admin page, you can update several values.
 
