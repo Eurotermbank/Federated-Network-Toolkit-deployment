@@ -661,7 +661,7 @@ All .yaml is located in Git [toolkit yaml](https://github.com/Eurotermbank/Feder
 
  **Auth__JwtBearer__Audience** - "account" - keycloak audience. **will be deprecated**
 
- **Auth__JwtBearer__Issuer** - "https://**auth.example.com**/auth/realms/**toolkit**" - URL to keycloak realm. Need to update base URL **auth.example.com** and realm name **toolkit**
+ **Auth__JwtBearer__Issuer** - "https://**auth.example.com**/auth/realms/**toolkit**" - URL to keycloak realm. Need to update base URL **auth.example.com** and realm name **toolkit**  - default name **toolkit**.
 
 &nbsp;
 &nbsp;

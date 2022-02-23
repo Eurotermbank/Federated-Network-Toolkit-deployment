@@ -19,6 +19,7 @@ This document contains information how to update helm/yaml installation with adv
 2. [Storage configuration](#storage)
 3. [Keycloak configuration](#keycloak)
 4. [Troubleshooting](#Troubleshooting)
+5. [SSL Let's Encrypt](#letsencrypt)
 
 &nbsp;
 &nbsp;
@@ -502,6 +503,7 @@ Folder will be located next to frontend-html folder.
 
 ```bash
 sudo mkdir -p /mnt/otk/cms-public-uploads/
+sudo chown -R 1000:1000 /mnt/otk/cms-public-uploads
 ```
 
 Same as for frontend, you can choose your own folder name, but dont forget update **storage.yaml** with correct local path.
@@ -598,6 +600,7 @@ Create folder for frontend:
 
 ```bash
 sudo mkdir -p /mnt/otk/frontend-html/
+sudo chown -R 1000:1000 /mnt/otk/frontend-html
 ```
 
 You can choose your own folder name, but dont forget update **storage.yaml** with correct local path.
@@ -644,6 +647,7 @@ Create folder for ElasticSearch:
 
 ```bash
 sudo mkdir -p /mnt/otk/es/
+sudo chown -R 1000:1000 /mnt/otk/es
 ```
 
 You can choose your own folder name, but dont forget update **storage.yaml** with correct local path.
@@ -696,9 +700,9 @@ Enter login and password, same as you defined in Keycloak values.
 ![keycloak login ](img/keycloak-login.PNG "keycloak login")
 
 
-After successful login, in left corrner choose Realm **Toolkit**.
+After successful login, in left corrner choose Realm **toolkit**.
 
-Once you select **Toolkit** it will forward you to Realm admin page.
+Once you select **toolkit** it will forward you to Realm admin page.
 
 In realm admin page, you can update several values.
 
@@ -895,3 +899,230 @@ POST /api/termservice/search/reindex
 Host: your-host.example.com
 Authorization: Basic XXXXXXXXXX
 ```
+
+&nbsp;
+&nbsp;
+
+## SSL
+
+&nbsp;
+&nbsp;
+
+## <a name="letsencrypt">SSL Let's Encrypt</a>
+
+&nbsp;
+&nbsp;
+
+The objective of Let’s Encrypt and the ACME protocol is to make it possible to set up an HTTPS server and have it automatically obtained a browser-trusted certificate, without any human intervention. This is accomplished by running a certificate management agent on the web server.
+
+There are two steps to this process. First, the agent proves to the CA that the web server controls a domain. Then, the agent can request, renew, and revoke certificates for that domain.
+
+
+**Important - Let's Encrypt will only works if site publicly available (from internet) and reachable with DNS name.**
+
+
+### Let's Encrypt installation
+
+There are several Let's Encrypt installation methods.
+
+For Kubernetes you can choose to install it with helm chart help or with. yaml.
+
+To install with helm (before execute check namespace, in example I will use *cert-manager* namespace):
+
+
+```bash
+kubectl create namespace cert-manager
+helm install   cert-manager   --namespace ingress-basic   --version v0.16.1   --set installCRDs=true   --set nodeSelector."beta\.kubernetes\.io/os"=linux   jetstack/cert-manager
+```
+
+To install with .yaml (yaml will *cert-manager*  namespace):
+
+```bash
+kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v0.16.1/cert-manager.yaml
+```
+
+To verify our installation, check the cert-manager Namespace (or your custom if you deployed elsewhere) for running pods:
+
+
+```bash
+kubectl get pods --namespace cert-manager
+```
+![ssl install](img/ssl-install.PNG "ssl install")
+
+This indicates that the cert-manager installation succeeded.
+
+Before we begin issuing certificates for our domains, we need to create an Issuer, which specifies the certificate authority from which signed x509 certificates can be obtained. In this guide, we’ll use the Let’s Encrypt certificate authority, which provides free TLS certificates.
+
+
+Let’s create a  ClusterIssuer to make sure the certificate provisioning mechanism is functioning correctly.
+
+
+Create and open a file named **cluster-issuer.yaml** in text editor, for example:
+
+```bash
+nano cluster-issuer.yaml
+```
+
+
+Paste in the following ClusterIssuer manifest:
+
+```bash
+apiVersion: cert-manager.io/v1alpha2
+kind: ClusterIssuer
+metadata:
+ name: letsencrypt-otk
+ namespace: cert-manager
+spec:
+ acme:
+   # The ACME server URL
+   server: https://acme-v02.api.letsencrypt.org/directory
+   # Email address used for ACME registration
+   email: your_email_address_here
+   # Name of a secret used to store the ACME account private key
+   privateKeySecretRef:
+     name: letsencrypt-otk
+   # Enable the HTTP-01 challenge provider
+   solvers:
+   - http01:
+       ingress:
+         class:  nginx
+```
+
+Update email adress in email section.
+
+When you’re done editing, save and close the file.
+
+Roll out this Issuer using kubectl:
+
+```bash
+kubectl create -f cluster-issuer.yaml
+```
+
+&nbsp;
+&nbsp;
+### Let's Encrypt configuration
+&nbsp;
+&nbsp;
+
+
+Now that we’ve created our Let’s Encrypt ClusterIssuers, we’re ready to modify the Ingress Resource we created above and enable TLS encryption for the domains.
+
+To issue a staging TLS certificate for our domains, we’ll annotate ingress.yaml with the ClusterIssuer created in privious step. This will use ingress-shim to automatically create and issue certificates for the domains specified in the Ingress manifest.
+
+
+If you use OTK deployment with **.yaml** then go to folder with all .yaml manifests and open **ingress.yaml** :
+There are 4 ingress configurations inside, if you don’t use Kibana, then you need to update 3 of them.
+
+
+
+you will need to add annotations under metadate:
+
+```bash
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-otk"
+```
+and under tls -> hosts update **secretName** it must be unique  for each ingress configuration, for example strapi-tls, frontend-tls, keyckloak-tls etc.
+
+In the end ingress must look like this:
+
+```bash
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: http-ingress-keycloak
+  namespace: otk
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-otk"
+spec:
+  tls:
+  - hosts:
+    - auth.example.com
+    secretName: keycloak-tls
+  rules:
+    - host: auth.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: keycloak
+                port:
+                  number: 2014
+status:
+  loadBalancer: {}
+```
+
+This was example for keycloak, you need to perform same configuration for other services in same file.
+
+
+
+When you’re done making changes, save and close the file.
+
+We’ll now push this update to the existing Ingress object using kubectl apply:
+
+```bash
+kubectl apply -f ingress.yaml
+```
+
+
+
+
+If you use OTK deployment with **helm* chart, go to archive and find and open **ingress.yaml** under templates folder.
+
+There are 3 ingress configuration inside, you need to update all of them.
+
+you will need to add annotations under metadata:
+
+```bash
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-otk"
+```
+and under tls -> hosts update **secretName**, you can delete:
+```bash
+{{ required "A valid ssl_cert name required!" .Values.ssl_cert.name | quote }}
+```
+
+secretName must be uniqe for each ingress configuration, for example strapi-tls, frontend-tls, keyckloak-tls etc.
+
+In the end ingress must look like:
+
+```bash
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: http-ingress-keycloak
+  namespace: {{ required "A valid namespace required!" .Values.namespace | quote }}
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-otk"
+spec:
+  tls:
+  - hosts:
+    - {{ required "A valid KC_URL required!" .Values.url.KC_URL | quote }}
+    secretName: keycloak-tls
+  rules:
+    - host: {{ required "A valid KC_URL required!" .Values.url.KC_URL | quote }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: keycloak
+                port:
+                  number: 2014
+status:
+  loadBalancer: {}
+
+```
+
+This was example for keycloak, you need to perform same configuration for other services in same file.
+
+When you’re done making changes, save and close the file and archive.
+
+We’ll now push this update to the existing Ingress object using **helm upgrade** command.
+
+In several minutes you can try open page in browser and check if your certificate is valid.
+
