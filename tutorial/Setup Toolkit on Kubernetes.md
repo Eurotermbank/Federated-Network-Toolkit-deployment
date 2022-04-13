@@ -993,7 +993,7 @@ Press **Master** icon at the left corner and press **Add realm**
 In **Add realm** section, you need to Select temlplate file. You can find template file in [Git](https://github.com/Eurotermbank/Federated-Network-Toolkit-deployment/tree/main/seed-data/keycloak). Download **toolkit.json** file. Once file downloaded select it from **Add realm** section in browser.
 
 
-If you want you can choose custome Realm name, but you will need to update all values in **configmap.yaml** which point to Realm name.
+If you want you can choose custome Realm name, but you will need to update all values in **configmap.yaml** which point to Realm name. The name Toolkit (or what ever name you choose) has to be spelled in **exactly** the same way as in the configmap.yaml file. If the name starts with a capital letter in one of the places, it has to be spelled with capital letter in the other place.
 
 
 ![keycloak add ](img/keycloak-add2.PNG "keycloak add")
@@ -1063,7 +1063,7 @@ You need to open **Cleints** section, find **otk-frontend** end press **Edit**.
 ![keycloak clients ](img/keycloak-clients.png "keycloak clients")
 
 
-Here we need to update 3 parametrs.
+Here we need to update 4 parametrs.
 
 Root URL - https://otk.example.com - frontend URL
 
@@ -1071,8 +1071,9 @@ Valid redirect URL - http://localhost:4200/* and https://otk.example.com/* - loc
 
 Base URL - https://otk.example.com - frontend URL
 
+Web Origins - there has to be a plus sign: "+". If this field is left empty you will have a cors-origins error and will be denied login. This error can bee seen in the browser console when you try to login to the frontend.
 
-![keycloak url ](img/keycloak-url.PNG "keycloak url")
+![keycloak url ](img/keycloak-url.jpg "keycloak url")
 
 
 Update values and press **Save**
