@@ -49,7 +49,7 @@ You can use Postman (https://www.postman.com/) prepared collection [FEDTERM Sync
 ## Add New Collection Metadata
 * Domain ID is mandatory and must be sent one of the IDs specified in [Domain Classifications](https://github.com/Eurotermbank/Federated-Network-Toolkit-deployment/blob/5918fe4486eac2f9f4067043b1cad9639d14a230/user-guides/DomainClassifiers.md)
 
-POST /api/termsrv/sync/collection HTTP/1.1
+POST /api/termservice/sync/collection HTTP/1.1
 
 Host: eurotermbank.com
 
@@ -60,7 +60,7 @@ Authorization: Basic XXXXXXXXXXXX
 ```json
 {
     "name": "This is name of my collection",
-    "description": "Description of my collection",   
+    "description": "Description of my collection",
     "domainid": "04",
     "allowsUsesBesidesDGT": true,
     "appropriatnessForDSI": true,
@@ -88,7 +88,7 @@ Return value: Id of created collection.
 
 * Domain ID is mandatory and must be sent one of the IDs specified in [Domain Classifications](https://github.com/Eurotermbank/Federated-Network-Toolkit-deployment/blob/5918fe4486eac2f9f4067043b1cad9639d14a230/user-guides/DomainClassifiers.md)
 
-PUT /api/termsrv/sync/collection HTTP/1.1
+PUT /api/termservice/sync/collection HTTP/1.1
 
 Host: eurotermbank.com
 
@@ -99,7 +99,7 @@ Authorization: Basic XXXXXXXXXXXX
 ```json
 {
     "name": "This is updated name of my collection",
-    "description": "Description of my collection",   
+    "description": "Description of my collection",
     "domainid": "04",
     "allowsUsesBesidesDGT": true,
     "appropriatnessForDSI": true,
@@ -126,7 +126,7 @@ Return value: Id of updated collection.
 
 *Multiple collection entries can be submitted, but only max 100 at single Post. Submited entries will be analyzed - if entry ID already exists, entry will be replaced with new version, otherwise new term entry will be created. In case there are no changes in posted entry - no action will be taken for that entry.*
 
-POST /api/termsrv/sync/collection/{collection_id}/entries HTTP/1.1
+POST /api/termservice/sync/collection/{collection_id}/entries HTTP/1.1
 
 Host: eurotermbank.com
 
@@ -239,7 +239,7 @@ Example of summary (tried to import 6 entries):
 
 ## Delete Concept Entry
 
-DELETE /api/termsrv/sync/collection/{collection_id}/entries/{entry_id} HTTP/1.1
+DELETE /api/termservice/sync/collection/{collection_id}/entries/{entry_id} HTTP/1.1
 
 Host: eurotermbank.com
 
@@ -250,7 +250,7 @@ Authorization: Basic XXXXXXXXXXXX
 
 ## Delete Collection
 
-DELETE /api/termsrv/sync/collection/{collection_id}/
+DELETE /api/termservice/sync/collection/{collection_id}/
 HTTP/1.1
 
 Host: eurotermbank.com
@@ -269,7 +269,7 @@ Authorization: Basic XXXXXXXXXXXX
 
 * In case external ID will exist for this federated node, metadata will be updated.
 
-PUT /api/termsrv/sync/collection/external/{external-collection-id} HTTP/1.1
+PUT /api/termservice/sync/collection/external/{external-collection-id} HTTP/1.1
 
 Host: eurotermbank.com
 
@@ -280,7 +280,7 @@ Authorization: Basic XXXXXXXXXXXX
 ```json
 {
     "name": "This is name of my collection with External ID",
-    "description": "Description of my collection",   
+    "description": "Description of my collection",
     "domainid": "04",
     "allowsUsesBesidesDGT": true,
     "appropriatnessForDSI": true,
@@ -417,7 +417,7 @@ Example of summary (tried to import 6 entries):
 
 ## Delete Concept Entry using External Collection ID
 
-DELETE /api/termsrv/sync/collection/external/{external-collection-id}/entries/{entry_id} HTTP/1.1
+DELETE /api/termservice/sync/collection/external/{external-collection-id}/entries/{entry_id} HTTP/1.1
 
 Host: eurotermbank.com
 
@@ -428,7 +428,7 @@ Authorization: Basic XXXXXXXXXXXX
 
 ## Delete Collection using External Collection ID
 
-DELETE /api/termsrv/sync/collection/external/{external-collection-id}/
+DELETE /api/termservice/sync/collection/external/{external-collection-id}/
 HTTP/1.1
 
 Host: eurotermbank.com
