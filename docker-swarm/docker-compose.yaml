@@ -31,7 +31,7 @@ services:
       KC_URL: http://localhost:8083/auth
       KC_REALM: Toolkit
       KC_CLIENTID: otk-frontend
-      ETB_URL: https://test-fedterm.eurotermbank.com/register
+      ETB_URL: https://www.eurotermbank.com/register
   frontend-cms:
     image: eurotermbank.azurecr.io/otk-frontend-cms:38546
     ports:
