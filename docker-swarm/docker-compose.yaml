@@ -20,7 +20,7 @@ services:
       timeout: 2s
       retries: 10  
   frontend:
-    image: eurotermbank.azurecr.io/otk-frontend:36340
+    image: eurotermbank.azurecr.io/otk-frontend:40496
     ports:
     - 8080:80     
     environment:      
@@ -31,9 +31,9 @@ services:
       KC_URL: http://localhost:8083/auth
       KC_REALM: Toolkit
       KC_CLIENTID: otk-frontend
-      ETB_URL: https://test-fedterm.eurotermbank.com/register
+      ETB_URL: https://www.eurotermbank.com/register
   frontend-cms:
-    image: eurotermbank.azurecr.io/otk-frontend-cms:36310
+    image: eurotermbank.azurecr.io/otk-frontend-cms:38546
     ports:
     - 1337:1337    
     environment:  
@@ -62,12 +62,12 @@ services:
           delay: 5s
           max_attempts: 5
   termService: 
-    image: eurotermbank.azurecr.io/otk-termservice:36278
+    image: eurotermbank.azurecr.io/otk-termservice:40462
     ports:
       - 8081:80   
     environment:
       "ConnectionStrings:termDB": "server=db,3306;user id=term-user;password=db-password;persistsecurityinfo=True;database=termservice;oldguids=true;Convert Zero Datetime=True;charset=utf8"
-      "Auth:JwtBearer:Issuer":  http://localhost:8083/auth/realms/toolkit
+      "Auth:JwtBearer:Issuer":  http://localhost:8083/auth/realms/Toolkit
       "Auth:BasicAuth:Username":  BA_USERNAME
       "Auth:BasicAuth:Password":  BA_PASSWORD
       "ElasticSearch:Host":  http://localhost:9200
@@ -82,12 +82,12 @@ services:
           delay: 5s
           max_attempts: 5
   discussionService: 
-    image: eurotermbank.azurecr.io/otk-discussionservice:35988
+    image: eurotermbank.azurecr.io/otk-discussionservice:37931
     ports:
       - 8082:80 
     environment:
       "ConnectionStrings:discussionDB": "server=db,3306;user id=discuss-user;password=db-password;persistsecurityinfo=True;database=discussionservice;oldguids=true;Convert Zero Datetime=True;charset=utf8"
-      "Auth:JwtBearer:Issuer":  http://localhost:8083/auth/realms/toolkit
+      "Auth:JwtBearer:Issuer":  http://localhost:8083/auth/realms/Toolkit
       "AllowedCORS": http://localhost:8080
     depends_on:     
       keycloak:
@@ -99,14 +99,14 @@ services:
           delay: 5s
           max_attempts: 5
   elasticSearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.2
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.3
     ports:
     - 9200:9200 
     environment:      
       discovery.type: single-node
   kibana:
     container_name: kibana
-    image: docker.elastic.co/kibana/kibana:7.9.2
+    image: docker.elastic.co/kibana/kibana:7.17.3
     ports:
       - 5601:5601
     depends_on:

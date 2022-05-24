@@ -78,7 +78,7 @@ spec:
            configMapKeyRef:
             name: keycloak-config
             key: JDBC_PARAMS
-        image: eurotermbank.azurecr.io/auth-keycloak-otk:V.1
+        image: eurotermbank.azurecr.io/auth-keycloak-otk:35914
         imagePullPolicy: "Always"
         name: keycloak
         ports:
