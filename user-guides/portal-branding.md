@@ -1,10 +1,10 @@
-# Term portal branding
+# Eurotermbank Toolkit branding
 
-While setting up Portals frontend docker image, it is possible to mount a directory that will override nodes default visual settings.  
-Directory path to mount:  
-/usr/share/nginx/html  
-Mounted directory after mounting:  
-/usr/share/nginx/html/overrides/  
+While setting up Portals frontend docker image, it is possible to mount a directory that will override nodes default visual settings.
+Directory path to mount:
+/usr/share/nginx/html/assets/
+Mounted directory after mounting:
+/usr/share/nginx/html/assets/overrides/
 
 ## Files to override
 
@@ -78,12 +78,56 @@ Example contents of file settings.json:
 }
 ```
 
-The effect of this override:  
+The effect of this override:
 ![Menu item management](img/portal-title.png "Menu item management")
 
+### Toolkit analytics
+
+It is possible to add either Google or Matomo page analytics.
+To do that, you should add the following piece of code to the settings.json file.
+### Google analytics
+Please fill "tracking_code" with page code that you receive when register site in Google Analytics.
+
+```json
+  "analytics": {
+    "tracker": "google_analytics",
+    "google_analytics": {
+      "tracking_code":""
+    }
+  }
+```
+
+## Matomo analytics
+Please fill "tracker_url" and "site_id" with code that you receive when register site in Matomo Analytics.
+
+```json
+  "analytics": {
+    "tracker": "matomo",
+    "matomo": {
+      "tracker_url": "",
+      "site_id": ""
+    }
+  }
+```
+
+Example settings.json file that has Toolkit title set and Google analytics set up:
+```json
+{
+  "Title": "My personal toolkit",
+  "analytics": {
+    "tracker": "google_analytics",
+    "google_analytics": {
+      "tracking_code":"U-12345"
+    }
+  }
+}
+```
 
 ## Troubleshooting
 
-All the files should have __exact__ names as mentioned in files to override section.  
+All the files should have __exact__ names as mentioned in files to override section.
 To make sure, that overrides work, each of the overriden file should be accessible from web. For example, color overrides:
-https://your-portal-node/overrides/custom-style.css
+https://your-portal-node/assets/overrides/custom-style.css
+
+
+If you are not sure about correctness of settings.json file, please run a linter, for example [JSONLint](https://jsonlint.com/)

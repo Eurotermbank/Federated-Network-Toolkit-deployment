@@ -321,6 +321,13 @@ There are 2 ways for deployment:
 &nbsp;
 &nbsp;
 
+
+### Portal branding
+
+It is possible to override Toolkits default look - change logo, favicon, colors and some other options described in [toolkit branding guide](user-guides/portal-branding.md)
+
+&nbsp;
+
 ## Additional configuration
 
 &nbsp;
