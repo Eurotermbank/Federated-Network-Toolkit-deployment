@@ -435,3 +435,10 @@ Here must be defined secret name:
 ```yaml
 nginx.ingress.kubernetes.io/auth-secret: kibana-basic-auth
 ```
+
+
+_____
+
+Project is co-financed by **Health and Digital Executive Agency (HaDEA)** <br>
+**Action No**: 2019-EU-IA-0049
+
