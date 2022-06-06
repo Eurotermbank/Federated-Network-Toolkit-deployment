@@ -1,0 +1,23 @@
+resources:
+# name space
+- namespace.yaml
+# configuration
+- configmap.yaml
+- secret.yaml
+
+# Public dockers
+- elasticserch.yaml
+- kibana.yaml
+
+# Eurotermbank ACR dockers
+- frontend.yaml
+- frontend-cms.yaml
+- termservice.yaml
+- discussionservice.yaml
+- keycloak.yaml
+
+# Nginx Ingress
+- ingress.yaml
+
+# Persistent Storage
+- storage.yaml

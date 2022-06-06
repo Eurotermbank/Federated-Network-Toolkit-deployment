@@ -1,0 +1,317 @@
+{
+    "info": {
+        "_postman_id": "607efeaa-e1ec-4926-b2f0-f39670c36702",
+        "name": "FEDTERM Synchro",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [{
+            "name": "Get Collections",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{url}}/Sync/collection",
+                    "host": [
+                        "{{url}}"
+                    ],
+                    "path": [
+                        "Sync",
+                        "collection"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Add New Collection Metadata",
+            "request": {
+                "method": "POST",
+                "header": [{
+                        "key": "Content-Type",
+                        "name": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                    },
+                    {
+                        "key": "",
+                        "value": "",
+                        "type": "text",
+                        "disabled": true
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"name\": \"This is name of my collection\",\n    \"description\": \"Description of my collection\",   \n    \"domainid\": \"04\",\n    \"allowsUsesBesidesDGT\": true,\n    \"appropriatnessForDSI\": true,\n    \"attributionText\": \"This is attribution text\",\n    \"cpEmail\": \"Contac-person@example.com\",\n    \"cpName\": \"Contac Person Name\",\n    \"cpOrganization\": \"Contac Person Organization\",\n    \"cpSurname\": \"Contac Person Surname\",\n    \"iprEmail\": \"ipr-holder@example.com\",\n    \"iprName\": \"IPR Holder name\",\n    \"iprOrganization\": \"IPR Holder Organization\",\n    \"iprSurname\": \"IPR Holder Surname\",\n    \"isPSI\": false,\n    \"licence\": \"CC-BY-4.0\",\n    \"originalName\": \"Šis ir manas kolekcijas nosaukums\",\n    \"originalNameLang\": \"LV\",\n    \"restrictionsOfUse\": \"No restrictions, you are welcome to use\",\n    \"sourceURL\": \"https://my-resource.example.com\"\n}"
+                },
+                "url": {
+                    "raw": "{{url}}/sync/collection",
+                    "host": [
+                        "{{url}}"
+                    ],
+                    "path": [
+                        "sync",
+                        "collection"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Update existing Collection Metadata",
+            "request": {
+                "method": "PUT",
+                "header": [{
+                        "key": "Content-Type",
+                        "name": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                    },
+                    {
+                        "key": "",
+                        "value": "",
+                        "type": "text",
+                        "disabled": true
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"name\": \"This is updated name of my collection\",\n    \"description\": \"Description of my collection\",   \n    \"domainid\": \"04\",\n    \"allowsUsesBesidesDGT\": true,\n    \"appropriatnessForDSI\": true,\n    \"attributionText\": \"This is attribution text\",\n    \"cpEmail\": \"Contac-person@example.com\",\n    \"cpName\": \"Contac Person Name\",\n    \"cpOrganization\": \"Contac Person Organization\",\n    \"cpSurname\": \"Contac Person Surname\",\n    \"iprEmail\": \"ipr-holder@example.com\",\n    \"iprName\": \"IPR Holder name\",\n    \"iprOrganization\": \"IPR Holder Organization\",\n    \"iprSurname\": \"IPR Holder Surname\",\n    \"isPSI\": false,\n    \"licence\": \"CC-BY-4.0\",\n    \"originalName\": \"Šis ir manas kolekcijas nosaukums\",\n    \"originalNameLang\": \"LV\",\n    \"restrictionsOfUse\": \"No restrictions, you are welcome to use\",\n    \"sourceURL\": \"https://my-resource.example.com\"\n}"
+                },
+                "url": {
+                    "raw": "{{url}}/sync/collection/19",
+                    "host": [
+                        "{{url}}"
+                    ],
+                    "path": [
+                        "sync",
+                        "collection",
+                        "19"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Add or update Collection Metadata with External ID",
+            "request": {
+                "method": "PUT",
+                "header": [{
+                        "key": "Content-Type",
+                        "name": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                    },
+                    {
+                        "key": "",
+                        "value": "",
+                        "type": "text",
+                        "disabled": true
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"name\": \"This is of my very perfect collection with external id\",\n    \"description\": \"Description of my collection\",   \n    \"domainid\": \"08\",\n    \"allowsUsesBesidesDGT\": true,\n    \"appropriatnessForDSI\": true,\n    \"attributionText\": \"This is attribution text\",\n    \"cpEmail\": \"Contac-person@example.com\",\n    \"cpName\": \"Contac Person Name\",\n    \"cpOrganization\": \"Contac Person Organization\",\n    \"cpSurname\": \"Contac Person Surname\",\n    \"iprEmail\": \"ipr-holder@example.com\",\n    \"iprName\": \"IPR Holder name\",\n    \"iprOrganization\": \"IPR Holder Organization\",\n    \"iprSurname\": \"IPR Holder Surname\",\n    \"isPSI\": false,\n    \"licence\": \"CC-BY-4.0\",\n    \"originalName\": \"Šis ir manas kolekcijas nosaukums\",\n    \"originalNameLang\": \"LV\",\n    \"restrictionsOfUse\": \"No restrictions, you are welcome to use\",\n    \"sourceURL\": \"https://my-resource.example.com\"\n}"
+                },
+                "url": {
+                    "raw": "{{url}}/sync/collection/external/my-collection-id-1",
+                    "host": [
+                        "{{url}}"
+                    ],
+                    "path": [
+                        "sync",
+                        "collection",
+                        "external",
+                        "my-collection-id-1"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Add or update Concept Entries",
+            "request": {
+                "method": "POST",
+                "header": [{
+                    "key": "",
+                    "value": "",
+                    "disabled": true
+                }],
+                "body": {
+                    "mode": "raw",
+                    "raw": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<!DOCTYPE martif SYSTEM \"https://eurotermbank.com/TBXcoreStructV02%20%281%29.dtd\">\r\n<martif type=\"TBX\" xml:lang=\"en\">\r\n  <martifHeader>\r\n    <fileDesc>\r\n      <sourceDesc>\r\n        <p>Sync collection sample</p>\r\n      </sourceDesc>\r\n    </fileDesc>\r\n    <encodingDesc>\r\n      <p type=\"XCSURI\">https://eurotermbank.com/tbx-0.5.1.xcs</p>\r\n    </encodingDesc>\r\n  </martifHeader>\r\n  <text>\r\n    <body>\r\n<termEntry id=\"external-1\">\r\n  <langSet xml:lang=\"en\">\r\n    <ntig>\r\n      <termGrp>\r\n        <term>Computer</term>\r\n      </termGrp>\r\n      <termNote type=\"administrativeStatus\">preferredTerm-admn-sts</termNote>\r\n      <admin type=\"status\">approved</admin>\r\n      <termNote type=\"normativeAuthorization\">approved</termNote>\r\n      <termNote type=\"grammaticalGender\">masculine</termNote>\r\n      <termNote type=\"grammaticalNumber\">singular</termNote>\r\n      <termNote type=\"partOfSpeech\">noun</termNote>\r\n      <termNote type=\"register\">technicalRegister</termNote>\r\n      <termNote type=\"termType\">entryTerm</termNote>\r\n      <termNote type=\"usageNote\">Commonly used</termNote>\r\n      <note>Use without restriction</note>\r\n      <xref type=\"xSource\" target=\"our company rules\" />\r\n      <descripGrp>\r\n        <descrip type=\"context\">Early computers were meant to be used only for calculations</descrip>\r\n        <admin type=\"sourceIdentifier\">https://en.wikipedia.org/wiki/Computer</admin>\r\n      </descripGrp>\r\n    </ntig>\r\n    <descripGrp>\r\n      <descrip type=\"definition\">A computer is a machine that can be programmed to carry out sequences of arithmetic or logical operations automatically.</descrip>\r\n      <admin type=\"sourceIdentifier\">https://en.wikipedia.org/wiki/Computer</admin>\r\n    </descripGrp>\r\n  </langSet>\r\n  <langSet xml:lang=\"lv\">\r\n    <ntig>\r\n      <termGrp>\r\n        <term>Dators</term>\r\n      </termGrp>\r\n      <admin type=\"status\">approved</admin>\r\n    </ntig>\r\n    <ntig>\r\n      <termGrp>\r\n        <term>Kompjūters</term>\r\n      </termGrp>\r\n      <admin type=\"status\">approved</admin>\r\n      <termNote type=\"temporalQualifier\">obsoleteTerm</termNote>\r\n      <note>Dažkārt tiek lietots automotive un citās inženierzinātnēs</note>\r\n    </ntig>\r\n  </langSet>\r\n  <descrip type=\"subjectField\">Politics and Administration</descrip>\r\n</termEntry>\r\n<termEntry id=\"external-2\">\r\n  <langSet xml:lang=\"en\">\r\n    <ntig>\r\n      <termGrp>\r\n        <term>Computer program</term>\r\n      </termGrp>\r\n      <admin type=\"status\">approved</admin>\r\n    </ntig>\r\n    <descripGrp>\r\n      <descrip type=\"definition\">A computer program is a collection of instructions[1] that can be executed by a computer to perform a specific task.</descrip>\r\n    </descripGrp>\r\n  </langSet>\r\n  <langSet xml:lang=\"lv\">\r\n    <ntig>\r\n      <termGrp>\r\n        <term>Datorprogramma</term>\r\n      </termGrp>\r\n      <admin type=\"status\">approved</admin>\r\n    </ntig>\r\n  </langSet>\r\n  <descrip type=\"subjectField\">Politics and Administration</descrip>\r\n</termEntry></body>\r\n  </text>\r\n</martif>",
+                    "options": {
+                        "raw": {
+                            "language": "xml"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "{{url}}/sync/collection/19/entries",
+                    "host": [
+                        "{{url}}"
+                    ],
+                    "path": [
+                        "sync",
+                        "collection",
+                        "19",
+                        "entries"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Add or update Concept Entries with Collection ExternalID",
+            "request": {
+                "method": "POST",
+                "header": [{
+                    "key": "",
+                    "value": "",
+                    "disabled": true
+                }],
+                "body": {
+                    "mode": "raw",
+                    "raw": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<!DOCTYPE martif SYSTEM \"https://eurotermbank.com/TBXcoreStructV02%20%281%29.dtd\">\r\n<martif type=\"TBX\" xml:lang=\"en\">\r\n  <martifHeader>\r\n    <fileDesc>\r\n      <sourceDesc>\r\n        <p>Sync collection sample</p>\r\n      </sourceDesc>\r\n    </fileDesc>\r\n    <encodingDesc>\r\n      <p type=\"XCSURI\">https://eurotermbank.com/tbx-0.5.1.xcs</p>\r\n    </encodingDesc>\r\n  </martifHeader>\r\n  <text>\r\n    <body>\r\n<termEntry id=\"external-1\">\r\n  <langSet xml:lang=\"en\">\r\n    <ntig>\r\n      <termGrp>\r\n        <term>Computer</term>\r\n      </termGrp>\r\n      <termNote type=\"administrativeStatus\">preferredTerm-admn-sts</termNote>\r\n      <admin type=\"status\">approved</admin>\r\n      <termNote type=\"normativeAuthorization\">approved</termNote>\r\n      <termNote type=\"grammaticalGender\">masculine</termNote>\r\n      <termNote type=\"grammaticalNumber\">singular</termNote>\r\n      <termNote type=\"partOfSpeech\">noun</termNote>\r\n      <termNote type=\"register\">technicalRegister</termNote>\r\n      <termNote type=\"termType\">entryTerm</termNote>\r\n      <termNote type=\"usageNote\">Commonly used</termNote>\r\n      <note>Use without restriction</note>\r\n      <xref type=\"xSource\" target=\"our company rules\" />\r\n      <descripGrp>\r\n        <descrip type=\"context\">Early computers were meant to be used only for calculations</descrip>\r\n        <admin type=\"sourceIdentifier\">https://en.wikipedia.org/wiki/Computer</admin>\r\n      </descripGrp>\r\n    </ntig>\r\n    <descripGrp>\r\n      <descrip type=\"definition\">A computer is a machine that can be programmed to carry out sequences of arithmetic or logical operations automatically.</descrip>\r\n      <admin type=\"sourceIdentifier\">https://en.wikipedia.org/wiki/Computer</admin>\r\n    </descripGrp>\r\n  </langSet>\r\n  <langSet xml:lang=\"lv\">\r\n    <ntig>\r\n      <termGrp>\r\n        <term>Dators</term>\r\n      </termGrp>\r\n      <admin type=\"status\">approved</admin>\r\n    </ntig>\r\n    <ntig>\r\n      <termGrp>\r\n        <term>Kompjūters</term>\r\n      </termGrp>\r\n      <admin type=\"status\">approved</admin>\r\n      <termNote type=\"temporalQualifier\">obsoleteTerm</termNote>\r\n      <note>Dažkārt tiek lietots automotive un citās inženierzinātnēs</note>\r\n    </ntig>\r\n  </langSet>\r\n  <descrip type=\"subjectField\">Politics and Administration</descrip>\r\n</termEntry>\r\n<termEntry id=\"external-2\">\r\n  <langSet xml:lang=\"en\">\r\n    <ntig>\r\n      <termGrp>\r\n        <term>Computer program</term>\r\n      </termGrp>\r\n      <admin type=\"status\">approved</admin>\r\n    </ntig>\r\n    <descripGrp>\r\n      <descrip type=\"definition\">A computer program is a collection of instructions[1] that can be executed by a computer to perform a specific task.</descrip>\r\n    </descripGrp>\r\n  </langSet>\r\n  <langSet xml:lang=\"lv\">\r\n    <ntig>\r\n      <termGrp>\r\n        <term>Datorprogramma</term>\r\n      </termGrp>\r\n      <admin type=\"status\">approved</admin>\r\n    </ntig>\r\n  </langSet>\r\n  <descrip type=\"subjectField\">Politics and Administration</descrip>\r\n</termEntry></body>\r\n  </text>\r\n</martif>",
+                    "options": {
+                        "raw": {
+                            "language": "xml"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "{{url}}/sync/collection/external/my-collection-id-1/entries",
+                    "host": [
+                        "{{url}}"
+                    ],
+                    "path": [
+                        "sync",
+                        "collection",
+                        "external",
+                        "my-collection-id-1",
+                        "entries"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Delete Term entry",
+            "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                    "raw": "{{url}}/sync/collection/19/entries/external-1",
+                    "host": [
+                        "{{url}}"
+                    ],
+                    "path": [
+                        "sync",
+                        "collection",
+                        "19",
+                        "entries",
+                        "external-1"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Delete Term entry with external collection ID",
+            "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                    "raw": "{{url}}/sync/collection/external/external-collection-id-1/entries/external-1",
+                    "host": [
+                        "{{url}}"
+                    ],
+                    "path": [
+                        "sync",
+                        "collection",
+                        "external",
+                        "external-collection-id-1",
+                        "entries",
+                        "external-1"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Delete Collection",
+            "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                    "raw": "{{url}}/sync/collection/19",
+                    "host": [
+                        "{{url}}"
+                    ],
+                    "path": [
+                        "sync",
+                        "collection",
+                        "19"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Delete Collection Using ExternalID",
+            "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                    "raw": "{{url}}/sync/collection/external/my-collection-id-1",
+                    "host": [
+                        "{{url}}"
+                    ],
+                    "path": [
+                        "sync",
+                        "collection",
+                        "external",
+                        "my-collection-id-1"
+                    ]
+                }
+            },
+            "response": []
+        }
+    ],
+    "auth": {
+        "type": "basic",
+        "basic": [{
+                "key": "password",
+                "value": "aaa",
+                "type": "string"
+            },
+            {
+                "key": "username",
+                "value": "bbb",
+                "type": "string"
+            }
+        ]
+    },
+    "event": [{
+            "listen": "prerequest",
+            "script": {
+                "type": "text/javascript",
+                "exec": [
+                    ""
+                ]
+            }
+        },
+        {
+            "listen": "test",
+            "script": {
+                "type": "text/javascript",
+                "exec": [
+                    ""
+                ]
+            }
+        }
+    ],
+    "variable": [{
+        "key": "url",
+        "value": "https://test-fedterm.eurotermbank.com/api/termservice"
+    }]
+}

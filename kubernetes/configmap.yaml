@@ -1,0 +1,62 @@
+#elasticsearch.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+ name: elasticsearch-config
+ namespace: otk
+data:
+ discovery.type: "single-node"
+---
+#frontend-cms.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+ name: frontend-cms-config
+ namespace: otk
+data:
+ DATABASE_CLIENT: ""
+ DATABASE_HOST: ""
+ DATABASE_NAME: ""
+ DATABASE_PORT: ""
+---
+#frontend.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+ name: frontend-config
+ namespace: otk
+data:
+ BASE_URL: ""
+ CMS_SERVICE_URL: ""
+ TERM_SERVICE_URL: ""
+ KC_URL: ""
+ KC_REALM: ""
+ KC_CLIENTID: ""
+ DISCUSSION_SERVICE_URL: ""
+ ETB_URL: "https://www.eurotermbank.com/register"
+---
+#termservice.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+ name: termservice-config
+ namespace: otk
+data:
+ Auth__JwtBearer__Audience: ""
+ Auth__JwtBearer__Issuer: ""
+ ElasticSearch__Host: "http://elasticserch:2022/"
+ ElasticSearch__IndexName: "otk-terms"
+ ElasticSearch__TermUri: "https://eurotermbank.com/"
+---
+#keycloak.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+ name: keycloak-config
+ namespace: otk
+data:
+ DB_VENDOR: "MYSQL"
+ DB_ADDR: ""
+ DB_DATABASE: "otk-keycloak"
+ JDBC_PARAMS: "connectTimeout=30000&useLegacyDatetimeCode=false&serverTimezone=UTC"
+---

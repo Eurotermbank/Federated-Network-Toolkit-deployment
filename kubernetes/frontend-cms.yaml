@@ -1,0 +1,117 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: frontend-cms
+  name: frontend-cms
+  namespace: otk
+spec:
+  ports:
+  - name: "2001"
+    port: 2001
+    targetPort: 1337
+  selector:
+    app: frontend-cms
+status:
+  loadBalancer: {}
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: frontend-cms
+  name: frontend-cms
+  namespace: otk
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend-cms
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: frontend-cms
+    spec:
+      volumes:
+      - name: otk-cms-pv-storage
+        persistentVolumeClaim:
+          claimName: otk-cms-pv-claim
+      containers:
+      - env:
+        - name: DATABASE_CLIENT
+          valueFrom:
+           configMapKeyRef:
+            name: frontend-cms-config
+            key: DATABASE_CLIENT
+        - name: DATABASE_HOST
+          valueFrom:
+           configMapKeyRef:
+            name: frontend-cms-config
+            key: DATABASE_HOST
+        - name: DATABASE_NAME
+          valueFrom:
+           configMapKeyRef:
+            name: frontend-cms-config
+            key: DATABASE_NAME
+          # NOTE - "tt-cms" DB neizveidojas automātiski, vajadzētu init skriptu, kas to izdara..
+        - name: DATABASE_PASSWORD
+          valueFrom:
+           secretKeyRef:
+            name: frontend-cms-secret
+            key: DATABASE_PASSWORD
+        - name: DATABASE_PORT
+          valueFrom:
+           configMapKeyRef:
+            name: frontend-cms-config
+            key: DATABASE_PORT
+        - name: DATABASE_USERNAME
+          valueFrom:
+           secretKeyRef:
+            name: frontend-cms-secret
+            key: DATABASE_USERNAME
+        - name: SMTP_HOST
+          valueFrom:
+           secretKeyRef:
+            name: frontend-cms-secret
+            key: SMTP_HOST
+        - name: SMTP_PORT
+          valueFrom:
+           secretKeyRef:
+            name: frontend-cms-secret
+            key: SMTP_PORT
+        - name: SMTP_USERNAME
+          valueFrom:
+           secretKeyRef:
+            name: frontend-cms-secret
+            key: SMTP_USERNAME
+        - name: SMTP_PASSWORD
+          valueFrom:
+           secretKeyRef:
+            name: frontend-cms-secret
+            key: SMTP_PASSWORD
+        - name: SMTP_FROM
+          valueFrom:
+           secretKeyRef:
+            name: frontend-cms-secret
+            key: SMTP_FROM
+        - name: SMTP_REPLYTO
+          valueFrom:
+           secretKeyRef:
+            name: frontend-cms-secret
+            key: SMTP_REPLYTO
+        image: eurotermbank.azurecr.io/otk-frontend-cms:38546
+        imagePullPolicy: "Always"
+        name: frontend-cms
+        ports:
+        - containerPort: 1337
+        volumeMounts:
+        - mountPath: "/strapi/public/uploads"
+          name: otk-cms-pv-storage
+        resources: {}
+      imagePullSecrets:
+        - name: dregsecret
+      restartPolicy: Always
+      serviceAccountName: ""
+status: {}

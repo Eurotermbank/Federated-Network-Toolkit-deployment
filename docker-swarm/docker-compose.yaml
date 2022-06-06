@@ -1,0 +1,143 @@
+version: '3.9'
+services: 
+  db:
+    image: mysql:5.7
+    restart: always
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+    environment:        
+      MYSQL_ROOT_PASSWORD: db-root-password
+    ports:      
+      - '3306:3306'
+    expose:
+      - '3307'
+      # Where our data will be persisted
+    volumes:
+      - db-pv:/var/lib/mysql
+      - ./initdata:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", 'mysqladmin ping']
+      interval: 4s
+      timeout: 2s
+      retries: 10  
+  frontend:
+    image: eurotermbank.azurecr.io/otk-frontend:40496
+    ports:
+    - 8080:80     
+    environment:      
+      BASE_URL: http://localhost:8080
+      TERM_SERVICE_URL: http://localhost:8081
+      CMS_SERVICE_URL: http://localhost:1337     
+      DISCUSSION_SERVICE_URL: http://localhost:8082 
+      KC_URL: http://localhost:8083/auth
+      KC_REALM: Toolkit
+      KC_CLIENTID: otk-frontend
+      ETB_URL: https://www.eurotermbank.com/register
+  frontend-cms:
+    image: eurotermbank.azurecr.io/otk-frontend-cms:38546
+    ports:
+    - 1337:1337    
+    environment:  
+      DATABASE_CLIENT: mysql
+      DATABASE_HOST: db
+      DATABASE_PORT: 3306
+      DATABASE_NAME: cms
+      DATABASE_USERNAME: cms-user
+      DATABASE_PASSWORD: db-password
+      #specify smtp to allow
+      #SMTP_HOST: ${SMTP_HOST}
+      #SMTP_PORT: ${SMTP_PORT}
+      #SMTP_USERNAME: ${SMTP_USERNAME}
+      #SMTP_PASSWORD: ${SMTP_PASSWORD}
+      #SMTP_FROM: ${SMTP_FROM}
+      #SMTP_REPLYTO: ${SMTP_REPLYTO}  
+    depends_on:
+      db:
+        condition: service_healthy   
+    #volumes:
+      #- cms-pv:/strapi/public/uploads
+    deploy:
+      replicas: 1
+      restart_policy:
+          condition: on-failure
+          delay: 5s
+          max_attempts: 5
+  termService: 
+    image: eurotermbank.azurecr.io/otk-termservice:40462
+    ports:
+      - 8081:80   
+    environment:
+      "ConnectionStrings:termDB": "server=db,3306;user id=term-user;password=db-password;persistsecurityinfo=True;database=termservice;oldguids=true;Convert Zero Datetime=True;charset=utf8"
+      "Auth:JwtBearer:Issuer":  http://localhost:8083/auth/realms/Toolkit
+      "Auth:BasicAuth:Username":  BA_USERNAME
+      "Auth:BasicAuth:Password":  BA_PASSWORD
+      "ElasticSearch:Host":  http://localhost:9200
+      "AllowedCORS": "http://localhost:8080"
+    depends_on:    
+      keycloak:
+        condition: service_healthy
+    deploy:
+      replicas: 1
+      restart_policy:
+          condition: on-failure
+          delay: 5s
+          max_attempts: 5
+  discussionService: 
+    image: eurotermbank.azurecr.io/otk-discussionservice:37931
+    ports:
+      - 8082:80 
+    environment:
+      "ConnectionStrings:discussionDB": "server=db,3306;user id=discuss-user;password=db-password;persistsecurityinfo=True;database=discussionservice;oldguids=true;Convert Zero Datetime=True;charset=utf8"
+      "Auth:JwtBearer:Issuer":  http://localhost:8083/auth/realms/Toolkit
+      "AllowedCORS": http://localhost:8080
+    depends_on:     
+      keycloak:
+        condition: service_healthy
+    deploy:
+      replicas: 1
+      restart_policy:
+          condition: on-failure
+          delay: 5s
+          max_attempts: 5
+  elasticSearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.3
+    ports:
+    - 9200:9200 
+    environment:      
+      discovery.type: single-node
+  kibana:
+    container_name: kibana
+    image: docker.elastic.co/kibana/kibana:7.17.3
+    ports:
+      - 5601:5601
+    depends_on:
+      - elasticSearch
+    environment:
+      - ELASTICSEARCH_HOSTS=http://localhost:9200   
+  keycloak:
+    image: eurotermbank.azurecr.io/auth-keycloak-otk:35914
+    environment:
+      KEYCLOAK_USER: otk-admin
+      KEYCLOAK_PASSWORD: otk-admin
+      DB_VENDOR: MYSQL
+      DB_ADDR: db
+      DB_PORT: 3306
+      DB_DATABASE: keycloak
+      DB_USER: kc-user
+      DB_PASSWORD: db-password
+      JDBC_PARAMS: "connectTimeout=30000"
+      KEYCLOAK_IMPORT: /tmp/toolkit.json
+    ports:
+      - 8083:8080
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/auth/realms/master"] #internally KC is available via default port
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 10 
+# Names our volume
+volumes:
+  db-pv:
+  cms-pv:  

@@ -1,0 +1,70 @@
+# prep storage for frontend-cms public uploads
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: otk-cms-pv-volume
+  namespace: otk
+  labels:
+    type: local
+    app: frontend-cms
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 3Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/otk/cms-public-uploads"
+---
+# CMS Pub storage
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: otk-cms-pv-claim
+  namespace: otk
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 3Gi
+  selector:
+    matchLabels:
+      app: frontend-cms
+---
+# prep storage for frontend html uploads
+# storage for custom branding files
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: otk-html-pv-volume
+  namespace: otk
+  labels:
+    type: local
+    app: frontend
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 3Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/otk/frontend-html"
+---
+# html Pub storage
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: otk-html-pv-claim
+  namespace: otk
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 3Gi
+  selector:
+    matchLabels:
+      app: frontend
