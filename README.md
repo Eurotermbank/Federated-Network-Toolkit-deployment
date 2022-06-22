@@ -439,6 +439,8 @@ nginx.ingress.kubernetes.io/auth-secret: kibana-basic-auth
 
 _____
 
+This project is licensed under the terms of the CC-BY-NC-ND-4.0 license.
+
 Project is co-financed by **Health and Digital Executive Agency (HaDEA)** <br>
 **Action No**: 2019-EU-IA-0049
 
