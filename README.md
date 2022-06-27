@@ -1,30 +1,69 @@
 
 <img align="right" height="100" src="https://user-images.githubusercontent.com/11315268/137450374-160146b9-e56a-4b49-aada-8e11518acc33.png">
 
-# Toolkit for Eurotermbank Federated Network
+# Toolkit for Eurotermbank Federated Network <!-- omit in toc -->
 
 This repo contains set up instructions and deployment files for deploying Toolkit to Kubernetes environment. This toolkit can also be deployed in any other environment that supports running Docker images
 
+## Table of contents <!-- omit in toc -->
 
 
-## Toolkit functionality
+- [Toolkit overview](#toolkit-overview)
+  - [Functionality](#functionality)
+  - [Portal User Types](#portal-user-types)
+  - [Architecture](#architecture)
+- [Setup](#setup)
+  - [Minimal system requirements](#minimal-system-requirements)
+  - [Setting up Strapi CMS](#setting-up-strapi-cms)
+  - [Configuring Keycloak](#configuring-keycloak)
+    - [Seting up Keycloak Realm](#seting-up-keycloak-realm)
+    - [Managing users, Roles and Groups](#managing-users-roles-and-groups)
+  - [Configuring databases](#configuring-databases)
+  - [Resource deployment](#resource-deployment)
+    - [Storage](#storage)
+    - [Ingress](#ingress)
+    - [Configmap values](#configmap-values)
+      - [Frontend-cms](#frontend-cms)
+      - [Frontend](#frontend)
+      - [Termservice](#termservice)
+      - [Keycloak](#keycloak)
+    - [Secret values](#secret-values)
+      - [Frontend cms](#frontend-cms-1)
+      - [Termservice & Discussionservice](#termservice--discussionservice)
+      - [Keycloak](#keycloak-1)
+    - [Deployment](#deployment)
+    - [Portal branding](#portal-branding)
+  - [Additional configuration](#additional-configuration)
+    - [Kibana](#kibana)
+
+
+
+
+If you plan to set up Eurotermbank toolkit, please see the instructions further below.
+
+In case you already have your terminology management system and would like to join Eurotermbank network by using api REST calls, please see [Data synchronization specification](https://github.com/Eurotermbank/Federated-Network-Toolkit-deployment/blob/main/user-guides/synchronization.md)
+
+# Toolkit overview
+
+## Functionality
+
 Toolkit is intended to decentralized terminology management, terminology sharing, terminology search, terminology creation workflow and its synchronization with central node Eurotermbank.com and later also metadata synchrnization with the ELRC-share.
 
 The main functionality of the open Terminology Management Toolkit includes:
 
-* Terminology management
+- Terminology management
 
   - Terminology import/export from/to TBX/TSV/CSV/Excel
 
   - Terminology entry management – edit, delete, create
 
-* sharing
+- sharing
 
   - Share with other people to do collaborative terminology management
 
   - Share with citizens – allow anyone to see the whole term collection
 
-* Terminology search
+- Terminology search
 
   - Global terminology search in the whole local database
 
@@ -34,7 +73,7 @@ The main functionality of the open Terminology Management Toolkit includes:
 
   - Federated eTranslation TermBank Network (from eurotermbank.com portal)
 
-* Terminology creation workflow
+- Terminology creation workflow
 
   - Share term candidates with others
 
@@ -42,13 +81,13 @@ The main functionality of the open Terminology Management Toolkit includes:
 
   - Approve term candidates and new entries
 
-* Automatic Terminology (approved terms) synchronization with Eurotermbank.com and ELRC-share
+- Automatic Terminology (approved terms) synchronization with Eurotermbank.com and ELRC-share
 
-* Manage portal style and Content management system:
+- Manage portal style and Content management system:
   - change colors, logo, title
   - manage portals' content, news, menu, landing page texts and images
 
-### Portal User Types
+## Portal User Types
 
 **Anonymous user** - any user that is not authenticated
 
@@ -72,7 +111,6 @@ Functionality VS user types:
 | Can import terms                             |                                            |                                            |                           | X                         |
 | Can delete collection                        |                                            |                                            |                           | X                         |
 
-
  Feedback functionality (not implemented yet):
  |                                              | Anonymous                                  | Registered User                            | Registered User as Reader | Registered User as Editor |
 | -------------------------------------------- | ------------------------------------------ | ------------------------------------------ | ------------------------- | ------------------------- |
@@ -83,6 +121,7 @@ Functionality VS user types:
 *adjustable for each collection in metadata
 
 ## Architecture
+
 The toolkit consists of several microservices, each component is deployable as docker container.
 
 **Frontend** – Application responsible for all GUI and its operations. It is using Angular, that means this is Single Page Application
@@ -91,53 +130,57 @@ The toolkit consists of several microservices, each component is deployable as d
 
 **Term Service** – microservice responsible for terminology management backend. This service consists from 3 components – (1) backend service built on ASP.NET Core, (2) Elastic Search service and (3) MySQL Database. Main methods for the service are:
 
-* CRUD operations for term metadata – terminology collections
+- CRUD operations for term metadata – terminology collections
 
-* CRUD operations for term entries
+- CRUD operations for term entries
 
-* Bulk methods for massive term import, export
+- Bulk methods for massive term import, export
 
-* Terminology search methods – lookup, search, fuzzy search, instant search
+- Terminology search methods – lookup, search, fuzzy search, instant search
 
-* Data synchronization support for Federated Network
+- Data synchronization support for Federated Network
 
 **User Service** – microservice that is responsible for user authentication and authorization. Open source identity platform Keycloak was chosen. Custom Keycloak theme has been developed and provided for this toolkit (included in this Toolkit kKeycloak container image) as well initial configuration file to be imported.
 
 **Discussion Service** - This service will consist from 2 components – (1) backend service built on ASP.NET Core, (2) MySQL Database. This service is responsible about user generated coments on terminology entries.
 
-**Log Service** – This services uses Elastic Search engine for log data storage and Kibana software for log data visualisation and query.
+**Logging Service** – This services uses Elastic Search engine for log data storage and Kibana software for log data visualisation and query.
 
-## Minimal system requirements:
-•	At least a 2-core x86/x64 CPU (Central Processor Unit)
+# Setup
+## Minimal system requirements
 
-•	5 GB of RAM (Random Access Memory) or more
+• At least a 2-core x86/x64 CPU (Central Processor Unit)
+• 5 GB of RAM (Random Access Memory) or more
+• 30 GB of storage or more
+• Internet access
 
-•	30 GB of storage or more
+**Solution has been tested on:**
 
-•	Internet access
+• Kubernetes cluster version: 1.19
+• MySQL version 8
 
-## Solution has been tested on:
-•	Kubernetes cluster version: 1.19
+## Setting up Strapi CMS
 
-•	MySQL version 8
-
-## Set up CMS
 1) Restore DB from dump
 2) Copy seed data files
 3) Change admin username and password
 
 [CMS content management guide](user-guides/cms.md)
 
-## Configure Keycloak
-### set up Realm
-1) Log into Keycloak master realm with admin user you specified in deployment yaml file (https://keycloak.example.com/auth)
+## Configuring Keycloak
+
+### Seting up Keycloak Realm
+
+1) Log into Keycloak master realm with admin user you specified in deployment yaml file (<https://keycloak.example.com/auth>)
 2) Go over Master dropdown and click button  "Add realm"
 3) This repo's folder 'seed-data/keycloak' contains file toolkit.json, imports this file.
 4) Go to Realm Settings --> Email, to configure access to your email service (e.g. need for password recovery)
 5) Go to Clients-->otk-frontend and enter your frontends public url (Root URL, Valid redirect URIs, Base URL)
 
-### Manage users, Roles and Groups
-There are 2 types of users:
+### Managing users, Roles and Groups
+
+There are two types of users:
+
 1) Users in Master realm - those who can log in Keycloak and manage endusers
 2) Users in toolkit realm - end-users of terminology portal. You can create new groups (each term collection belongs to one user group). As well you can asiing roles to the end users:
 
@@ -145,9 +188,9 @@ There are 2 types of users:
 
     b) Terminology Manager - can also do editorial operations.
 
+## Configuring databases
 
-## Configure database
-There are need to configure 2 databases before deploying solution. Recomended to use MySQL.
+There need to be two databases configured before a solution can be deployed. It is recomended to use MySQL.
 
 1) Keycloak database:
 
@@ -159,7 +202,7 @@ There are need to configure 2 databases before deploying solution. Recomended to
 
          Default characterset: utf8
 
-2) CMS database:
+2) Strapi CMS database:
 
     a) create databse with name: **otk-cms**
 
@@ -170,37 +213,37 @@ There are need to configure 2 databases before deploying solution. Recomended to
 There are multiple .yaml files. Before deployment you need fill **configmap.yaml**, **secret.yaml**, **storage.yaml**, **ingress.yaml** with your values.
 &nbsp;
 &nbsp;
-### **Storage**
-&nbsp;
+
+### Storage
+
 You need to define path to [cms-public-uploads](https://github.com/Eurotermbank/Federated-Network-Toolkit-deployment/blob/main/seed-data/cms/cms-public-uploads.zip"cms-public-uploads.zip") files.
-&nbsp;
 |Value|Description|
 |-----|-----------|
 |Path|location of cms public  uploads files ex. "/mnt/otk/cms-public-uploads" |
 
 &nbsp;
 &nbsp;
-### **Ingress**
-&nbsp;
+### Ingress
+
 You need change host values.
+&nbsp;
+&nbsp;
 
+### Configmap values
 
-&nbsp;
-&nbsp;
-### **Configmap value**
-&nbsp;
-&nbsp;
-#### **Frontend-cms**
+#### Frontend-cms
+
 |Value|Description|
 |-----|-----------|
 |DATABASE_CLIENT|database service ex. "mysql"|
 |DATABASE_HOST| database host name |
 |DATABASE_NAME| cms db name ex. "otk-cms"|
 |DATABASE_PORT| database communication port ex. "3306"|
+&nbsp;
+&nbsp;
 
-&nbsp;
-&nbsp;
-#### **Frontend**
+#### Frontend
+
 |Value|Description|
 |-----|-----------|
 |BASE_URL|frontend URL  ex. "https://example.com"|
@@ -213,7 +256,9 @@ You need change host values.
 
 &nbsp;
 &nbsp;
-#### **Termservice**
+
+#### Termservice
+
 |Value|Description|
 |-----|-----------|
 |Auth__JwtBearer__Audience|keycloak audience ex. "account"|
@@ -221,25 +266,21 @@ You need change host values.
 
 &nbsp;
 &nbsp;
-#### **Keycloak**
+
+#### Keycloak
+
 |Value|Description|
 |-----|-----------|
 |DB_VENDOR|database service ex. "mysql"|
 |DB_ADDR|database host name|
 
-
 &nbsp;
 &nbsp;
-&nbsp;
 
+### Secret values
 
+#### Frontend cms
 
-
-
-### **Secret value**
-&nbsp;
-&nbsp;
-#### **Frontend-cms**
 |Value|Description|
 |-----|-----------|
 |DATABASE_USERNAME| database admin username |
@@ -251,10 +292,11 @@ You need change host values.
 |SMTP_FROM| e-mail from ex. ""no-reply@example.com"" |
 |SMTP_REPLYTO| e-mail from ex. ""no-reply@example.com"" |
 
+&nbsp;
+&nbsp;
 
-&nbsp;
-&nbsp;
-#### **Termservice** & **Discussionservice**
+#### Termservice & Discussionservice
+
 |Value|Description|
 |-----|-----------|
 |Auth__BasicAuth__Password| basic user password |
@@ -263,12 +305,15 @@ You need change host values.
 |ConnectionStrings__termDB| termservice database connection string |
 |ConnectionStrings__discussionDB| discussion database connection string |
 
-&nbsp;
+
 &nbsp;
 database connection string example: "server=example.mysql.database.example.com;user id=dbuser;password=dbpass;persistsecurityinfo=True;database=otk-term-srv;oldguids=true;Convert Zero Datetime=True;charset=utf8"
 &nbsp;
 &nbsp;
-#### **Keycloak**
+
+
+#### Keycloak
+
 |Value|Description|
 |-----|-----------|
 |KEYCLOAK_USER| keyclaok admin username |
@@ -278,14 +323,10 @@ database connection string example: "server=example.mysql.database.example.com;u
 
 &nbsp;
 &nbsp;
-&nbsp;
-
-
-
-
 
 ### Deployment
-There are 2 ways for deployment:
+
+There are two ways for deployment:
 
 1) If you have automated deployment, you can use **kustomization.yaml**. After deployment complete, run kubectl create secret command from [container-registry-secret](https://github.com/Eurotermbank/Federated-Network-Toolkit-deployment/blob/main/container-registry-secret"container-registry-secret") file. container-registry-secret file contains credentials for ACR pull user.
 
@@ -317,7 +358,6 @@ There are 2 ways for deployment:
 
     m) ingress.yaml
 
-  &nbsp;
 &nbsp;
 &nbsp;
 
@@ -330,29 +370,31 @@ It is possible to override Toolkits default look - change logo, favicon, colors 
 
 ## Additional configuration
 
-&nbsp;
-&nbsp;
-
 ### Kibana
+
 &nbsp;
 There are possability to configure authentification for Kibana dashboard.
 Authentification will be enabled from Ingress. Before configuring Ingress, there are need to create secret key.
 If key configured not correctly you can get error **503**.
 
 Execute command:
+
 ```bash
 htpasswd -c auth otk-logViewer
 ```
+
 where **otk-logViewer** is login. And enter password in terminal log.
 Next, create secret from auth, and displey it.
 
 If you deploying directly to k8, you can add **--namespace otk** paramter to create command.
+
 ```kubectl
 kubectl create secret generic basic-auth --from-file=auth
 kubectl get secret basic-auth -o yaml
 ```
 
 Output will be similar:
+
 ```yaml
 apiVersion: v1
 data:
@@ -381,6 +423,7 @@ type: Opaque
 ```
 
 If you need to deploy in other environment, you can create secret yaml from previous step. It will look like this:
+
 ```yaml
 apiVersion: v1
 data:
@@ -432,10 +475,10 @@ status:
 ```
 
 Here must be defined secret name:
+
 ```yaml
 nginx.ingress.kubernetes.io/auth-secret: kibana-basic-auth
 ```
-
 
 _____
 
@@ -443,4 +486,3 @@ This project is licensed under the terms of the CC-BY-NC-ND-4.0 license.
 
 Project is co-financed by **Health and Digital Executive Agency (HaDEA)** <br>
 **Action No**: 2019-EU-IA-0049
-
