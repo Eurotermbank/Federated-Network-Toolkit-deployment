@@ -1,7 +1,7 @@
 
 <img align="right" height="100" src="https://user-images.githubusercontent.com/11315268/137450374-160146b9-e56a-4b49-aada-8e11518acc33.png">
-<!-- omit in toc -->
-# Toolkit for Eurotermbank Federated Network
+
+# Toolkit for Eurotermbank Federated Network <!-- omit in toc -->
 
 This repo contains set up instructions and deployment files for deploying Toolkit to Kubernetes environment. This toolkit can also be deployed in any other environment that supports running Docker images
 
