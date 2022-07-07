@@ -20,7 +20,7 @@ services:
       timeout: 2s
       retries: 10  
   frontend:
-    image: eurotermbank.azurecr.io/otk-frontend:40496
+    image: eurotermbank.azurecr.io/otk-frontend:41742
     ports:
     - 8080:80     
     environment:      
