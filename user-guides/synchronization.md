@@ -87,8 +87,9 @@ Return value: Id of created collection.
 ## Update Existing Collection Metadata
 
 * Domain ID is mandatory and must be sent one of the IDs specified in [Domain Classifications](https://github.com/Eurotermbank/Federated-Network-Toolkit-deployment/blob/5918fe4486eac2f9f4067043b1cad9639d14a230/user-guides/DomainClassifiers.md)
+* collection_id is the ID of the collection that needs to be updated. The Id was returned in "Add New Collection Metadata" method.
 
-PUT /api/termservice/sync/collection HTTP/1.1
+PUT /api/termservice/sync/collection/{collection_id} HTTP/1.1
 
 Host: eurotermbank.com
 
