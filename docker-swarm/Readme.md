@@ -17,7 +17,7 @@ You will be asked for username and password:
 
 <u>Username</u>: bbff8f3e-176d-483a-89ef-1a17b0674abf
 
-<u>Password</u>: Pvq3OmyHlbtrpP7yGfZ3Kp9_5pt1b1-LwI
+<u>Password</u>: F_u8Q~kLt6h5JX3fnV6FsU66xFEmpDT5A4xiZcr-
 
 
 **#Step 2**

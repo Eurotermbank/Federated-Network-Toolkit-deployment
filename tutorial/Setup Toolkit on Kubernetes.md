@@ -921,7 +921,7 @@ kubectl create secret docker-registry dregsecret \
     --namespace otk \
     --docker-server=eurotermbank.azurecr.io \
     --docker-username=bbff8f3e-176d-483a-89ef-1a17b0674abf \
-    --docker-password=Pvq3OmyHlbtrpP7yGfZ3Kp9_5pt1b1-LwI
+    --docker-password=F_u8Q~kLt6h5JX3fnV6FsU66xFEmpDT5A4xiZcr-
 ```
 
 Once secret created, go thrue **configmap.yaml** and **secret.yaml** files and check if all values in place.
